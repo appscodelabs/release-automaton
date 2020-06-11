@@ -6,6 +6,9 @@ cloud.google.com/go/internal/optional
 cloud.google.com/go/internal/trace
 cloud.google.com/go/internal/version
 cloud.google.com/go/storage
+# github.com/Masterminds/semver v1.5.0
+## explicit
+github.com/Masterminds/semver
 # github.com/aws/aws-sdk-go v1.15.78
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/awserr
@@ -54,6 +57,14 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
+# github.com/google/go-github/v32 v32.0.0
+## explicit
+github.com/google/go-github/v32/github
+# github.com/google/go-querystring v1.0.0
+github.com/google/go-querystring/query
+# github.com/google/uuid v1.1.1
+## explicit
+github.com/google/uuid
 # github.com/googleapis/gax-go/v2 v2.0.5
 github.com/googleapis/gax-go/v2
 # github.com/hashicorp/go-cleanhttp v0.5.0
@@ -99,13 +110,21 @@ go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/propagation
 go.opencensus.io/trace/tracestate
+# golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
+golang.org/x/crypto/cast5
+golang.org/x/crypto/openpgp
+golang.org/x/crypto/openpgp/armor
+golang.org/x/crypto/openpgp/elgamal
+golang.org/x/crypto/openpgp/errors
+golang.org/x/crypto/openpgp/packet
+golang.org/x/crypto/openpgp/s2k
 # golang.org/x/mod v0.3.0
 ## explicit
 golang.org/x/mod/internal/lazyregexp
 golang.org/x/mod/modfile
 golang.org/x/mod/module
 golang.org/x/mod/semver
-# golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+# golang.org/x/net v0.0.0-20191004110552-13f9640d40b9
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -115,12 +134,13 @@ golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
 # golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+## explicit
 golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20190624142023-c5567b49c5d0
+# golang.org/x/sys v0.0.0-20191022100944-742c48ecaeb7
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.2
 golang.org/x/text/secure/bidirule
@@ -130,6 +150,11 @@ golang.org/x/text/unicode/norm
 # golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
+# gomodules.xyz/envsubst v0.1.0
+## explicit
+gomodules.xyz/envsubst
+gomodules.xyz/envsubst/parse
+gomodules.xyz/envsubst/path
 # google.golang.org/api v0.9.0
 google.golang.org/api/gensupport
 google.golang.org/api/googleapi
@@ -191,3 +216,11 @@ google.golang.org/grpc/resolver/passthrough
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
+# gopkg.in/yaml.v2 v2.2.8
+gopkg.in/yaml.v2
+# k8s.io/apimachinery v0.18.3
+## explicit
+k8s.io/apimachinery/pkg/util/sets
+# sigs.k8s.io/yaml v1.2.0
+## explicit
+sigs.k8s.io/yaml
