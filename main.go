@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/appscodelabs/release-automaton/lib"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -175,22 +176,6 @@ func MeetsCondition(fn ConditionFunc, sh *shell.Session, items ...string) bool {
 		}
 	}
 	return true
-}
-
-func Keys(m map[string]string) []string {
-	keys := make([]string, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-	return keys
-}
-
-func Values(m map[string]string) []string {
-	values := sets.NewString()
-	for _, v := range m {
-		values.Insert(v)
-	}
-	return values.UnsortedList()
 }
 
 func FirstCommit(sh *shell.Session) string {
@@ -565,7 +550,7 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}
 			vs[i] = v
 		}
-		sort.Sort(SemverCollection(vs))
+		sort.Sort(lib.SemverCollection(vs))
 
 		var tagIdx = -1
 		for idx, vs := range vs {
