@@ -25,6 +25,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -257,11 +258,12 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 		// -----------------------
 
-		vars := map[string]string{
-			"TAG":             tag,
-			"RELEASE":         releaseNumber,
-			"RELEASE_TRACKER": releaseTracker,
-		}
+		vars := lib.MergeMaps(map[string]string{
+			repoURL2EnvKey(repoURL): tag,
+			"TAG":                   tag,
+			"RELEASE":               releaseNumber,
+			"RELEASE_TRACKER":       releaseTracker,
+		}, envVars)
 
 		headBranch := fmt.Sprintf("%s-%s", releaseNumber, branch)
 
@@ -1045,6 +1047,14 @@ func UpdateGoMod(dir string) {
 	}
 }
 
+func repoURL2EnvKey(repoURL string) string {
+	u, err := url.Parse(repoURL)
+	if err != nil {
+		panic(err)
+	}
+	return strings.ToUpper(strings.ReplaceAll(path.Join(u.Path, "tag"), "/", "_"))
+}
+
 const gitRoot = "/tmp/workspace"
 
 var (
@@ -1056,6 +1066,7 @@ var (
 
 	sessionID   = uuid.New().String()
 	repoVersion = map[string]string{}     // repo url -> version
+	envVars     = map[string]string{}     // ENV var format(repo url) -> version
 	modCache    = make(map[string]string) // module path -> repo
 	tagged      = sets.NewString()        // already tagged repos
 	merged      = map[MergeData]string{}  // (repo, branch) -> sha
@@ -1092,6 +1103,7 @@ func main() {
 		for repoURL, project := range projects {
 			if project.Tag != nil {
 				repoVersion[repoURL] = *project.Tag
+				envVars[repoURL2EnvKey(repoURL)] = *project.Tag
 			}
 		}
 	}

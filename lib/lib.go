@@ -7,6 +7,15 @@ import (
 	"sort"
 )
 
+func MergeMaps(dst, src map[string]string) map[string]string {
+	for k, v := range src {
+		if _, ok := dst[k]; !ok {
+			dst[k] = v
+		}
+	}
+	return dst
+}
+
 func Keys(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
 	for k := range m {
