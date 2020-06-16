@@ -21,7 +21,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/appscodelabs/release-automaton/lib"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -32,6 +31,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/appscodelabs/release-automaton/lib"
 	"github.com/appscodelabs/release-automaton/templates"
 
 	"github.com/Masterminds/semver"
@@ -247,7 +247,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	}
 
 	// All remote tags exist, so only add Go module path if needed.
-	if MeetsCondition(RemoteTagExists, sh, Keys(tags)...) {
+	if MeetsCondition(RemoteTagExists, sh, lib.Keys(tags)...) {
 		if modPath != "" {
 			comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
 		}
@@ -404,7 +404,7 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	}
 
 	// All remote tags exist, so only add Go module path if needed.
-	if MeetsCondition(RemoteTagExists, sh, Keys(tags)...) {
+	if MeetsCondition(RemoteTagExists, sh, lib.Keys(tags)...) {
 		if modPath != "" {
 			comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
 		}

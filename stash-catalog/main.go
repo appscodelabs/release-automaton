@@ -7,29 +7,29 @@ import (
 	"sort"
 )
 
-type Project struct {
+type Addon struct {
 	Name string `json:"name"`
 	Versions []string `json:"versions"`
 }
 
-type Catalog struct {
-	Projects []Project `json:"projects"`
+type StashCatalog struct {
+	Addons []Addon `json:"addons"`
 }
 
-func (c *Catalog) Sort() {
-	sort.Slice(c.Projects, func(i, j int) bool { return c.Projects[i].Name < c.Projects[j].Name })
+func (c *StashCatalog) Sort() {
+	sort.Slice(c.Addons, func(i, j int) bool { return c.Addons[i].Name < c.Addons[j].Name })
 	var err error
-	for i, project := range c.Projects {
-		c.Projects[i].Versions, err = lib.SortVersions(project.Versions)
+	for i, project := range c.Addons {
+		c.Addons[i].Versions, err = lib.SortVersions(project.Versions)
 		if err != nil {
 			panic(err)
 		}
 	}
 }
 
-func CreateCatalogData() Catalog {
-	return Catalog{
-		Projects: []Project{
+func CreateCatalogData() StashCatalog {
+	return StashCatalog{
+		Addons: []Addon{
 			{
 				Name: "postgres",
 				Versions: []string{
