@@ -21,8 +21,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 	"path"
@@ -30,17 +32,19 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"text/template"
 
 	"github.com/appscodelabs/release-automaton/lib"
 	"github.com/appscodelabs/release-automaton/templates"
 
 	"github.com/Masterminds/semver"
+	"github.com/Masterminds/sprig"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/google/go-github/v32/github"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-getter"
+	"github.com/keighl/metabolize"
 	flag "github.com/spf13/pflag"
+	"github.com/tamalsaha/go-oneliners"
 	"golang.org/x/mod/modfile"
 	"golang.org/x/oauth2"
 	"gomodules.xyz/envsubst"
@@ -49,9 +53,9 @@ import (
 )
 
 func NewGitHubClient() *github.Client {
-	token, found := os.LookupEnv("GITHUB_TOKEN")
+	token, found := os.LookupEnv(GitHubTokenKey)
 	if !found {
-		log.Fatalln("GITHUB_TOKEN env var is not set")
+		log.Fatalln(GitHubTokenKey + " env var is not set")
 	}
 
 	// Create the http client.
@@ -63,7 +67,7 @@ func NewGitHubClient() *github.Client {
 	return github.NewClient(tc)
 }
 
-func ListTags(ctx context.Context, client *github.Client, owner, repo string) ([]*github.RepositoryTag, error) {
+func ListTags2(ctx context.Context, client *github.Client, owner, repo string) ([]*github.RepositoryTag, error) {
 	opt := &github.ListOptions{
 		PerPage: 100,
 	}
@@ -81,6 +85,14 @@ func ListTags(ctx context.Context, client *github.Client, owner, repo string) ([
 		opt.Page = resp.NextPage
 	}
 	return result, nil
+}
+
+func ListTags(sh *shell.Session) ([]string, error) {
+	data, err := sh.Command("git", "tag").Output()
+	if err != nil {
+		return nil, err
+	}
+	return strings.Fields(string(data)), nil
 }
 
 func ListReviews(ctx context.Context, client *github.Client, owner, repo string, number int) ([]*github.PullRequestReview, error) {
@@ -160,12 +172,18 @@ func RemoteBranchExists(sh *shell.Session, branch string) bool {
 }
 
 func RemoteTagExists(sh *shell.Session, tag string) bool {
-	// git ls-remote --tags origin <tag>
-	data, err := sh.Command("git", "ls-remote", "--tags", "origin", tag).Output()
+	// git ls-remote --exit-code --tags origin <tag>
+	err := sh.Command("git", "ls-remote", "--exit-code", "--tags", "origin", tag).Run()
+	return err == nil
+}
+
+func GetRemoteTag(sh *shell.Session, tag string) string {
+	// git ls-remote --exit-code --tags origin <tag>
+	data, err := sh.Command("git", "ls-remote", "--exit-code", "--tags", "origin", tag).Output()
 	if err != nil {
-		panic(err)
+		return ""
 	}
-	return len(bytes.TrimSpace(data)) > 0
+	return strings.Fields(string(data))[0]
 }
 
 type ConditionFunc func(*shell.Session, string) bool
@@ -190,42 +208,65 @@ func FirstCommit(sh *shell.Session) string {
 	return commits[len(commits)-1]
 }
 
+func LatestCommit(sh *shell.Session) string {
+	// // git show -s --format=%H
+	data, err := sh.Command("git", "show", "-s", "--format=%H").Output()
+	if err != nil {
+		panic(err)
+	}
+	commits := strings.Fields(string(data))
+	return commits[0]
+}
+
 func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project Project) error {
 	if project.Tags != nil && project.Tag != nil {
 		return fmt.Errorf("repo %s is provided an invalid project configuration which uses both tag and tags", repoURL)
 	}
 
-	err := os.RemoveAll(gitRoot)
-	if err != nil {
-		return err
-	}
-	err = os.MkdirAll(gitRoot, 0755)
-	if err != nil {
-		return err
-	}
-	wd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer sh.SetDir(wd)
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
 
-	sh.SetDir(gitRoot)
+	owner, repo := ParseRepoURL(repoURL)
 
-	err = sh.Command("git",
-		"clone",
-		"--no-tags", // ok ???
-		"--no-recurse-submodules",
-		"--depth=1",
-		fmt.Sprintf("https://%s:%s@%s.git", os.Getenv("GITHUB_USER"), os.Getenv("GITHUB_TOKEN"), repoURL),
-	).Run()
+	// TODO: cache git repo
+	wdCur := filepath.Join(gitRoot, owner)
+	err := os.MkdirAll(wdCur, 0755)
 	if err != nil {
 		return err
 	}
-	sh.SetDir(filepath.Base(repoURL))
 
-	modPath := DetectGoMod(gitRoot)
+	if !exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
+
+		err = sh.Command("git",
+			"clone",
+			// "--no-tags", //TODO: ok?
+			"--no-recurse-submodules",
+			//"--depth=1",
+			//"--no-single-branch",
+			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(GitHubUserKey), os.Getenv(GitHubTokenKey), repoURL),
+		).Run()
+		if err != nil {
+			return err
+		}
+	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
+
+	modPath := DetectGoMod(wdCur)
 	if modPath != "" {
-		modCache[modPath] = repoURL
+		gm := GoImport{
+			RepoRoot: repoURL,
+		}
+		vcs, err := DetectVCSRoot(modPath)
+		if err != nil {
+			panic(err)
+		}
+		if vcs != repoURL {
+			gm.VCSRoot = vcs
+		}
+		modCache[modPath] = gm
 	}
 
 	tags := project.Tags
@@ -237,8 +278,48 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 	// All remote tags exist, so only add Go module path if needed.
 	if MeetsCondition(RemoteTagExists, sh, lib.Keys(tags)...) {
+		var ok bool
+		// Make sure /tagged, /cherry-picked comments exist
+		if project.Tag != nil {
+			sha := GetRemoteTag(sh, *project.Tag)
+			if replies, ok = AppendReplyIfMissing(replies, Reply{
+				Type: ReadyToTag,
+				ReadyToTag: &ReadyToTagReplyData{
+					Repo:           repoURL,
+					MergeCommitSHA: sha,
+				},
+			}); ok {
+				comments = append(comments, fmt.Sprintf("%s %s %s", ReadyToTag, repoURL, sha))
+			}
+		}
+		if project.Tags != nil {
+			for tag, branch := range project.Tags {
+				sha := GetRemoteTag(sh, tag)
+				if replies, ok = AppendReplyIfMissing(replies, Reply{
+					Type: CherryPicked,
+					CherryPicked: &CherryPickedReplyData{
+						Repo:           repoURL,
+						Branch:         branch,
+						MergeCommitSHA: sha,
+					},
+				}); ok {
+					comments = append(comments, fmt.Sprintf("%s %s %s %s", CherryPicked, repoURL, branch, sha))
+				}
+			}
+		}
+
+		if replies, ok = AppendReplyIfMissing(replies, Reply{
+			Type: Tagged,
+			Tagged: &TaggedReplyData{
+				Repo: repoURL,
+			},
+		}); ok {
+			comments = append(comments, fmt.Sprintf("%s %s", Tagged, repoURL))
+		}
+
 		if modPath != "" {
-			comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
+			AppendGo(modPath)
+			modPath = ""
 		}
 		return nil
 	}
@@ -277,15 +358,19 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			return err
 		}
 
-		// Update Go mod
-		UpdateGoMod(gitRoot)
-		err = sh.Command("go", "mod", "tidy").Run()
-		if err != nil {
-			return err
-		}
-		err = sh.Command("go", "mod", "vendor").Run()
-		if err != nil {
-			return err
+		if exists(filepath.Join(wdCur, "go.mod")) {
+			// Update Go mod
+			UpdateGoMod(wdCur)
+			if RepoModified(sh) {
+				err = sh.Command("go", "mod", "tidy").Run()
+				if err != nil {
+					return err
+				}
+				err = sh.Command("go", "mod", "vendor").Run()
+				if err != nil {
+					return err
+				}
+			}
 		}
 
 		for _, cmd := range project.Commands {
@@ -308,7 +393,16 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		}
 
 		if RepoModified(sh) {
-			err = CommitRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
+			messages := []string{
+				"ProductLine: " + release.ProductLine,
+				"Release: " + releaseNumber,
+			}
+			if !usesCherryPick || branch != "master" {
+				// repos that use cherry pick, a pr is opened against the master branch
+				// That pr MUST NOT report back to release tracker.
+				messages = append(messages, "Release-tracker: "+releaseTracker)
+			}
+			err = CommitRepo(sh, tag, messages...)
 			if err != nil {
 				return err
 			}
@@ -318,9 +412,9 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}
 
 			// open pr against project repo
-			owner, repo := ParseRepoURL(repoURL)
-			prBody := fmt.Sprintf(`Release: %s
-Release-tracker: %s`, releaseNumber, releaseTracker)
+			prBody := fmt.Sprintf(`ProductLine: %s
+Release: %s
+Release-tracker: %s`, release.ProductLine, releaseNumber, releaseTracker)
 			pr, err := CreatePR(gh, owner, repo, &github.NewPullRequest{
 				Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
 				Head:                github.String(headBranch),
@@ -334,22 +428,24 @@ Release-tracker: %s`, releaseNumber, releaseTracker)
 			}
 
 			// add comments to release repo
-			{
-				comments = append(comments, fmt.Sprintf("%s %s", PR, repoURL))
-				comments = append(comments, string(PR)+pr.GetHTMLURL())
-				if modPath != "" {
-					comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
-				}
-			}
+			comments = append(comments, fmt.Sprintf("%s %s", PR, pr.GetHTMLURL()))
 		} else {
-			comments = append(comments, fmt.Sprintf("%s %s", ReadyToTag, repoURL))
-			if modPath != "" {
-				comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
-			}
+			comments = append(comments, fmt.Sprintf("%s %s %s", ReadyToTag, repoURL, LatestCommit(sh)))
+			// TODO: add to replies map?
+		}
+
+		if modPath != "" {
+			AppendGo(modPath)
+			modPath = ""
 		}
 	}
 
 	return nil
+}
+
+func AppendGo(modPath string) {
+	gm := modCache[modPath]
+	comments = append(comments, fmt.Sprintf(`%s %s %s %s`, Go, gm.RepoRoot, modPath, gm.VCSRoot))
 }
 
 func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project Project) error {
@@ -357,49 +453,50 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		return fmt.Errorf("repo %s is provided an invalid project configuration which uses both tag and tags", repoURL)
 	}
 
-	err := os.RemoveAll(gitRoot)
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
+
+	owner, repo := ParseRepoURL(repoURL)
+
+	// TODO: cache git repo
+	wdCur := filepath.Join(gitRoot, owner)
+	err := os.MkdirAll(wdCur, 0755)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll(gitRoot, 0755)
-	if err != nil {
-		return err
-	}
-	wd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer sh.SetDir(wd)
 
-	sh.SetDir(gitRoot)
+	if !exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
 
-	err = sh.Command("git",
-		"clone",
-		"--no-tags",
-		"--no-recurse-submodules",
-		"--depth=1",
-		fmt.Sprintf("https://%s:%s@%s.git", os.Getenv("GITHUB_USER"), os.Getenv("GITHUB_TOKEN"), repoURL),
-	).Run()
-	if err != nil {
-		return err
-	}
-	sh.SetDir(filepath.Base(repoURL))
-
-	var modPath string
-
-	if exists("go.mod") {
-		data, err := ioutil.ReadFile("go.mod")
+		err = sh.Command("git",
+			"clone",
+			// "--no-tags", //TODO: ok?
+			"--no-recurse-submodules",
+			//"--depth=1",
+			//"--no-single-branch",
+			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(GitHubUserKey), os.Getenv(GitHubTokenKey), repoURL),
+		).Run()
 		if err != nil {
 			return err
 		}
-		gomod, err := modfile.Parse("go.mod", data, nil)
+	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
+
+	modPath := DetectGoMod(wdCur)
+	if modPath != "" {
+		gm := GoImport{
+			RepoRoot: repoURL,
+		}
+		vcs, err := DetectVCSRoot(modPath)
 		if err != nil {
 			panic(err)
 		}
-		if _, ok := modCache[gomod.Module.Mod.Path]; !ok {
-			modCache[gomod.Module.Mod.Path] = repoURL
-			modPath = gomod.Module.Mod.Path
+		if vcs != repoURL {
+			gm.VCSRoot = vcs
 		}
+		modCache[modPath] = gm
 	}
 
 	tags := project.Tags
@@ -411,8 +508,20 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 	// All remote tags exist, so only add Go module path if needed.
 	if MeetsCondition(RemoteTagExists, sh, lib.Keys(tags)...) {
+		// make sure /tagged is appended for next group of projects in this run
+		// and added to comments for next run
+		var ok bool
+		if replies, ok = AppendReplyIfMissing(replies, Reply{
+			Type: Tagged,
+			Tagged: &TaggedReplyData{
+				Repo: repoURL,
+			},
+		}); ok {
+			comments = append(comments, fmt.Sprintf("%s %s", Tagged, repoURL))
+		}
+
 		if modPath != "" {
-			comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
+			AppendGo(modPath)
 		}
 		return nil
 	}
@@ -472,7 +581,7 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				}
 			}
 
-			err = TagRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
+			err = TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
 			if err != nil {
 				return err
 			}
@@ -494,7 +603,7 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				if err != nil {
 					return err
 				}
-				err = TagRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
+				err = TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
 				if err != nil {
 					return err
 				}
@@ -518,7 +627,7 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				if err != nil {
 					return err
 				}
-				err = TagRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
+				err = TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
 				if err != nil {
 					return err
 				}
@@ -531,26 +640,22 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 		// add comments to release repo
 		{
-			comments = append(comments, fmt.Sprintf("%s %s %s", Tagged, repoURL, tag))
+			comments = append(comments, fmt.Sprintf("%s %s", Tagged, repoURL))
 			if modPath != "" {
-				comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
+				AppendGo(modPath)
 			}
 		}
 
-		owner, repo := ParseRepoURL(repoURL)
-		tags, err := ListTags(context.TODO(), gh, owner, repo)
+		tags, err := ListTags(sh)
 		if err != nil {
 			return err
 		}
-		tagSet := sets.NewString()
-		for _, r := range tags {
-			tagSet.Insert(r.GetName())
-		}
+		tagSet := sets.NewString(tags...)
 		tagSet.Insert(tag)
 
 		vs := make([]*semver.Version, tagSet.Len())
 		for i, r := range tags {
-			v, err := semver.NewVersion(r.GetName())
+			v, err := semver.NewVersion(r)
 			if err != nil {
 				return fmt.Errorf("error parsing version: %s", err)
 			}
@@ -568,11 +673,21 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 		var commits []Commit
 		if tagIdx == 0 {
-			commits = ListCommits(sh, FirstCommit(sh), vs[tagIdx].String())
+			commits = ListCommits(sh, FirstCommit(sh), vs[tagIdx].Original())
 		} else {
-			commits = ListCommits(sh, vs[tagIdx-1].String(), vs[tagIdx].String())
+			commits = ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
 		}
-		AccumulateChangelog(filepath.Join(scriptRoot, releaseNumber, "CHANGELOG.json"), repoURL, tag, commits)
+		UpdateChangelog(filepath.Join(scriptRoot, releaseNumber), repoURL, tag, commits)
+		if AnyRepoModified(scriptRoot, sh) {
+			err = CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
+			if err != nil {
+				return err
+			}
+			err = PushAnyRepo(scriptRoot, sh, false)
+			if err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }
@@ -583,7 +698,7 @@ func MergedCommitSHA(repoURL, branch string, useCherryPick bool) (string, bool) 
 		Branch: branch,
 	}
 	if !useCherryPick {
-		key.Branch = ""
+		key.Branch = "master"
 	}
 	sha, ok := merged[key]
 	return sha, ok
@@ -598,13 +713,37 @@ func ResetRepo(sh *shell.Session) error {
 	return sh.Command("git", "stash").Run()
 }
 
+func AnyRepoModified(wd string, sh *shell.Session) bool {
+	wdorig := sh.Getwd()
+	defer sh.SetDir(wdorig)
+
+	sh.SetDir(wd)
+	return RepoModified(sh)
+}
+
 func RepoModified(sh *shell.Session) bool {
+	err := sh.Command("git", "add", "--all").Run()
+	if err != nil {
+		panic(err)
+	}
 	// https://stackoverflow.com/questions/10385551/get-exit-code-go
-	err := sh.Command("git", "diff", "--exit-code", "-s", "HEAD").Run()
+	err = sh.Command("git", "diff", "--exit-code", "-s", "HEAD").Run()
 	return err != nil
 }
 
+func CommitAnyRepo(wd string, sh *shell.Session, tag string, messages ...string) error {
+	wdorig := sh.Getwd()
+	defer sh.SetDir(wdorig)
+
+	sh.SetDir(wd)
+	return CommitRepo(sh, tag, messages...)
+}
+
 func CommitRepo(sh *shell.Session, tag string, messages ...string) error {
+	err := sh.Command("git", "add", "--all").Run()
+	if err != nil {
+		return err
+	}
 	//  git commit -a -s -m "Prepare for release %tag"
 	args := []interface{}{
 		"commit", "-a", "-s",
@@ -616,6 +755,14 @@ func CommitRepo(sh *shell.Session, tag string, messages ...string) error {
 		args = append(args, "-m", msg)
 	}
 	return sh.Command("git", args...).Run()
+}
+
+func PushAnyRepo(wd string, sh *shell.Session, pushTag bool) error {
+	wdorig := sh.Getwd()
+	defer sh.SetDir(wdorig)
+
+	sh.SetDir(wd)
+	return PushRepo(sh, pushTag)
 }
 
 func PushRepo(sh *shell.Session, pushTag bool) error {
@@ -659,99 +806,33 @@ func ListCommits(sh *shell.Session, start, end string) []Commit {
 	return commits
 }
 
-func ParseComment(s string) map[ReplyType][]Reply {
-	out := map[ReplyType][]Reply{}
+func ParseComment(s string) []Reply {
+	var out []Reply
 	for _, line := range strings.Split(s, "\n") {
 		if reply := ParseReply(line); reply != nil {
-			out[reply.Type] = append(out[reply.Type], *reply)
+			out = append(out, *reply)
 		}
 	}
 	return out
 }
 
-func ParseReply(s string) *Reply {
-	fields := strings.Fields(s)
-	if len(fields) == 0 {
-		return nil
-	}
-
-	rt := ReplyType(fields[0])
-	params := fields[1:]
-
-	switch rt {
-	case OkToRelease:
-		fallthrough
-	case ChartPublished:
-		if len(params) > 0 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt}
-	case Tagged:
-		if len(params) != 1 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, Tagged: &TaggedReplyData{
-			Repo: params[0],
-		}}
-	case Go:
-		if len(params) != 2 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, Go: &GoReplyData{
-			Repo:       params[0],
-			ModulePath: params[1],
-		}}
-	case PR:
-		if len(params) != 1 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		owner, repo, prNumber := ParsePullRequestURL(params[0])
-		return &Reply{Type: rt, PR: &PullRequestReplyData{
-			Repo:   fmt.Sprintf("github.com/%s/%s", owner, repo),
-			Number: prNumber,
-		}}
-	case ReadyToTag:
-		if len(params) != 2 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, ReadyToTag: &ReadyToTagReplyData{
-			Repo:           params[0],
-			MergeCommitSHA: params[1],
-		}}
-	case CherryPicked:
-		if len(params) != 3 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, CherryPicked: &CherryPickedReplyData{
-			Repo:           params[0],
-			Branch:         params[1],
-			MergeCommitSHA: params[2],
-		}}
-	case ChartMerged:
-		if len(params) != 1 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, ChartMerged: &ChartMergedReplyData{
-			Repo: params[0],
-		}}
-	default:
-		panic(fmt.Errorf("unknown reply type found in %s", s))
-	}
-}
-
 func ParsePullRequestURL(prURL string) (string, string, int) {
+	if !strings.Contains(prURL, "://") {
+		prURL = "https://" + prURL
+	}
+
 	u, err := url.Parse(prURL)
 	if err != nil {
 		panic(err)
 	}
 	parts := strings.Split(u.Path, "/")
-	if u.Hostname() != "github.com" || len(parts) != 4 || parts[2] != "pull" {
+	if u.Hostname() != "github.com" || len(parts) != 5 || parts[3] != "pull" {
 		panic(fmt.Errorf("invalid or unsupported release tracker url: %s", prURL))
 	}
 
-	owner := parts[0]
-	repo := parts[1]
-	prNumber, err := strconv.Atoi(parts[3])
+	owner := parts[1]
+	repo := parts[2]
+	prNumber, err := strconv.Atoi(parts[4])
 	if err != nil {
 		panic(err)
 	}
@@ -759,71 +840,56 @@ func ParsePullRequestURL(prURL string) (string, string, int) {
 }
 
 func ParseRepoURL(repoURL string) (string, string) {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+
 	u, err := url.Parse(repoURL)
 	if err != nil {
 		panic(err)
 	}
 	parts := strings.Split(u.Path, "/")
-	if u.Hostname() != "github.com" || len(parts) != 2 {
+	if u.Hostname() != "github.com" || len(parts) != 3 {
 		panic(fmt.Errorf("invalid or unsupported repo url: %s", repoURL))
 	}
 
-	owner := parts[0]
-	repo := parts[1]
+	owner := parts[1]
+	repo := parts[2]
 	return owner, repo
 }
 
-func merge(slice []Reply, elems ...Reply) []Reply {
-	var out = slice
-	for idx := range elems {
-		out = mergeElement(out, elems[idx])
-	}
-	return out
-}
+//
+//func WriteChangelogMarkdown(filename string, chlog Changelog) {
+//	funcMap := template.FuncMap{
+//		"trimPrefix": strings.TrimPrefix,
+//	}
+//	tpl := template.Must(template.New("").Funcs(funcMap).Parse(string(templates.MustAsset("changelog.tpl"))))
+//	var buf bytes.Buffer
+//	err := tpl.Execute(&buf, chlog)
+//	if err != nil {
+//		panic(err)
+//	}
+//	fmt.Println(buf.String())
+//	err = os.MkdirAll(filepath.Dir(filename), 0755)
+//	if err != nil {
+//		panic(err)
+//	}
+//	err = ioutil.WriteFile(filename, buf.Bytes(), 0644)
+//	if err != nil {
+//		panic(err)
+//	}
+//}
 
-func mergeElement(slice []Reply, elem Reply) []Reply {
-	idx := -1
-	for i, existing := range slice {
-		if existing.Repo() == elem.Repo() {
-			idx = i
-			break
-		}
+func UpdateChangelog(dir, url, tag string, commits []Commit) {
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		panic(err)
 	}
-	if idx > -1 {
-		slice = append(slice[:idx], slice[idx+1:]...)
-	}
-	return append(slice, elem)
-}
 
-func WriteChangelogMarkdown(filename string, chlog Changelog) {
-	funcMap := template.FuncMap{
-		"trimPrefix": strings.TrimPrefix,
-	}
-	tpl := template.Must(template.New("").Funcs(funcMap).Parse(string(templates.MustAsset("changelog.tpl"))))
-	var buf bytes.Buffer
-	err := tpl.Execute(&buf, chlog)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(buf.String())
-	err = os.MkdirAll(filepath.Dir(filename), 0755)
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(filename, buf.Bytes(), 0644)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func AccumulateChangelog(filename, url, tag string, commits []Commit) {
-	err := os.MkdirAll(filepath.Dir(filename), 0755)
-	if err != nil {
-		panic(err)
-	}
+	filenameChlog := filepath.Join(dir, "CHANGELOG.json")
 
 	var chlog Changelog
-	data, err := ioutil.ReadFile(filename)
+	data, err := ioutil.ReadFile(filenameChlog)
 	if err == nil {
 		err = json.Unmarshal(data, &chlog)
 		if err != nil {
@@ -871,7 +937,23 @@ func AccumulateChangelog(filename, url, tag string, commits []Commit) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filename, b, 0644)
+	err = ioutil.WriteFile(filenameChlog, b, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	WriteChangelogMarkdown(dir, chlog)
+}
+
+func WriteChangelogMarkdown(dir string, chlog Changelog) {
+	tpl := template.Must(template.New("").Funcs(sprig.FuncMap()).Parse(string(templates.MustAsset("changelog.tpl"))))
+	var buf bytes.Buffer
+	err := tpl.Execute(&buf, chlog)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(buf.String())
+	err = ioutil.WriteFile(filepath.Join(dir, "CHANGELOG.md"), buf.Bytes(), 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -1011,13 +1093,13 @@ func UpdateGoMod(dir string) {
 
 	// Add replaces first because it may be coming from forked repo during testing automaton
 	for _, x := range f.Replace {
-		if repoURL, ok := modCache[x.Old.Path]; ok {
+		if gm, ok := modCache[x.Old.Path]; ok && gm.VCSRoot != "" { // meaning using forked repo
 			err = f.DropReplace(x.Old.Path, x.Old.Version)
 			if err != nil {
 				panic(err)
 			}
-			if v, ok := repoVersion[repoURL]; ok {
-				err = f.AddReplace(x.Old.Path, x.Old.Version, repoURL, v)
+			if v, ok := repoVersion[gm.RepoRoot]; ok {
+				err = f.AddReplace(x.Old.Path, x.Old.Version, gm.RepoRoot, v)
 				if err != nil {
 					panic(err)
 				}
@@ -1025,14 +1107,24 @@ func UpdateGoMod(dir string) {
 		}
 	}
 
-	for x, repoURL := range modCache {
-		if x == f.Module.Mod.Path {
-			continue
-		}
-		if v, ok := repoVersion[repoURL]; ok {
-			err = f.AddRequire(x, v)
-			if err != nil {
-				panic(err)
+	for _, x := range f.Require {
+		if gm, ok := modCache[x.Mod.Path]; ok {
+			if v, ok := repoVersion[gm.RepoRoot]; ok {
+				if gm.VCSRoot != "" {
+					// using forked repo, so we need to use replace statement to get the newly tagged code
+					// This path should only be taken during testing
+					err = f.AddReplace(x.Mod.Path, "", gm.RepoRoot, v)
+					if err != nil {
+						panic(err)
+					}
+				} else {
+					// we tagged the vcs repo, so we can just use require statement
+					// this path should be taken in actual releases, since we tag the vcs repo
+					err = f.AddRequire(x.Mod.Path, v)
+					if err != nil {
+						panic(err)
+					}
+				}
 			}
 		}
 	}
@@ -1041,36 +1133,46 @@ func UpdateGoMod(dir string) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile("go.mod", data, 0644)
+	err = ioutil.WriteFile(filename, data, 0644)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func repoURL2EnvKey(repoURL string) string {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+
 	u, err := url.Parse(repoURL)
 	if err != nil {
 		panic(err)
 	}
-	return strings.ToUpper(strings.ReplaceAll(path.Join(u.Path, "tag"), "/", "_"))
+	return strings.ToUpper(strings.ReplaceAll(strings.ReplaceAll(path.Join(u.Path, "tag"), "/", "_"), "-", "_"))
 }
 
-const gitRoot = "/tmp/workspace"
+const (
+	gitRoot        = "/tmp/workspace"
+	GitHubUserKey  = "GITHUB_USER"
+	GitHubTokenKey = "LGTM_GITHUB_TOKEN"
+)
 
 var (
+	release        Release
 	releaseFile    string
 	releaseNumber  string
 	releaseTracker string
 	commentId      int64
-	scriptRoot     string
 
-	sessionID   = uuid.New().String()
-	repoVersion = map[string]string{}     // repo url -> version
-	envVars     = map[string]string{}     // ENV var format(repo url) -> version
-	modCache    = make(map[string]string) // module path -> repo
-	tagged      = sets.NewString()        // already tagged repos
-	merged      = map[MergeData]string{}  // (repo, branch) -> sha
-	comments    []string
+	scriptRoot, _ = os.Getwd()
+	sessionID     = uuid.New().String()
+	replies       Replies
+	repoVersion   = map[string]string{}    // repo url -> version
+	envVars       = map[string]string{}    // ENV var format(repo url) -> version
+	modCache      = map[string]GoImport{}  // module path -> repo
+	tagged        = sets.NewString()       // already tagged repos
+	merged        = map[MergeData]string{} // (repo, branch) -> sha
+	comments      []string
 )
 
 func init() {
@@ -1078,22 +1180,26 @@ func init() {
 	flag.StringVar(&releaseNumber, "release", "", "Release number")
 	flag.StringVar(&releaseTracker, "release-tracker", "", "URL of release tracker pull request")
 	flag.Int64Var(&commentId, "comment-id", 0, "Comment Id that triggered this run")
-	if wd, err := os.Getwd(); err == nil {
-		scriptRoot = wd
-	} else {
-		panic(err)
-	}
 }
 
 func main() {
 	flag.Parse()
+
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	err := os.RemoveAll(gitRoot)
+	if err != nil {
+		panic(err)
+	}
 
 	data, err := ioutil.ReadFile(releaseFile)
 	if err != nil {
 		panic(err)
 	}
 
-	var release Release
 	err = yaml.Unmarshal(data, &release)
 	if err != nil {
 		panic(err)
@@ -1128,11 +1234,6 @@ func main() {
 		os.Exit(0)
 	}
 
-	sh := shell.NewSession()
-	sh.ShowCMD = true
-	sh.PipeFail = true
-	sh.PipeStdErrors = true
-
 	// Build state
 	prComments, err := ListComments(context.TODO(), gh, releaseOwner, releaseRepo, releasePR)
 	if err != nil {
@@ -1152,29 +1253,14 @@ func main() {
 		}
 	}
 
-	replies := map[ReplyType][]Reply{}
 	for _, comment := range prComments {
-		for rt, r := range ParseComment(comment.GetBody()) {
-			replies[rt] = merge(replies[rt], r...)
-		}
+		replies = MergeReplies(replies, ParseComment(comment.GetBody())...)
 	}
 	for _, reply := range replies[Go] {
-		modCache[reply.Go.ModulePath] = reply.Go.Repo
-	}
-	for _, reply := range replies[Tagged] {
-		tagged.Insert(reply.Tagged.Repo)
-	}
-	for _, reply := range replies[ReadyToTag] {
-		merged[MergeData{
-			Repo:   reply.ReadyToTag.Repo,
-			Branch: "master",
-		}] = reply.ReadyToTag.MergeCommitSHA
-	}
-	for _, reply := range replies[CherryPicked] {
-		merged[MergeData{
-			Repo:   reply.CherryPicked.Repo,
-			Branch: reply.CherryPicked.Branch,
-		}] = reply.CherryPicked.MergeCommitSHA
+		modCache[reply.Go.ModulePath] = GoImport{
+			RepoRoot: reply.Go.Repo,
+			VCSRoot:  reply.Go.VCSRoot,
+		}
 	}
 
 	if _, ok := replies[OkToRelease]; !ok {
@@ -1184,6 +1270,23 @@ func main() {
 
 	for groupIdx, projects := range release.Projects {
 		firstGroup := groupIdx == 0
+
+		// regenerate caches as previous group might have changed stuff
+		for _, reply := range replies[Tagged] {
+			tagged.Insert(reply.Tagged.Repo)
+		}
+		for _, reply := range replies[ReadyToTag] {
+			merged[MergeData{
+				Repo:   reply.ReadyToTag.Repo,
+				Branch: "master",
+			}] = reply.ReadyToTag.MergeCommitSHA
+		}
+		for _, reply := range replies[CherryPicked] {
+			merged[MergeData{
+				Repo:   reply.CherryPicked.Repo,
+				Branch: reply.CherryPicked.Branch,
+			}] = reply.CherryPicked.MergeCommitSHA
+		}
 
 		if ProjectsTagged(projects) {
 			continue
@@ -1199,6 +1302,7 @@ func main() {
 		var readyToTag sets.String
 		if firstGroup {
 			readyToTag = notTagged
+			notTagged = sets.NewString() // make it empty
 		} else {
 			readyToTag = sets.NewString()
 
@@ -1230,6 +1334,7 @@ func main() {
 
 		// Now, open pr for notTagged
 		for _, repoURL := range notTagged.UnsortedList() {
+			oneliners.FILE()
 			err = PrepareProject(gh, sh, releaseTracker, repoURL, projects[repoURL])
 			if err != nil {
 				panic(err)
@@ -1238,12 +1343,14 @@ func main() {
 
 		// Tag the repos in readyToTag
 		for _, repoURL := range readyToTag.UnsortedList() {
+			oneliners.FILE()
 			err = ReleaseProject(gh, sh, releaseTracker, repoURL, projects[repoURL])
 			if err != nil {
 				panic(err)
 			}
 		}
 
+		oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
 		if len(comments) > 0 {
 			_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
 				Body: github.String(strings.Join(comments, "\n")),
@@ -1251,31 +1358,14 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
+			os.Exit(0) // Let next execution to pick up
 		}
-	}
-
-	data, err = ioutil.ReadFile(filepath.Join(scriptRoot, releaseNumber, "CHANGELOG.json"))
-	if err != nil {
-		panic(err)
-	}
-	var chlog Changelog
-	err = json.Unmarshal(data, &chlog)
-	if err != nil {
-		panic(err)
-	}
-	WriteChangelogMarkdown(filepath.Join(scriptRoot, releaseNumber, "CHANGELOG.md"), chlog)
-	err = CommitRepo(sh, "", "Update changelog")
-	if err != nil {
-		panic(err)
-	}
-	err = PushRepo(sh, false)
-	if err != nil {
-		panic(err)
 	}
 }
 
 func CreateReleaseFile() Release {
 	return Release{
+		ProductLine: "Stash",
 		Projects: []IndependentProjects{
 			{
 				"github.com/appscode-cloud/apimachinery": Project{
@@ -1303,7 +1393,7 @@ func CreateReleaseFile() Release {
 	}
 }
 
-func PrintReleaseFile() {
+func main_PrintReleaseFile() {
 	rel := CreateReleaseFile()
 	data, err := yaml.Marshal(rel)
 	if err != nil {
@@ -1318,6 +1408,14 @@ func PrintReleaseFile() {
 	fmt.Println(string(data))
 
 	// https://github.com/tamalsaha/gh-release-automation-testing/pull/8
+}
+
+func main_ParsePullRequestURL() {
+	ParsePullRequestURL("https://github.com/appscodelabs/gh-release-automation-testing/pull/21")
+	ParseRepoURL("https://github.com/appscodelabs/gh-release-automation-testing")
+
+	ParsePullRequestURL("github.com/appscodelabs/gh-release-automation-testing/pull/21")
+	ParseRepoURL("github.com/appscode-cloud/apimachinery")
 }
 
 func mm() {
@@ -1395,6 +1493,48 @@ func main_ListCommits() {
 	}
 }
 
+func main_CherryPick() {
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	sh.SetDir("/home/tamal/go/src/github.com/appscode-cloud/pg")
+
+	data, err := sh.Command("git", "show", "-s", "--format=%b").Output()
+	if err != nil {
+		panic(err)
+	}
+	a := []byte("ProductLine: Stash")
+	fmt.Println(string(data), a)
+}
+
+func main_ShellGetwd() {
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	fmt.Println(sh.Getwd())
+
+	sh.SetDir("/home/tamal/go/src/stash.appscode.dev/stash")
+
+	fmt.Println(sh.Getwd())
+}
+
+func main_ListTags() {
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	sh.SetDir("/home/tamal/go/src/github.com/appscodelabs/release-automaton")
+
+	tags, err := ListTags(sh)
+
+	fmt.Println(tags, err)
+}
+
 func main_RepoModified() {
 	sh := shell.NewSession()
 	sh.ShowCMD = true
@@ -1429,5 +1569,95 @@ func main_WriteChangelogMarkdown() {
 			},
 		},
 	}
-	WriteChangelogMarkdown("/tmp/changelog.md", chlog)
+	WriteChangelogMarkdown("/tmp", chlog)
+}
+
+func mainMergeReply() {
+	var replies Replies
+
+	r := Reply{
+		Type: Tagged,
+		Tagged: &TaggedReplyData{
+			Repo: "a/b",
+		},
+	}
+
+	replies = MergeReply(replies, r)
+	fmt.Println(replies)
+}
+
+type GoImport struct {
+	RepoRoot string
+	VCSRoot  string
+}
+
+func (g GoImport) String() string {
+	if g.VCSRoot == "" {
+		return g.RepoRoot
+	}
+	return g.RepoRoot + " " + g.VCSRoot
+}
+
+type MetaData struct {
+	GoImport string `meta:"go-import"`
+}
+
+// ref: https://gist.github.com/inotnako/c4a82f6723f6ccea5d83c5d3689373dd
+// ref: https://github.com/keighl/metabolize
+// ref: https://github.com/rsc/go-import-redirector/blob/master/main.go#L134
+//ref: https://github.com/appscodelabs/gh-release-automation-testing/issues/22
+func main_DetectVCSRoot() {
+	// res, _ := http.Get("https://stash.appscode.dev/cli?go-get=1")
+	// res, _ := http.Get("https://k8s.io/api?go-get=1")
+	// "https://github.com/cloudevents/sdk-go/blob/master/samples/kafka?go-get=1"
+
+	r, err := DetectVCSRoot("stash.appscode.dev/cli")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(r)
+}
+
+func DetectVCSRoot(repoURL string) (string, error) {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+
+	uRepo, err := url.Parse(repoURL)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse repo url: %v", err)
+	}
+	qRepo := uRepo.Query()
+	qRepo.Set("go-get", "1")
+	uRepo.RawQuery = qRepo.Encode()
+
+	res, err := http.Get(uRepo.String())
+	if err != nil {
+		return "", err
+	}
+	data := new(MetaData)
+
+	err = metabolize.Metabolize(res.Body, data)
+	if err != nil {
+		return "", err
+	}
+
+	// GoImport: stash.appscode.dev/cli git https://github.com/stashed/cli
+	if data.GoImport == "" {
+		return "", fmt.Errorf("%s is missing go-import meta tag", uRepo.String())
+	}
+	fmt.Printf("GoImport: %s\n", data.GoImport)
+
+	parts := strings.Fields(data.GoImport)
+	if len(parts) != 3 {
+		return "", fmt.Errorf("%s contains badly formatted go-import meta tag %s", uRepo.String(), data.GoImport)
+	}
+
+	uVCS, err := url.Parse(parts[2])
+	if err != nil {
+		return "", fmt.Errorf("failed to parse VCS root %s: %v", parts[2], err)
+	}
+	//uVCS.Scheme = ""
+	vcsURL := path.Join(uVCS.Hostname(), uVCS.Path)
+	return strings.TrimSuffix(vcsURL, path.Ext(vcsURL)), nil
 }
