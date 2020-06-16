@@ -222,21 +222,9 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	}
 	sh.SetDir(filepath.Base(repoURL))
 
-	var modPath string
-
-	if exists("go.mod") {
-		data, err := ioutil.ReadFile("go.mod")
-		if err != nil {
-			return err
-		}
-		gomod, err := modfile.Parse("go.mod", data, nil)
-		if err != nil {
-			panic(err)
-		}
-		if _, ok := modCache[gomod.Module.Mod.Path]; !ok {
-			modCache[gomod.Module.Mod.Path] = repoURL
-			modPath = gomod.Module.Mod.Path
-		}
+	modPath := DetectGoMod(gitRoot)
+	if modPath != "" {
+		modCache[modPath] = repoURL
 	}
 
 	tags := project.Tags
@@ -288,6 +276,15 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		}
 
 		// Update Go mod
+		UpdateGoMod(gitRoot)
+		err = sh.Command("go", "mod", "tidy").Run()
+		if err != nil {
+			return err
+		}
+		err = sh.Command("go", "mod", "vendor").Run()
+		if err != nil {
+			return err
+		}
 
 		for _, cmd := range project.Commands {
 			cmd, err = envsubst.EvalMap(cmd, vars)
@@ -308,35 +305,42 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}
 		}
 
-		err = CommitRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
-		if err != nil {
-			return err
-		}
-		err = PushRepo(sh, true)
-		if err != nil {
-			return err
-		}
+		if RepoModified(sh) {
+			err = CommitRepo(sh, tag, "Release: "+releaseNumber, "Release-tracker: "+releaseTracker)
+			if err != nil {
+				return err
+			}
+			err = PushRepo(sh, true)
+			if err != nil {
+				return err
+			}
 
-		// open pr against project repo
-		owner, repo := ParseRepoURL(repoURL)
-		prBody := fmt.Sprintf(`Release: %s
+			// open pr against project repo
+			owner, repo := ParseRepoURL(repoURL)
+			prBody := fmt.Sprintf(`Release: %s
 Release-tracker: %s`, releaseNumber, releaseTracker)
-		pr, err := CreatePR(gh, owner, repo, &github.NewPullRequest{
-			Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
-			Head:                github.String(headBranch),
-			Base:                github.String(branch),
-			Body:                github.String(prBody),
-			MaintainerCanModify: github.Bool(true),
-			Draft:               github.Bool(false),
-		}, "automerge")
-		if err != nil {
-			panic(err)
-		}
+			pr, err := CreatePR(gh, owner, repo, &github.NewPullRequest{
+				Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
+				Head:                github.String(headBranch),
+				Base:                github.String(branch),
+				Body:                github.String(prBody),
+				MaintainerCanModify: github.Bool(true),
+				Draft:               github.Bool(false),
+			}, "automerge")
+			if err != nil {
+				panic(err)
+			}
 
-		// add comments to release repo
-		{
-			comments = append(comments, fmt.Sprintf("%s %s", PR, repoURL))
-			comments = append(comments, string(PR)+pr.GetHTMLURL())
+			// add comments to release repo
+			{
+				comments = append(comments, fmt.Sprintf("%s %s", PR, repoURL))
+				comments = append(comments, string(PR)+pr.GetHTMLURL())
+				if modPath != "" {
+					comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
+				}
+			}
+		} else {
+			comments = append(comments, fmt.Sprintf("%s %s", ReadyToTag, repoURL))
 			if modPath != "" {
 				comments = append(comments, fmt.Sprintf(`%s %s %s`, Go, repoURL, modPath))
 			}
@@ -590,6 +594,12 @@ func ResetRepo(sh *shell.Session) error {
 		return err
 	}
 	return sh.Command("git", "stash").Run()
+}
+
+func RepoModified(sh *shell.Session) bool {
+	// https://stackoverflow.com/questions/10385551/get-exit-code-go
+	err := sh.Command("git", "diff", "--exit-code", "-s", "HEAD").Run()
+	return err != nil
 }
 
 func CommitRepo(sh *shell.Session, tag string, messages ...string) error {
@@ -963,6 +973,78 @@ func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullR
 	return result, err
 }
 
+func DetectGoMod(dir string) string {
+	filename := filepath.Join(dir, "go.mod")
+	if !exists(filename) {
+		return ""
+	}
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	gomod, err := modfile.Parse("go.mod", data, nil)
+	if err != nil {
+		panic(err)
+	}
+	path := gomod.Module.Mod.Path
+	if _, ok := modCache[path]; !ok {
+		return path
+	}
+	return ""
+}
+
+func UpdateGoMod(dir string) {
+	filename := filepath.Join(dir, "go.mod")
+	if !exists(filename) {
+		return
+	}
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	f, err := modfile.Parse("go.mod", data, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// Add replaces first because it may be coming from forked repo during testing automaton
+	for _, x := range f.Replace {
+		if repoURL, ok := modCache[x.Old.Path]; ok {
+			err = f.DropReplace(x.Old.Path, x.Old.Version)
+			if err != nil {
+				panic(err)
+			}
+			if v, ok := repoVersion[repoURL]; ok {
+				err = f.AddReplace(x.Old.Path, x.Old.Version, repoURL, v)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	}
+
+	for x, repoURL := range modCache {
+		if x == f.Module.Mod.Path {
+			continue
+		}
+		if v, ok := repoVersion[repoURL]; ok {
+			err = f.AddRequire(x, v)
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	data, err = f.Format()
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile("go.mod", data, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 const gitRoot = "/tmp/workspace"
 
 var (
@@ -972,11 +1054,12 @@ var (
 	commentId      int64
 	scriptRoot     string
 
-	sessionID = uuid.New().String()
-	modCache  = make(map[string]string)
-	tagged    = sets.NewString()
-	merged    = map[MergeData]string{}
-	comments  []string
+	sessionID   = uuid.New().String()
+	repoVersion = map[string]string{}     // repo url -> version
+	modCache    = make(map[string]string) // module path -> repo
+	tagged      = sets.NewString()        // already tagged repos
+	merged      = map[MergeData]string{}  // (repo, branch) -> sha
+	comments    []string
 )
 
 func init() {
@@ -1003,6 +1086,14 @@ func main() {
 	err = yaml.Unmarshal(data, &release)
 	if err != nil {
 		panic(err)
+	}
+
+	for _, projects := range release.Projects {
+		for repoURL, project := range projects {
+			if project.Tag != nil {
+				repoVersion[repoURL] = *project.Tag
+			}
+		}
 	}
 
 	releaseOwner, releaseRepo, releasePR := ParsePullRequestURL(releaseTracker)
@@ -1289,6 +1380,17 @@ func main_ListCommits() {
 	commits := ListCommits(sh, "0ab9faa68308cd646e1e63271950cf75e3cf62c0", "v0.9.0-rc.6")
 	for _, commit := range commits {
 		fmt.Println(commit.SHA, commit.Subject)
+	}
+}
+
+func main_RepoModified() {
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	if RepoModified(sh) {
+		fmt.Println("Something to commit")
 	}
 }
 
