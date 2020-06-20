@@ -779,7 +779,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		} else {
 			commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
 		}
-		lib.UpdateChangelog(filepath.Join(scriptRoot, release.Release), repoURL, tag, commits)
+		lib.UpdateChangelog(filepath.Join(scriptRoot, release.Release), release, repoURL, tag, commits)
 		if lib.AnyRepoModified(scriptRoot, sh) {
 			err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
 			if err != nil {

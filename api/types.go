@@ -206,8 +206,9 @@ type ProjectChangelog struct {
 }
 
 type Changelog struct {
-	Release  string             `json:"release"`
-	Projects []ProjectChangelog `json:"projects"`
+	ProductLine string             `json:"product_line"`
+	Release     string             `json:"release"`
+	Projects    []ProjectChangelog `json:"projects"`
 }
 
 func (chlog *Changelog) Sort() {

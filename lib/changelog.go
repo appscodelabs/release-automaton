@@ -31,7 +31,7 @@ import (
 	"github.com/Masterminds/sprig"
 )
 
-func UpdateChangelog(dir, url, tag string, commits []api.Commit) {
+func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commits []api.Commit) {
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
 		panic(err)
@@ -47,10 +47,12 @@ func UpdateChangelog(dir, url, tag string, commits []api.Commit) {
 			panic(err)
 		}
 	}
+	chlog.ProductLine = release.ProductLine
+	chlog.Release = release.Release
 
 	var repoFound bool
 	for repoIdx := range chlog.Projects {
-		if chlog.Projects[repoIdx].URL == url {
+		if chlog.Projects[repoIdx].URL == repoURL {
 			repoFound = true
 
 			var tagFound bool
@@ -73,7 +75,7 @@ func UpdateChangelog(dir, url, tag string, commits []api.Commit) {
 	}
 	if !repoFound {
 		chlog.Projects = append(chlog.Projects, api.ProjectChangelog{
-			URL: url,
+			URL: repoURL,
 			Releases: []api.ReleaseChangelog{
 				{
 					Tag:     tag,
