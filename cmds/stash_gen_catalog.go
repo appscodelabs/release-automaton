@@ -73,7 +73,7 @@ func generateCatalog() error {
 	}
 
 	for i, addon := range catalog.Addons {
-		if versions, ok := findVersions(addon.Name); ok {
+		if versions, ok := findAddonVersions(addon.Name); ok {
 			catalog.Addons[i].Versions = versions
 		}
 	}
@@ -87,7 +87,7 @@ func generateCatalog() error {
 	return err
 }
 
-func findVersions(addon string) ([]string, bool) {
+func findAddonVersions(addon string) ([]string, bool) {
 	for _, projects := range release.Projects {
 		for repoURL, project := range projects {
 			if !strings.HasSuffix(repoURL, "/"+addon) {

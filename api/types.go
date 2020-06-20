@@ -108,13 +108,14 @@ func AppendReplyIfMissing(replies Replies, r Reply) (Replies, bool) {
 }
 
 type Reply struct {
-	Type         ReplyType
-	Tagged       *TaggedReplyData
-	PR           *PullRequestReplyData
-	ReadyToTag   *ReadyToTagReplyData
-	CherryPicked *CherryPickedReplyData
-	Go           *GoReplyData
-	Chart        *ChartReplyData
+	Type           ReplyType
+	Tagged         *TaggedReplyData
+	PR             *PullRequestReplyData
+	ReadyToTag     *ReadyToTagReplyData
+	CherryPicked   *CherryPickedReplyData
+	Go             *GoReplyData
+	Chart          *ChartReplyData
+	ChartPublished *ChartPublishedReplyData
 }
 
 type ReplyKey struct {
@@ -166,8 +167,12 @@ type CherryPickedReplyData struct {
 }
 
 type MergeData struct {
-	Repo   string
-	Branch string
+	Repo string
+	Ref  string
+}
+
+func (d MergeData) String() string {
+	return fmt.Sprintf("%s@%s", d.Repo, d.Ref)
 }
 
 type GoReplyData struct {
@@ -179,6 +184,10 @@ type GoReplyData struct {
 type ChartReplyData struct {
 	Repo string
 	Tag  string
+}
+
+type ChartPublishedReplyData struct {
+	Repo string
 }
 
 type Commit struct {

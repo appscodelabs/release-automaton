@@ -47,14 +47,17 @@ var (
 	releaseTracker string
 	commentId      int64
 
-	scriptRoot, _ = os.Getwd()
-	replies       api.Replies
-	repoVersion   = map[string]string{}        // repo url -> version
-	envVars       = map[string]string{}        // ENV var format(repo url) -> version
-	modCache      = map[string]lib.GoImport{}  // module path -> repo
-	tagged        = sets.NewString()           // already tagged repos
-	merged        = map[api.MergeData]string{} // (repo, branch) -> sha
-	comments      []string
+	empty          = struct{}{}
+	scriptRoot, _  = os.Getwd()
+	replies        api.Replies
+	repoVersion    = map[string]string{}          // repo url -> version
+	envVars        = map[string]string{}          // ENV var format(repo url) -> version
+	modCache       = map[string]lib.GoImport{}    // module path -> repo
+	tagged         = sets.NewString()             // already tagged repos
+	merged         = map[api.MergeData]string{}   // (repo, branch) -> sha
+	chartsMerged   = map[api.MergeData]struct{}{} // (repo, tag) -> empty
+	chartPublished = sets.NewString()             // set(chart repo url)
+	comments       []string
 )
 
 func NewCmdReleaseRun() *cobra.Command {
@@ -166,26 +169,61 @@ func runAutomaton() {
 		}
 		for _, reply := range replies[api.ReadyToTag] {
 			merged[api.MergeData{
-				Repo:   reply.ReadyToTag.Repo,
-				Branch: "master",
+				Repo: reply.ReadyToTag.Repo,
+				Ref:  "master",
 			}] = reply.ReadyToTag.MergeCommitSHA
 		}
 		for _, reply := range replies[api.CherryPicked] {
 			merged[api.MergeData{
-				Repo:   reply.CherryPicked.Repo,
-				Branch: reply.CherryPicked.Branch,
+				Repo: reply.CherryPicked.Repo,
+				Ref:  reply.CherryPicked.Branch,
 			}] = reply.CherryPicked.MergeCommitSHA
 		}
+		for _, reply := range replies[api.Chart] {
+			chartsMerged[api.MergeData{
+				Repo: reply.Chart.Repo,
+				Ref:  reply.Chart.Tag,
+			}] = empty
+		}
+		for _, reply := range replies[api.ChartPublished] {
+			chartPublished.Insert(reply.ChartPublished.Repo)
+		}
 
-		if ProjectsTagged(projects) {
+		if ProjectsDone(projects) {
 			continue
 		}
 
+		chartsReadyToPublish := sets.NewString()
+		chartsYetToMerge := map[api.MergeData]struct{}{}
+
 		notTagged := sets.NewString()
 		openPRs := sets.NewString()
-		for repoURL := range projects {
-			if !tagged.Has(repoURL) {
-				notTagged.Insert(repoURL)
+		for repoURL, project := range projects {
+			if len(project.Charts) == 0 {
+				if !tagged.Has(repoURL) {
+					notTagged.Insert(repoURL)
+				}
+			} else {
+				var someYetToMerge bool
+
+				for _, chartRepo := range project.Charts {
+					if tags, ok := findRepoTags(chartRepo); ok {
+						for _, tag := range tags {
+							mergeKey := api.MergeData{
+								Repo: chartRepo,
+								Ref:  tag,
+							}
+							if _, ok := chartsMerged[mergeKey]; !ok {
+								chartsYetToMerge[mergeKey] = empty
+								someYetToMerge = true
+							}
+						}
+					}
+				}
+
+				if !someYetToMerge {
+					chartsReadyToPublish.Insert(repoURL)
+				}
 			}
 		}
 
@@ -235,7 +273,17 @@ func runAutomaton() {
 		// Tag the repos in readyToTag
 		for _, repoURL := range readyToTag.UnsortedList() {
 			oneliners.FILE()
-			err = ReleaseProject(gh, sh, releaseTracker, repoURL, projects[repoURL])
+			err = ReleaseProject(sh, releaseTracker, repoURL, projects[repoURL])
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		// Publish chart registry
+		for _, repoURL := range chartsReadyToPublish.UnsortedList() {
+			oneliners.FILE()
+			owner, repo := lib.ParseRepoURL(repoURL)
+			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), "master", "automerge")
 			if err != nil {
 				panic(err)
 			}
@@ -257,6 +305,22 @@ func runAutomaton() {
 			fmt.Println("Waiting for prs to close:")
 			for _, pr := range openPRs.List() {
 				fmt.Println(">>> " + pr)
+			}
+			os.Exit(0)
+		}
+
+		if len(chartsYetToMerge) > 0 {
+			fmt.Println("Waiting for charts to be merged:")
+			for data := range chartsYetToMerge {
+				fmt.Println(">>> ", data)
+			}
+			os.Exit(0)
+		}
+
+		if chartsReadyToPublish.Len() > 0 {
+			fmt.Println("Waiting for charts to be published:")
+			for _, repoURL := range chartsReadyToPublish.List() {
+				fmt.Println(">>> ", repoURL)
 			}
 			os.Exit(0)
 		}
@@ -494,7 +558,7 @@ func AppendGo(modPath string) {
 	comments = append(comments, fmt.Sprintf(`%s %s %s %s`, api.Go, gm.RepoRoot, modPath, gm.VCSRoot))
 }
 
-func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.Project) error {
+func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project api.Project) error {
 	if project.Tags != nil && project.Tag != nil {
 		return fmt.Errorf("repo %s is provided an invalid project configuration which uses both tag and tags", repoURL)
 	}
@@ -741,19 +805,21 @@ func ReleaseProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 func MergedCommitSHA(repoURL, branch string, useCherryPick bool) (string, bool) {
 	key := api.MergeData{
-		Repo:   repoURL,
-		Branch: branch,
+		Repo: repoURL,
+		Ref:  branch,
 	}
 	if !useCherryPick {
-		key.Branch = "master"
+		key.Ref = "master"
 	}
 	sha, ok := merged[key]
 	return sha, ok
 }
 
-func ProjectsTagged(projects api.IndependentProjects) bool {
-	for repoURL := range projects {
-		if !tagged.Has(repoURL) {
+func ProjectsDone(projects api.IndependentProjects) bool {
+	for repoURL, project := range projects {
+		done := (len(project.Charts) == 0 && tagged.Has(repoURL)) ||
+			(len(project.Charts) > 0 && chartPublished.Has(repoURL))
+		if !done {
 			return false
 		}
 	}
@@ -767,7 +833,7 @@ func ProjectCherryPicked(repoURL string, project api.Project) bool {
 
 	data := api.MergeData{Repo: repoURL}
 	for _, branch := range project.Tags {
-		data.Branch = branch
+		data.Ref = branch
 		if _, ok := merged[data]; !ok {
 			return false
 		}
@@ -867,4 +933,21 @@ func repoURL2EnvKey(repoURL string) string {
 		panic(err)
 	}
 	return strings.ToUpper(strings.ReplaceAll(strings.ReplaceAll(path.Join(u.Path, "tag"), "/", "_"), "-", "_"))
+}
+
+func findRepoTags(reg string) ([]string, bool) {
+	for _, projects := range release.Projects {
+		for repoURL, project := range projects {
+			if repoURL != reg {
+				continue
+			}
+			if project.Tag != nil {
+				return []string{*project.Tag}, true
+			}
+			if project.Tags != nil {
+				return lib.Keys(project.Tags), true
+			}
+		}
+	}
+	return nil, false
 }

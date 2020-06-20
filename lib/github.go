@@ -18,6 +18,7 @@ package lib
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/appscodelabs/release-automaton/api"
@@ -182,6 +183,38 @@ func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullR
 	}
 
 	return result, err
+}
+
+func LabelPR(gh *github.Client, owner string, repo, head, base string, labels ...string) error {
+	labelSet := sets.NewString(labels...)
+	var result *github.PullRequest
+
+	prs, _, err := gh.PullRequests.List(context.TODO(), owner, repo, &github.PullRequestListOptions{
+		State: "open",
+		Head:  head,
+		Base:  base,
+		ListOptions: github.ListOptions{
+			PerPage: 1,
+		},
+	})
+	if err != nil {
+		return err
+	}
+	if len(prs) == 0 {
+		return fmt.Errorf("no open pr found")
+	}
+
+	result = prs[0]
+	for _, label := range result.Labels {
+		labelSet.Delete(label.GetName())
+	}
+	if labelSet.Len() > 0 {
+		_, _, err := gh.Issues.AddLabelsToIssue(context.TODO(), owner, repo, result.GetNumber(), labelSet.UnsortedList())
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func ListTags2(ctx context.Context, gh *github.Client, owner, repo string) ([]*github.RepositoryTag, error) {

@@ -34,8 +34,6 @@ func ParseReply(s string) *api.Reply {
 
 	switch rt {
 	case api.OkToRelease:
-		fallthrough
-	case api.ChartPublished:
 		if len(params) > 0 {
 			panic(fmt.Errorf("unsupported parameters with reply %s", s))
 		}
@@ -92,6 +90,13 @@ func ParseReply(s string) *api.Reply {
 		return &api.Reply{Type: rt, Chart: &api.ChartReplyData{
 			Repo: params[0],
 			Tag:  params[1],
+		}}
+	case api.ChartPublished:
+		if len(params) != 1 {
+			panic(fmt.Errorf("unsupported parameters with reply %s", s))
+		}
+		return &api.Reply{Type: rt, ChartPublished: &api.ChartPublishedReplyData{
+			Repo: params[0],
 		}}
 	default:
 		fmt.Printf("unknown reply type found in %s\n", s)
