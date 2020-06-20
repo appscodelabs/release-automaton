@@ -40,9 +40,9 @@ jobs:
         with:
           draft: true
           files: |
-            bin/gomod-gen-linux-amd64
-            bin/gomod-gen-linux-arm
-            bin/gomod-gen-linux-arm64
-            bin/gomod-gen-darwin-amd64
+            bin/release-automaton-linux-amd64
+            bin/release-automaton-linux-arm
+            bin/release-automaton-linux-arm64
+            bin/release-automaton-darwin-amd64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

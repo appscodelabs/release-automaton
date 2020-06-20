@@ -14,14 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package api
 
-import "os"
-
-// exists reports whether the named file or directory exists.
-func exists(name string) bool {
-	if _, err := os.Stat(name); os.IsNotExist(err) {
-		return false
-	}
-	return true
-}
+const (
+	Workspace      = "/tmp/workspace"
+	GitHubUserKey  = "GITHUB_USER"
+	GitHubTokenKey = "LGTM_GITHUB_TOKEN"
+)

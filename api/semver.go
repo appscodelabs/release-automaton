@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package lib
+package api
 
 import (
+	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -37,9 +39,11 @@ func (c SemverCollection) Len() int {
 // Less is needed for the sort interface to compare two Version objects on the
 // slice. If checks if one is less than the other.
 func (c SemverCollection) Less(i, j int) bool {
-	vi := c[i]
+	return CompareVersions(c[i], c[j])
+}
+
+func CompareVersions(vi *semver.Version, vj *semver.Version) bool {
 	mi, _ := vi.SetPrerelease("")
-	vj := c[j]
 	mj, _ := vj.SetPrerelease("")
 
 	if mi.Equal(&mj) &&
@@ -57,11 +61,29 @@ func (c SemverCollection) Less(i, j int) bool {
 		}
 		return si < sj
 	}
-	return c[i].LessThan(c[j])
+	return vi.LessThan(vj)
 }
 
 // Swap is needed for the sort interface to replace the Version objects
 // at two different positions in the slice.
 func (c SemverCollection) Swap(i, j int) {
 	c[i], c[j] = c[j], c[i]
+}
+
+func SortVersions(versions []string) ([]string, error) {
+	vs := make([]*semver.Version, len(versions))
+	for i, v := range versions {
+		v, err := semver.NewVersion(v)
+		if err != nil {
+			return nil, fmt.Errorf("error parsing version: %s", err)
+		}
+		vs[i] = v
+	}
+	sort.Sort(SemverCollection(vs))
+
+	result := make([]string, len(vs))
+	for i, v := range vs {
+		result[i] = v.Original()
+	}
+	return result, nil
 }

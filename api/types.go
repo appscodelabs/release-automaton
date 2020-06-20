@@ -14,27 +14,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package api
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
-	"strings"
+
+	"github.com/Masterminds/semver"
 )
 
 type Project struct {
 	Tag      *string           `json:"tag,omitempty"`
 	Tags     map[string]string `json:"tags,omitempty"` // tag-> branch
-	Commands []string          `json:"cmds,omitempty"`
+	Charts   []string          `json:"charts,omitempty"`
+	Commands []string          `json:"commands,omitempty"`
 }
 
 type IndependentProjects map[string]Project
 
 type Release struct {
-	ProductLine string `json:"productLine"`
+	ProductLine string `json:"product_line"`
+	Release     string `json:"release"`
 	// These projects can be released in sequence
 	Projects []IndependentProjects `json:"projects"`
 }
+
+/*
+- Only one pr per published_chart repo
+- Different chart repos can have different prs
+*/
 
 type ReplyType string
 
@@ -46,7 +55,7 @@ const (
 	CherryPicked ReplyType = "/cherry-picked"
 	PR           ReplyType = "/pr"
 
-	Chart          ReplyType = "/chart-merged"
+	Chart          ReplyType = "/chart"
 	ChartPublished ReplyType = "/chart-published"
 )
 
@@ -97,31 +106,6 @@ func AppendReplyIfMissing(replies Replies, r Reply) (Replies, bool) {
 
 	return replies, true
 }
-
-// https://www.calhoun.io/when-nil-isnt-equal-to-nil/
-
-//func (replies Replies) Find(repoURL string) (*Reply, bool) {
-//	for i := range replies {
-//		if replies[i].Repo() == repoURL {
-//			return &replies[i], true
-//		}
-//	}
-//	return nil, false
-//}
-//
-//func (replies *Replies) Append(r Reply) {
-//	*replies = append(*replies, r)
-//}
-//
-//func (replies *Replies) AppendIfMissing(r Reply) bool {
-//	for _, entry := range *replies {
-//		if entry.Repo() == r.Repo() {
-//			return false
-//		}
-//	}
-//	*replies = append(*replies, r)
-//	return true
-//}
 
 type Reply struct {
 	Type         ReplyType
@@ -217,78 +201,14 @@ type Changelog struct {
 	Projects []ProjectChangelog `json:"projects"`
 }
 
-func ParseReply(s string) *Reply {
-	fields := strings.Fields(s)
-	if len(fields) == 0 {
-		return nil
-	}
-
-	rt := ReplyType(fields[0])
-	params := fields[1:]
-
-	switch rt {
-	case OkToRelease:
-		fallthrough
-	case ChartPublished:
-		if len(params) > 0 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt}
-	case Tagged:
-		if len(params) != 1 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, Tagged: &TaggedReplyData{
-			Repo: params[0],
-		}}
-	case Go:
-		if len(params) != 2 && len(params) != 3 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		data := &GoReplyData{
-			Repo:       params[0],
-			ModulePath: params[1],
-		}
-		if len(params) == 3 {
-			data.VCSRoot = params[2]
-		}
-		return &Reply{Type: rt, Go: data}
-	case PR:
-		if len(params) != 1 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		owner, repo, prNumber := ParsePullRequestURL(params[0])
-		return &Reply{Type: rt, PR: &PullRequestReplyData{
-			Repo:   fmt.Sprintf("github.com/%s/%s", owner, repo),
-			Number: prNumber,
-		}}
-	case ReadyToTag:
-		if len(params) != 2 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, ReadyToTag: &ReadyToTagReplyData{
-			Repo:           params[0],
-			MergeCommitSHA: params[1],
-		}}
-	case CherryPicked:
-		if len(params) != 3 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, CherryPicked: &CherryPickedReplyData{
-			Repo:           params[0],
-			Branch:         params[1],
-			MergeCommitSHA: params[2],
-		}}
-	case Chart:
-		if len(params) != 2 {
-			panic(fmt.Errorf("unsupported parameters with reply %s", s))
-		}
-		return &Reply{Type: rt, Chart: &ChartReplyData{
-			Repo: params[0],
-			Tag:  params[1],
-		}}
-	default:
-		fmt.Printf("unknown reply type found in %s\n", s)
-		return nil
+func (chlog *Changelog) Sort() {
+	sort.Slice(chlog.Projects, func(i, j int) bool { return chlog.Projects[i].URL < chlog.Projects[j].URL })
+	for idx, projects := range chlog.Projects {
+		sort.Slice(projects.Releases, func(i, j int) bool {
+			vi, _ := semver.NewVersion(projects.Releases[i].Tag)
+			vj, _ := semver.NewVersion(projects.Releases[j].Tag)
+			return CompareVersions(vi, vj)
+		})
+		chlog.Projects[idx] = projects
 	}
 }

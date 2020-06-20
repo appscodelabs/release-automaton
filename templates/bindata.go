@@ -193,7 +193,7 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"changelog.tpl": &bintree{changelogTpl, map[string]*bintree{}},
+	"changelog.tpl": {changelogTpl, map[string]*bintree{}},
 }}
 
 // RestoreAsset restores an asset under the given directory

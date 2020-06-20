@@ -44,7 +44,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS :=
+SRC_PKGS := api cmds lib templates
 SRC_DIRS := $(SRC_PKGS) *.go # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm linux/arm64

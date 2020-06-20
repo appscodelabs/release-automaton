@@ -15,6 +15,10 @@ github.com/Masterminds/semver
 # github.com/Masterminds/sprig v2.22.0+incompatible
 ## explicit
 github.com/Masterminds/sprig
+# github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
+## explicit
+github.com/appscode/go/log/golog
+github.com/appscode/go/version
 # github.com/aws/aws-sdk-go v1.15.78
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/awserr
@@ -53,9 +57,11 @@ github.com/aws/aws-sdk-go/service/sts
 github.com/bgentry/go-netrc/netrc
 # github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
 github.com/codegangsta/inject
-# github.com/codeskyblue/go-sh v0.0.0-00010101000000-000000000000 => github.com/gomodules/go-sh v0.0.0-20200616225555-bfeba62378c9
+# github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27 => github.com/gomodules/go-sh v0.0.0-20200616225555-bfeba62378c9
 ## explicit
 github.com/codeskyblue/go-sh
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+github.com/golang/glog
 # github.com/golang/protobuf v1.3.2
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/protoc-gen-go/descriptor
@@ -91,6 +97,8 @@ github.com/huandu/xstrings
 # github.com/imdario/mergo v0.3.9
 ## explicit
 github.com/imdario/mergo
+# github.com/inconshreveable/mousetrap v1.0.0
+github.com/inconshreveable/mousetrap
 # github.com/jmespath/go-jmespath v0.0.0-20160202185014-0b12d6b521d8
 github.com/jmespath/go-jmespath
 # github.com/keighl/metabolize v0.0.0-20150915210303-97ab655d4034
@@ -99,14 +107,16 @@ github.com/keighl/metabolize
 # github.com/mitchellh/copystructure v1.0.0
 ## explicit
 github.com/mitchellh/copystructure
-# github.com/mitchellh/go-homedir v1.0.0
+# github.com/mitchellh/go-homedir v1.1.0
 github.com/mitchellh/go-homedir
 # github.com/mitchellh/go-testing-interface v1.0.0
 github.com/mitchellh/go-testing-interface
 # github.com/mitchellh/reflectwalk v1.0.0
 github.com/mitchellh/reflectwalk
-# github.com/spf13/pflag v1.0.5
+# github.com/spf13/cobra v1.0.0
 ## explicit
+github.com/spf13/cobra
+# github.com/spf13/pflag v1.0.5
 github.com/spf13/pflag
 # github.com/tamalsaha/go-oneliners v0.0.0-20190126213733-6d24eabef827
 ## explicit
@@ -133,7 +143,8 @@ go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/propagation
 go.opencensus.io/trace/tracestate
-# golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
+# golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975
+## explicit
 golang.org/x/crypto/cast5
 golang.org/x/crypto/openpgp
 golang.org/x/crypto/openpgp/armor
@@ -182,6 +193,8 @@ golang.org/x/xerrors/internal
 gomodules.xyz/envsubst
 gomodules.xyz/envsubst/parse
 gomodules.xyz/envsubst/path
+# gomodules.xyz/version v0.1.0
+gomodules.xyz/version
 # google.golang.org/api v0.9.0
 google.golang.org/api/gensupport
 google.golang.org/api/googleapi
@@ -210,8 +223,11 @@ google.golang.org/genproto/googleapis/iam/v1
 google.golang.org/genproto/googleapis/rpc/code
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/googleapis/type/expr
-# google.golang.org/grpc v1.21.1
+# google.golang.org/grpc v1.26.0
+## explicit
 google.golang.org/grpc
+google.golang.org/grpc/attributes
+google.golang.org/grpc/backoff
 google.golang.org/grpc/balancer
 google.golang.org/grpc/balancer/base
 google.golang.org/grpc/balancer/roundrobin
@@ -227,10 +243,13 @@ google.golang.org/grpc/internal
 google.golang.org/grpc/internal/backoff
 google.golang.org/grpc/internal/balancerload
 google.golang.org/grpc/internal/binarylog
+google.golang.org/grpc/internal/buffer
 google.golang.org/grpc/internal/channelz
 google.golang.org/grpc/internal/envconfig
 google.golang.org/grpc/internal/grpcrand
 google.golang.org/grpc/internal/grpcsync
+google.golang.org/grpc/internal/resolver/dns
+google.golang.org/grpc/internal/resolver/passthrough
 google.golang.org/grpc/internal/syscall
 google.golang.org/grpc/internal/transport
 google.golang.org/grpc/keepalive
@@ -238,14 +257,13 @@ google.golang.org/grpc/metadata
 google.golang.org/grpc/naming
 google.golang.org/grpc/peer
 google.golang.org/grpc/resolver
-google.golang.org/grpc/resolver/dns
-google.golang.org/grpc/resolver/passthrough
+google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
 # gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
-# k8s.io/apimachinery v0.18.3
+# k8s.io/apimachinery v0.18.4
 ## explicit
 k8s.io/apimachinery/pkg/util/sets
 # sigs.k8s.io/yaml v1.2.0

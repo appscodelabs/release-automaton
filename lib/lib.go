@@ -1,10 +1,25 @@
+/*
+Copyright AppsCode Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package lib
 
 import (
-	"fmt"
-	"github.com/Masterminds/semver"
+	"os"
+
 	"k8s.io/apimachinery/pkg/util/sets"
-	"sort"
 )
 
 func MergeMaps(dst, src map[string]string) map[string]string {
@@ -32,20 +47,22 @@ func Values(m map[string]string) []string {
 	return values.UnsortedList()
 }
 
-func SortVersions(versions []string) ([]string, error) {
-	vs := make([]*semver.Version, len(versions))
-	for i, v := range versions {
-		v, err := semver.NewVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("error parsing version: %s", err)
-		}
-		vs[i] = v
+// Exists reports whether the named file or directory Exists.
+func Exists(name string) bool {
+	if _, err := os.Stat(name); os.IsNotExist(err) {
+		return false
 	}
-	sort.Sort(SemverCollection(vs))
+	return true
+}
 
-	result := make([]string, len(vs))
-	for i, v := range vs {
-		result[i] = v.Original()
+func UniqComments(comments []string) []string {
+	out := make([]string, 0, len(comments))
+	s := sets.NewString()
+	for i := len(comments) - 1; i >= 0; i-- {
+		if !s.Has(comments[i]) {
+			out = append([]string{comments[i]}, out...)
+			s.Insert(comments[i])
+		}
 	}
-	return result, nil
+	return out
 }
