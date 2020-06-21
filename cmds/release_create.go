@@ -62,11 +62,13 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/cli": api.Project{
+					Key: "stash-cli",
 					Tag: github.String("v0.10.0-alpha.2"),
 				},
 			},
 			{
 				"github.com/appscode-cloud/postgres": api.Project{
+					Key: "stash-postgres",
 					Tags: map[string]string{
 						"9.6-v1":  "release-9.6",
 						"10.2-v1": "release-10.2",
@@ -95,6 +97,7 @@ func CreateReleaseFile() api.Release {
 						"github.com/appscode-cloud/postgres",
 						"github.com/appscode-cloud/installer",
 					},
+					IgnoreChangelog: true,
 				},
 			},
 			{
@@ -117,8 +120,9 @@ func CreateReleaseFile() api.Release {
 			{
 				"github.com/appscode-cloud/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton stash update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/static-assets",
+						"release-automaton stash update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/appscode-cloud/static-assets",
 					},
+					IgnoreChangelog: true,
 				},
 			},
 			{
@@ -130,6 +134,7 @@ func CreateReleaseFile() api.Release {
 						"make docs",
 						"make set-version VERSION=${TAG}",
 					},
+					IgnoreChangelog: true,
 				},
 			},
 			// Bundle
@@ -146,6 +151,7 @@ func CreateReleaseFile() api.Release {
 					Charts: []string{
 						"github.com/stashed/bundles",
 					},
+					IgnoreChangelog: true,
 				},
 			},
 		},

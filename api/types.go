@@ -25,12 +25,14 @@ import (
 )
 
 type Project struct {
-	Tag           *string           `json:"tag,omitempty"`
-	Tags          map[string]string `json:"tags,omitempty"` // tag-> branch
-	Charts        []string          `json:"charts,omitempty"`
-	Commands      []string          `json:"commands,omitempty"`
-	ReleaseBranch string            `json:"release_branch,omitempty"`
-	ReadyToTag    bool              `json:"ready_to_tag"`
+	Key             string            `json:"key,omitempty"`
+	Tag             *string           `json:"tag,omitempty"`
+	Tags            map[string]string `json:"tags,omitempty"` // tag-> branch
+	Charts          []string          `json:"charts,omitempty"`
+	Commands        []string          `json:"commands,omitempty"`
+	ReleaseBranch   string            `json:"release_branch,omitempty"`
+	ReadyToTag      bool              `json:"ready_to_tag,omitempty"`
+	IgnoreChangelog bool              `json:"ignore_changelog,omitempty"`
 }
 
 type IndependentProjects map[string]Project

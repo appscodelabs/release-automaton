@@ -32,6 +32,14 @@ import (
 )
 
 func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commits []api.Commit) {
+	for _, projects := range release.Projects {
+		for u, project := range projects {
+			if u == repoURL && project.IgnoreChangelog {
+				return
+			}
+		}
+	}
+
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
 		panic(err)
