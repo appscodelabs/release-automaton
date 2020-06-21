@@ -103,6 +103,15 @@ func runAutomaton() {
 				repoVersion[repoURL] = *project.Tag
 				envVars[repoURL2EnvKey(repoURL)] = *project.Tag
 			}
+			if project.ReadyToTag {
+				replies = api.MergeReplies(replies, api.Reply{
+					Type: api.ReadyToTag,
+					ReadyToTag: &api.ReadyToTagReplyData{
+						Repo:           repoURL,
+						MergeCommitSHA: "",
+					},
+				})
+			}
 		}
 	}
 
@@ -450,8 +459,10 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 		vars := lib.MergeMaps(map[string]string{
 			repoURL2EnvKey(repoURL): tag,
+			"SCRIPT_ROOT":           scriptRoot,
 			"WORKSPACE":             sh.Getwd(),
 			"TAG":                   tag,
+			"PRODUCT_LINE":          release.ProductLine,
 			"RELEASE":               release.Release,
 			"RELEASE_TRACKER":       releaseTracker,
 		}, envVars)
@@ -651,7 +662,22 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 				return fmt.Errorf("repo %s is missing branch for tag %s", repoURL, tag)
 			}
 		} else {
-			if vTag.Patch() > 0 { // PATCH release
+			if project.ReleaseBranch != "" {
+				vars := lib.MergeMaps(map[string]string{
+					repoURL2EnvKey(repoURL): tag,
+					"SCRIPT_ROOT":           scriptRoot,
+					"WORKSPACE":             sh.Getwd(),
+					"TAG":                   tag,
+					"PRODUCT_LINE":          release.ProductLine,
+					"RELEASE":               release.Release,
+					"RELEASE_TRACKER":       releaseTracker,
+				}, envVars)
+				branch, err = envsubst.EvalMap(project.ReleaseBranch, vars)
+				if err != nil {
+					return err
+				}
+				tags[tag] = branch
+			} else if vTag.Patch() > 0 { // PATCH release
 				if vTag.Prerelease() != "" {
 					panic(fmt.Errorf("version %s is invalid because it is a patch release but includes a pre-release component", tag))
 				}
@@ -677,7 +703,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 
 		// -----------------------
 
-		if usesCherryPick || vTag.Patch() > 0 {
+		if usesCherryPick || (vTag.Patch() > 0 && project.ReleaseBranch == "") {
 			err = sh.Command("git", "checkout", branch).Run()
 			if err != nil {
 				return err
@@ -699,19 +725,21 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			if err != nil {
 				return err
 			}
-		} else if vTag.Patch() == 0 {
+		} else if vTag.Patch() == 0 || project.ReleaseBranch != "" {
 			if lib.RemoteBranchExists(sh, branch) {
 				err = sh.Command("git", "checkout", branch).Run()
 				if err != nil {
 					return err
 				}
-				ref := "master"
-				if sha, found := MergedCommitSHA(repoURL, branch, usesCherryPick); found {
-					ref = sha
-				}
-				err = sh.Command("git", "merge", ref).Run()
-				if err != nil {
-					return err
+				if branch != "master" {
+					ref := "master"
+					if sha, found := MergedCommitSHA(repoURL, branch, usesCherryPick); found {
+						ref = sha
+					}
+					err = sh.Command("git", "merge", ref).Run()
+					if err != nil {
+						return err
+					}
 				}
 				err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
 				if err != nil {
@@ -932,7 +960,12 @@ func repoURL2EnvKey(repoURL string) string {
 	if err != nil {
 		panic(err)
 	}
-	return strings.ToUpper(strings.ReplaceAll(strings.ReplaceAll(path.Join(u.Path, "tag"), "/", "_"), "-", "_"))
+
+	key := path.Join(u.Path, "tag")
+	key = strings.Trim(key, "/")
+	key = strings.ReplaceAll(key, "/", "_")
+	key = strings.ReplaceAll(key, "-", "_")
+	return strings.ToUpper(key)
 }
 
 func findRepoTags(reg string) ([]string, bool) {

@@ -99,10 +99,52 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/catalog": api.Project{
-					Tag: github.String("v2020.6.16"),
+					Tag:           github.String("v2020.6.16"),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"release-automaton stash gen-catalog --release-file=./v2020.6.16/release.json --catalog-file=${WORKSPACE}/catalog.json",
+						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --catalog-file=${WORKSPACE}/catalog.json",
 						"make gen fmt",
+					},
+				},
+			},
+			{
+				"github.com/appscode-cloud/docs": api.Project{
+					Tag:           github.String("v2020.6.16"),
+					ReadyToTag:    true,
+					ReleaseBranch: "release-${TAG}",
+				},
+			},
+			{
+				"github.com/appscode-cloud/static-assets": api.Project{
+					Commands: []string{
+						"release-automaton stash update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/static-assets",
+					},
+				},
+			},
+			{
+				"github.com/appscode-cloud/website": api.Project{
+					Tag:           github.String("v2020.6.16"),
+					ReadyToTag:    true,
+					ReleaseBranch: "master",
+					Commands: []string{
+						"make docs",
+						"make set-version VERSION=${TAG}",
+					},
+				},
+			},
+			// Bundle
+			{
+				"github.com/stashed/bundles": api.Project{
+					Tag:      github.String("v2020.6.16"),
+					Commands: []string{
+						// "make chart-stash CHART_VERSION=${TAG}",
+					},
+				},
+			},
+			{
+				"github.com/bytebuilders/bundles": api.Project{
+					Charts: []string{
+						"github.com/stashed/bundles",
 					},
 				},
 			},
