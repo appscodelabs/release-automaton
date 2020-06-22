@@ -35,6 +35,7 @@ func NewRootCmd() *cobra.Command {
 
 	rootCmd.AddCommand(NewCmdRelease())
 	rootCmd.AddCommand(NewCmdStash())
+	rootCmd.AddCommand(NewCmdUpdateAssets())
 	rootCmd.AddCommand(v.NewCmdVersion())
 	return rootCmd
 }

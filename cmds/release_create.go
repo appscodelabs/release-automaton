@@ -76,13 +76,17 @@ func CreateReleaseFile() api.Release {
 						"11.1-v1": "release-11.1",
 						"11.2-v1": "release-11.2",
 					},
+					Commands: []string{
+						"make update-charts CHART_VERSION=${TAG}",
+					},
 				},
 			},
-			//{
-			//	"github.com/appscode-cloud/stash": Project{
-			//		Tag: github.String("v0.10.0-alpha.2"),
-			//	},
-			//},
+			{
+				"github.com/appscode-cloud/stash": api.Project{
+					Key: "stash",
+					Tag: github.String("v0.10.0-alpha.2"),
+				},
+			},
 			{
 				"github.com/appscode-cloud/installer": api.Project{
 					Tag: github.String("v0.10.0-alpha.2"),
@@ -102,6 +106,7 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/catalog": api.Project{
+					Key:           "stash-catalog",
 					Tag:           github.String("v2020.6.16"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
@@ -120,7 +125,7 @@ func CreateReleaseFile() api.Release {
 			{
 				"github.com/appscode-cloud/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton stash update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/appscode-cloud/static-assets",
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/appscode-cloud/static-assets",
 					},
 					IgnoreChangelog: true,
 				},

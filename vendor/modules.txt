@@ -18,7 +18,11 @@ github.com/Masterminds/sprig
 # github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
 ## explicit
 github.com/appscode/go/log/golog
+github.com/appscode/go/strings
 github.com/appscode/go/version
+# github.com/appscode/static-assets v0.5.0
+## explicit
+github.com/appscode/static-assets/api
 # github.com/aws/aws-sdk-go v1.15.78
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/awserr
