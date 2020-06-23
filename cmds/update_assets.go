@@ -17,8 +17,6 @@ limitations under the License.
 package cmds
 
 import (
-	"bytes"
-	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
 	"sort"
@@ -169,15 +167,11 @@ func updateAsset(release api.Release, repoURL string, project api.Project) error
 	}
 	prod.Versions, prod.LatestVersion = sortProductVersions(prod.Versions)
 
-	var buf bytes.Buffer
-	encoder := json.NewEncoder(&buf)
-	encoder.SetEscapeHTML(false)
-	encoder.SetIndent("", "  ")
-	err = encoder.Encode(prod)
+	data, err = lib.MarshalJson(prod)
 	if err != nil {
 		panic(err)
 	}
-	return ioutil.WriteFile(filename, buf.Bytes(), 0644)
+	return ioutil.WriteFile(filename, data, 0644)
 }
 
 func findProjectByKey(key string, release api.Release) (string, api.Project, bool) {

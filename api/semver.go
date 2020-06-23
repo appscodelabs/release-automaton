@@ -87,3 +87,14 @@ func SortVersions(versions []string) ([]string, error) {
 	}
 	return result, nil
 }
+
+func versionToRune(v *semver.Version) rune {
+	if v.Prerelease() != "" {
+		return []rune(v.Prerelease())[0]
+	}
+	return 'v' // Handle 9.6, 9.6-v1
+}
+
+func AtLeastAsImp(base *semver.Version, x *semver.Version) bool {
+	return versionToRune(x) >= versionToRune(base)
+}

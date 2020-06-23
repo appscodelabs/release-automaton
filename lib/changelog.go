@@ -19,7 +19,6 @@ package lib
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -32,10 +31,15 @@ import (
 )
 
 func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commits []api.Commit) {
+	var status api.ChangelogStatus
 	for _, projects := range release.Projects {
 		for u, project := range projects {
-			if u == repoURL && project.IgnoreChangelog {
-				return
+			if u == repoURL {
+				status = project.Changelog
+				if status == api.SkipChangelog {
+					return
+				}
+				break
 			}
 		}
 	}
@@ -94,27 +98,31 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 	chlog.Sort()
 
-	b, err := json.MarshalIndent(chlog, "", "  ")
+	data, err = MarshalJson(chlog)
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filenameChlog, b, 0644)
+	err = ioutil.WriteFile(filenameChlog, data, 0644)
 	if err != nil {
 		panic(err)
 	}
 
-	WriteChangelogMarkdown(dir, chlog)
+	WriteChangelogMarkdown(filepath.Join(dir, "CHANGELOG.md"), "changelog.tpl", chlog)
+	if status == api.StandaloneWebsiteChangelog {
+		WriteChangelogMarkdown(filepath.Join(dir, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
+	} else if status == api.SharedWebsiteChangelog {
+		WriteChangelogMarkdown(filepath.Join(dir, "docs_changelog.md"), "shared-changelog.tpl", chlog)
+	}
 }
 
-func WriteChangelogMarkdown(dir string, chlog api.Changelog) {
-	tpl := template.Must(template.New("").Funcs(sprig.FuncMap()).Parse(string(templates.MustAsset("changelog.tpl"))))
+func WriteChangelogMarkdown(filename string, tplname string, chlog api.Changelog) {
+	tpl := template.Must(template.New("").Funcs(sprig.FuncMap()).Parse(string(templates.MustAsset(tplname))))
 	var buf bytes.Buffer
 	err := tpl.Execute(&buf, chlog)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(buf.String())
-	err = ioutil.WriteFile(filepath.Join(dir, "CHANGELOG.md"), buf.Bytes(), 0644)
+	err = ioutil.WriteFile(filename, buf.Bytes(), 0644)
 	if err != nil {
 		panic(err)
 	}

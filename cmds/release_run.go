@@ -102,6 +102,9 @@ func runAutomaton() {
 			if project.Tag != nil {
 				repoVersion[repoURL] = *project.Tag
 				envVars[repoURL2EnvKey(repoURL)] = *project.Tag
+				if project.Key != "" {
+					envVars[key2EnvKey(project.Key)] = *project.Tag
+				}
 			}
 			if project.ReadyToTag {
 				replies = api.MergeReplies(replies, api.Reply{
@@ -783,13 +786,13 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		tagSet := sets.NewString(tags...)
 		tagSet.Insert(tag)
 
-		vs := make([]*semver.Version, tagSet.Len())
-		for i, r := range tags {
-			v, err := semver.NewVersion(r)
-			if err != nil {
-				return fmt.Errorf("error parsing version: %s", err)
+		vs := make([]*semver.Version, 0, tagSet.Len())
+		for _, x := range tagSet.UnsortedList() {
+			v := semver.MustParse(x)
+			// filter out lower importance tags
+			if api.AtLeastAsImp(vTag, v) {
+				vs = append(vs, v)
 			}
-			vs[i] = v
 		}
 		sort.Sort(api.SemverCollection(vs))
 
@@ -960,8 +963,14 @@ func repoURL2EnvKey(repoURL string) string {
 	if err != nil {
 		panic(err)
 	}
+	return toEnvKey(path.Join(u.Path, "tag"))
+}
 
-	key := path.Join(u.Path, "tag")
+func key2EnvKey(key string) string {
+	return toEnvKey(path.Join(key, "version"))
+}
+
+func toEnvKey(key string) string {
 	key = strings.Trim(key, "/")
 	key = strings.ReplaceAll(key, "/", "_")
 	key = strings.ReplaceAll(key, "-", "_")

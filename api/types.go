@@ -25,15 +25,24 @@ import (
 )
 
 type Project struct {
-	Key             string            `json:"key,omitempty"`
-	Tag             *string           `json:"tag,omitempty"`
-	Tags            map[string]string `json:"tags,omitempty"` // tag-> branch
-	Charts          []string          `json:"charts,omitempty"`
-	Commands        []string          `json:"commands,omitempty"`
-	ReleaseBranch   string            `json:"release_branch,omitempty"`
-	ReadyToTag      bool              `json:"ready_to_tag,omitempty"`
-	IgnoreChangelog bool              `json:"ignore_changelog,omitempty"`
+	Key           string            `json:"key,omitempty"`
+	Tag           *string           `json:"tag,omitempty"`
+	Tags          map[string]string `json:"tags,omitempty"` // tag-> branch
+	Charts        []string          `json:"charts,omitempty"`
+	Commands      []string          `json:"commands,omitempty"`
+	ReleaseBranch string            `json:"release_branch,omitempty"`
+	ReadyToTag    bool              `json:"ready_to_tag,omitempty"`
+	Changelog     ChangelogStatus   `json:"changelog"`
 }
+
+type ChangelogStatus string
+
+const (
+	AddToChangelog             ChangelogStatus = "" // by default show up in changelog
+	SkipChangelog              ChangelogStatus = "Skip"
+	StandaloneWebsiteChangelog ChangelogStatus = "StandaloneWebsite"
+	SharedWebsiteChangelog     ChangelogStatus = "SharedWebsite"
+)
 
 type IndependentProjects map[string]Project
 
@@ -41,7 +50,8 @@ type Release struct {
 	ProductLine string `json:"product_line"`
 	Release     string `json:"release"`
 	// These projects can be released in sequence
-	Projects []IndependentProjects `json:"projects"`
+	Projects         []IndependentProjects `json:"projects"`
+	ExternalProjects IndependentProjects   `json:"external_projects,omitempty"`
 }
 
 /*

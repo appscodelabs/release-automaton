@@ -17,10 +17,10 @@ limitations under the License.
 package cmds
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/appscodelabs/release-automaton/api"
+	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
@@ -40,7 +40,7 @@ func NewCmdReleaseCreate() *cobra.Command {
 			}
 			fmt.Println(string(data))
 
-			data, err = json.MarshalIndent(rel, "", "  ")
+			data, err = lib.MarshalJson(rel)
 			if err != nil {
 				panic(err)
 			}
@@ -51,6 +51,10 @@ func NewCmdReleaseCreate() *cobra.Command {
 }
 
 func CreateReleaseFile() api.Release {
+	updateEnvVars := []string{
+		"echo STASH_VERSION=${STASH_VERSION} > Makefile.env",
+		"echo STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} >> Makefile.env",
+	}
 	return api.Release{
 		ProductLine: "Stash",
 		Release:     "v2020.6.16",
@@ -101,7 +105,7 @@ func CreateReleaseFile() api.Release {
 						"github.com/appscode-cloud/postgres",
 						"github.com/appscode-cloud/installer",
 					},
-					IgnoreChangelog: true,
+					Changelog: api.SkipChangelog,
 				},
 			},
 			{
@@ -110,36 +114,38 @@ func CreateReleaseFile() api.Release {
 					Tag:           github.String("v2020.6.16"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --catalog-file=${WORKSPACE}/catalog.json",
+						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/${TAG}/release.json --catalog-file=${WORKSPACE}/catalog.json",
 						"make gen fmt",
 					},
 				},
 			},
 			{
-				"github.com/appscode-cloud/docs": api.Project{
-					Tag:           github.String("v2020.6.16"),
-					ReadyToTag:    true,
-					ReleaseBranch: "release-${TAG}",
+				// Must come before docs repo, so we can generate the docs_changelog.md
+				"github.com/appscode-cloud/static-assets": api.Project{
+					Commands: []string{
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE}",
+					},
+					Changelog: api.StandaloneWebsiteChangelog,
 				},
 			},
 			{
-				"github.com/appscode-cloud/static-assets": api.Project{
+				"github.com/appscode-cloud/docs": api.Project{
+					Tag: github.String("v2020.6.16"),
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json --workspace=${WORKSPACE}/appscode-cloud/static-assets",
+						"cp ${SCRIPT_ROOT}/${RELEASE}/docs_changelog.md --workspace=${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
 					},
-					IgnoreChangelog: true,
 				},
 			},
 			{
 				"github.com/appscode-cloud/website": api.Project{
 					Tag:           github.String("v2020.6.16"),
-					ReadyToTag:    true,
 					ReleaseBranch: "master",
+					ReadyToTag:    true,
 					Commands: []string{
 						"make docs",
 						"make set-version VERSION=${TAG}",
 					},
-					IgnoreChangelog: true,
+					Changelog: api.SkipChangelog,
 				},
 			},
 			// Bundle
@@ -156,8 +162,32 @@ func CreateReleaseFile() api.Release {
 					Charts: []string{
 						"github.com/stashed/bundles",
 					},
-					IgnoreChangelog: true,
+					Changelog: api.SkipChangelog,
 				},
+			},
+		},
+		ExternalProjects: map[string]api.Project{
+			"github.com/kubedb/apimachinery": {},
+			"github.com/kubedb/cli":          {},
+			"github.com/kubedb/memcached":    {},
+			"github.com/kubedb/operator":     {},
+			"github.com/kubedb/pgbouncer":    {},
+			"github.com/kubedb/proxysql":     {},
+			"github.com/kubedb/redis":        {},
+			"github.com/kubedb/elasticsearch": {
+				Commands: updateEnvVars,
+			},
+			"github.com/kubedb/mongodb": {
+				Commands: updateEnvVars,
+			},
+			"github.com/kubedb/mysql": {
+				Commands: updateEnvVars,
+			},
+			"github.com/kubedb/percona-xtradb": {
+				Commands: updateEnvVars,
+			},
+			"github.com/kubedb/postgres": {
+				Commands: updateEnvVars,
 			},
 		},
 	}

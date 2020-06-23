@@ -193,7 +193,7 @@ func main_WriteChangelogMarkdown() {
 			},
 		},
 	}
-	lib.WriteChangelogMarkdown("/tmp", chlog)
+	lib.WriteChangelogMarkdown(filepath.Join("/tmp", "CHANGELOG.md"), "changelog.tpl", chlog)
 }
 
 func mainMergeReply() {
