@@ -134,7 +134,7 @@ func CreateReleaseFile() api.Release {
 				"github.com/appscode-cloud/docs": api.Project{
 					Tag: github.String("v2020.6.16"),
 					Commands: []string{
-						"cp ${SCRIPT_ROOT}/${RELEASE}/docs_changelog.md --workspace=${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+						"mv ${SCRIPT_ROOT}/${RELEASE}/docs_changelog.md --workspace=${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
 					},
 				},
 			},
@@ -153,9 +153,9 @@ func CreateReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/stashed/bundles": api.Project{
-					Tag:      github.String("v2020.6.16"),
+					Tag: github.String("v2020.6.16"),
 					Commands: []string{
-						// "make chart-stash CHART_VERSION=${TAG}",
+						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
 					},
 				},
 			},

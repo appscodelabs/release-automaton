@@ -38,14 +38,14 @@ var (
 )
 
 /*
-release-automaton stash update-assets \
+release-automaton update-assets \
   --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json \
-  --workspace=${WORKSPACE}/static-assets
+  --workspace=${WORKSPACE}
 */
 func NewCmdUpdateAssets() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "update-assets",
-		Short:             "Update Stash assets",
+		Short:             "Update static assets",
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return updateAssets()
@@ -174,6 +174,7 @@ func updateAsset(release api.Release, project api.Project) error {
 	return ioutil.WriteFile(filename, data, 0644)
 }
 
+//nolint:unparam
 func findProjectByKey(key string, release api.Release) (string, api.Project, bool) {
 	for _, projects := range release.Projects {
 		for repoURL, project := range projects {
