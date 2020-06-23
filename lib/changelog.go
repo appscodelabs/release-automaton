@@ -19,10 +19,11 @@ package lib
 import (
 	"bytes"
 	"encoding/json"
-	"html/template"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"text/template"
 	"time"
 
 	"github.com/appscodelabs/release-automaton/api"
@@ -62,6 +63,8 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 	chlog.ProductLine = release.ProductLine
 	chlog.Release = release.Release
+	chlog.ReleaseProjectURL = fmt.Sprintf("https://github.com/%s", os.Getenv("GITHUB_REPOSITORY"))
+	chlog.DocsURL = fmt.Sprintf(release.DocsURLTemplate, release.Release)
 	chlog.ReleaseDate = time.Now().UTC()
 	chlog.KubernetesVersion = release.KubernetesVersion
 
@@ -110,7 +113,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 		panic(err)
 	}
 
-	WriteChangelogMarkdown(filepath.Join(dir, "CHANGELOG.md"), "changelog.tpl", chlog)
+	WriteChangelogMarkdown(filepath.Join(dir, "README.md"), "changelog.tpl", chlog)
 	if status == api.StandaloneWebsiteChangelog {
 		WriteChangelogMarkdown(filepath.Join(dir, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
 	} else if status == api.SharedWebsiteChangelog {
@@ -118,10 +121,24 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 }
 
-func WriteChangelogMarkdown(filename string, tplname string, chlog api.Changelog) {
-	tpl := template.Must(template.New("").Funcs(sprig.FuncMap()).Parse(string(templates.MustAsset(tplname))))
+func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
+	var err error
+
+	err = os.MkdirAll(filepath.Dir(filename), 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	tpl := template.New("").Funcs(sprig.TxtFuncMap())
+	for _, name := range templates.AssetNames() {
+		tpl, err = tpl.New(name).Parse(string(templates.MustAsset(name)))
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	var buf bytes.Buffer
-	err := tpl.Execute(&buf, chlog)
+	err = tpl.ExecuteTemplate(&buf, tplname, data)
 	if err != nil {
 		panic(err)
 	}

@@ -56,8 +56,10 @@ func CreateReleaseFile() api.Release {
 		"echo STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} >> Makefile.env",
 	}
 	return api.Release{
-		ProductLine: "Stash",
-		Release:     "v2020.6.16",
+		ProductLine:       "Stash",
+		Release:           "v2020.6.16",
+		DocsURLTemplate:   "https://stash.run/docs/%s",
+		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/apimachinery": api.Project{

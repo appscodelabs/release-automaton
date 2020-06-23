@@ -88,7 +88,7 @@ func SortVersions(versions []string) ([]string, error) {
 	return result, nil
 }
 
-func versionToRune(v *semver.Version) rune {
+func VersionToRune(v *semver.Version) rune {
 	if v.Prerelease() != "" {
 		return []rune(v.Prerelease())[0]
 	}
@@ -96,5 +96,5 @@ func versionToRune(v *semver.Version) rune {
 }
 
 func AtLeastAsImp(base *semver.Version, x *semver.Version) bool {
-	return versionToRune(x) >= versionToRune(base)
+	return VersionToRune(x) >= VersionToRune(base)
 }

@@ -49,6 +49,7 @@ var (
 
 	empty          = struct{}{}
 	scriptRoot, _  = os.Getwd()
+	changelogRoot  = filepath.Join(scriptRoot, "CHANGELOG")
 	replies        api.Replies
 	repoVersion    = map[string]string{}          // repo url -> version
 	envVars        = map[string]string{}          // ENV var format(repo url) -> version
@@ -835,7 +836,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		} else {
 			commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
 		}
-		lib.UpdateChangelog(filepath.Join(scriptRoot, release.Release), release, repoURL, tag, commits)
+		lib.UpdateChangelog(filepath.Join(changelogRoot, release.Release), release, repoURL, tag, commits)
 		if lib.AnyRepoModified(scriptRoot, sh) {
 			err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
 			if err != nil {

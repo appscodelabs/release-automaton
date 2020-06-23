@@ -3,5 +3,5 @@
 | {{ .ProductLine }} Version | Release Date | User Guide | Changelog | Kubernetes Version |
 |--------------------------- | ------------ | ---------- | --------- | ------------------ |
 {{ range $r :=  .Releases -}}
-| [{{ $r.Release }}](https://{{ $.URL }}/tag/{{ $r.Release }}) | {{ $r.ReleaseDate }} | [User Guide]({ $r.ChangelogLink }}) | [CHANGELOG]({{ $r.UserGuideLink }}) | {{ $r.KubernetesVersion }} |
+| [{{ $r.Release }}]({{ $r.ReleaseURL }}) | {{ $r.ReleaseDate | date "2006-01-02" }} | [User Guide]({{ $r.ChangelogURL }}) | [CHANGELOG]({{ $r.DocsURL }}) | {{ $r.KubernetesVersion }} |
 {{ end }}

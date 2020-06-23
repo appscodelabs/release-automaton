@@ -30,6 +30,7 @@ func NewCmdRelease() *cobra.Command {
 	}
 
 	cmd.AddCommand(NewCmdReleaseCreate())
+	cmd.AddCommand(NewCmdReleaseReadme())
 	cmd.AddCommand(NewCmdReleaseRun())
 	return cmd
 }

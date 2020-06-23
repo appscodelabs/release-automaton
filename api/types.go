@@ -37,7 +37,7 @@ type Project struct {
 	Commands      []string          `json:"commands,omitempty"`
 	ReleaseBranch string            `json:"release_branch,omitempty"`
 	ReadyToTag    bool              `json:"ready_to_tag,omitempty"`
-	Changelog     ChangelogStatus   `json:"changelog"`
+	Changelog     ChangelogStatus   `json:"changelog,omitempty"`
 }
 
 type ChangelogStatus string
@@ -54,6 +54,7 @@ type IndependentProjects map[string]Project
 type Release struct {
 	ProductLine       string `json:"product_line"`
 	Release           string `json:"release"`
+	DocsURLTemplate   string `json:"docs_url_template"` // "https://stash.run/docs/%s"
 	KubernetesVersion string `json:"kubernetes_version"`
 	// These projects can be released in sequence
 	Projects         []IndependentProjects      `json:"projects"`
@@ -229,6 +230,8 @@ type Changelog struct {
 	ProductLine       string             `json:"product_line"`
 	Release           string             `json:"release"`
 	ReleaseDate       time.Time          `json:"release_date"`
+	ReleaseProjectURL string             `json:"release_project_url"`
+	DocsURL           string             `json:"docs_url"`
 	KubernetesVersion string             `json:"kubernetes_version,omitempty"`
 	Projects          []ProjectChangelog `json:"projects"`
 }
@@ -249,8 +252,9 @@ type ReleaseSummary struct {
 	Release           string
 	ReleaseDate       time.Time
 	KubernetesVersion string
-	ChangelogLink     string
-	UserGuideLink     string
+	ReleaseURL        string
+	ChangelogURL      string
+	DocsURL           string
 }
 
 type ReleaseTable struct {
