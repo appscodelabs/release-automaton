@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/templates"
@@ -61,6 +62,8 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 	chlog.ProductLine = release.ProductLine
 	chlog.Release = release.Release
+	chlog.ReleaseDate = time.Now().UTC()
+	chlog.KubernetesVersion = release.KubernetesVersion
 
 	var repoFound bool
 	for repoIdx := range chlog.Projects {

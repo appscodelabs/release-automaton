@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/Masterminds/semver"
 )
@@ -51,8 +52,9 @@ const (
 type IndependentProjects map[string]Project
 
 type Release struct {
-	ProductLine string `json:"product_line"`
-	Release     string `json:"release"`
+	ProductLine       string `json:"product_line"`
+	Release           string `json:"release"`
+	KubernetesVersion string `json:"kubernetes_version"`
 	// These projects can be released in sequence
 	Projects         []IndependentProjects      `json:"projects"`
 	ExternalProjects map[string]ExternalProject `json:"external_projects,omitempty"`
@@ -224,9 +226,11 @@ type ProjectChangelog struct {
 }
 
 type Changelog struct {
-	ProductLine string             `json:"product_line"`
-	Release     string             `json:"release"`
-	Projects    []ProjectChangelog `json:"projects"`
+	ProductLine       string             `json:"product_line"`
+	Release           string             `json:"release"`
+	ReleaseDate       time.Time          `json:"release_date"`
+	KubernetesVersion string             `json:"kubernetes_version,omitempty"`
+	Projects          []ProjectChangelog `json:"projects"`
 }
 
 func (chlog *Changelog) Sort() {
@@ -239,4 +243,17 @@ func (chlog *Changelog) Sort() {
 		})
 		chlog.Projects[idx] = projects
 	}
+}
+
+type ReleaseSummary struct {
+	Release           string
+	ReleaseDate       time.Time
+	KubernetesVersion string
+	ChangelogLink     string
+	UserGuideLink     string
+}
+
+type ReleaseTable struct {
+	ProductLine string
+	Releases    []ReleaseSummary
 }

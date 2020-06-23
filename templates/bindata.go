@@ -3,6 +3,7 @@
 // changelog.tpl
 // shared-changelog.tpl
 // standalone-changelog.tpl
+// version-table.tpl
 package templates
 
 import (
@@ -139,6 +140,26 @@ func standaloneChangelogTpl() (*asset, error) {
 	return a, nil
 }
 
+var _versionTableTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x74\x50\xcf\x4b\xc3\x30\x14\xbe\xe7\xaf\xf8\xc0\x1d\xea\x61\xed\x7d\xe0\x41\xa6\x54\xb0\xa8\x0c\xe6\xa5\xf4\x50\xed\xa3\x2b\x8e\x54\x92\xf4\x94\xf7\xfe\x77\x49\x66\xcc\x18\x2e\xb7\xef\x57\x1e\xdf\x77\x03\xef\x51\xbe\x99\x79\x58\x3e\x5d\x33\x69\x82\x08\x76\x74\xa4\xde\x92\x55\x8a\xff\x93\xdf\xc9\xd8\x69\xd6\xe0\x64\xc4\x43\xef\x08\x8c\xbd\x25\x83\x7a\x99\x86\x00\xb6\x87\x5e\x8f\x74\x9c\x47\x30\x9e\x97\x0f\x32\x9a\x1c\xd9\x1c\x56\xbc\xbe\xfe\xc0\xb8\x0a\xcf\xc1\x85\x2f\x91\xca\x7b\x98\x70\x1e\x2b\x83\xcd\x1d\x50\xa6\x4a\x58\x8b\x28\x46\xeb\x3d\x56\x26\xb1\x10\xe9\x8a\x83\x73\xdf\x76\x53\x55\x41\x29\xf7\xbb\x06\x22\x95\xeb\xc7\xea\xd2\x79\x8b\x38\x4a\xe6\x62\x79\x11\x30\xda\x3c\x40\x57\x44\xcb\xdf\x08\xcd\xa4\xbf\x7e\xc3\xed\xf6\xe9\xfe\xa5\x7e\x6c\x5e\xeb\xae\x38\x7d\x14\x62\x31\x75\xe6\x3a\x29\x79\xb8\xb4\x5b\x38\x14\xea\x91\x1e\x20\xa2\x7e\x02\x00\x00\xff\xff\xee\xa8\xf4\x04\xc0\x01\x00\x00")
+
+func versionTableTplBytes() ([]byte, error) {
+	return bindataRead(
+		_versionTableTpl,
+		"version-table.tpl",
+	)
+}
+
+func versionTableTpl() (*asset, error) {
+	bytes, err := versionTableTplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "version-table.tpl", size: 448, mode: os.FileMode(420), modTime: time.Unix(1573722179, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
 // Asset loads and returns the asset for the given name.
 // It returns an error if the asset could not be found or
 // could not be loaded.
@@ -194,6 +215,7 @@ var _bindata = map[string]func() (*asset, error){
 	"changelog.tpl":            changelogTpl,
 	"shared-changelog.tpl":     sharedChangelogTpl,
 	"standalone-changelog.tpl": standaloneChangelogTpl,
+	"version-table.tpl":        versionTableTpl,
 }
 
 // AssetDir returns the file names below a certain
@@ -240,6 +262,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 	"changelog.tpl":            {changelogTpl, map[string]*bintree{}},
 	"shared-changelog.tpl":     {sharedChangelogTpl, map[string]*bintree{}},
 	"standalone-changelog.tpl": {standaloneChangelogTpl, map[string]*bintree{}},
+	"version-table.tpl":        {versionTableTpl, map[string]*bintree{}},
 }}
 
 // RestoreAsset restores an asset under the given directory
