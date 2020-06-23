@@ -337,6 +337,31 @@ func runAutomaton() {
 			os.Exit(0)
 		}
 	}
+
+	openPRs := sets.NewString()
+	// skip repos where prs have been opened
+	for _, data := range replies[api.PR] {
+		openPRs.Insert(data.PR.Repo)
+	}
+	for repoURL, project := range release.ExternalProjects {
+		if !openPRs.Has(repoURL) {
+			err = PrepareExternalProject(gh, sh, repoURL, project)
+			if err != nil {
+				break
+			}
+		}
+	}
+	oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
+	if len(comments) > 0 {
+		comments = lib.UniqComments(comments)
+		_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
+			Body: github.String(strings.Join(comments, "\n")),
+		})
+		if err != nil {
+			panic(err)
+		}
+		os.Exit(0) // Let next execution to pick up
+	}
 }
 
 func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.Project) error {
@@ -831,6 +856,128 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		}
 	}
 
+	return nil
+}
+
+func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string, project api.ExternalProject) error {
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
+
+	owner, repo := lib.ParseRepoURL(repoURL)
+
+	// TODO: cache git repo
+	wdCur := filepath.Join(api.Workspace, owner)
+	err := os.MkdirAll(wdCur, 0755)
+	if err != nil {
+		return err
+	}
+
+	if !lib.Exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
+
+		err = sh.Command("git",
+			"clone",
+			"--no-tags",
+			"--no-recurse-submodules",
+			"--depth=1",
+			"--no-single-branch",
+			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
+		).Run()
+		if err != nil {
+			return err
+		}
+	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
+
+	// -----------------------
+
+	vars := lib.MergeMaps(map[string]string{
+		"SCRIPT_ROOT":     scriptRoot,
+		"WORKSPACE":       sh.Getwd(),
+		"PRODUCT_LINE":    release.ProductLine,
+		"RELEASE":         release.Release,
+		"RELEASE_TRACKER": releaseTracker,
+	}, envVars)
+
+	headBranch := fmt.Sprintf("%s-%s", release.ProductLine, release.Release)
+
+	err = sh.Command("git", "checkout", "master").Run()
+	if err != nil {
+		return err
+	}
+
+	err = sh.Command("git", "checkout", "-b", headBranch).Run()
+	if err != nil {
+		return err
+	}
+
+	if lib.Exists(filepath.Join(wdCur, "go.mod")) {
+		// Update Go mod
+		UpdateGoMod(wdCur)
+		if lib.RepoModified(sh) {
+			err = sh.Command("go", "mod", "tidy").Run()
+			if err != nil {
+				return err
+			}
+			err = sh.Command("go", "mod", "vendor").Run()
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	for _, cmd := range project.Commands {
+		cmd, err = envsubst.EvalMap(cmd, vars)
+		if err != nil {
+			return err
+		}
+		fields := strings.Fields(cmd)
+		if len(fields) > 0 {
+			args := make([]interface{}, len(fields)-1)
+			for i := range fields[1:] {
+				args[i] = fields[i+1]
+			}
+
+			err = sh.Command(fields[0], args...).Run()
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	if lib.RepoModified(sh) {
+		messages := []string{
+			fmt.Sprintf("Update for release %s@%s", release.ProductLine, release.Release),
+			"ProductLine: " + release.ProductLine,
+			"Release: " + release.Release,
+		}
+		err = lib.CommitRepo(sh, "", messages...)
+		if err != nil {
+			return err
+		}
+		err = lib.PushRepo(sh, true)
+		if err != nil {
+			return err
+		}
+
+		// open pr against project repo
+		pr, err := lib.CreatePR(gh, owner, repo, &github.NewPullRequest{
+			Title:               github.String(messages[0]),
+			Head:                github.String(headBranch),
+			Base:                github.String("master"),
+			Body:                github.String(strings.Join(messages[1:], "\n")),
+			MaintainerCanModify: github.Bool(true),
+			Draft:               github.Bool(false),
+		}, "automerge")
+		if err != nil {
+			panic(err)
+		}
+
+		// add comments to release repo
+		comments = append(comments, fmt.Sprintf("%s %s", api.PR, pr.GetHTMLURL()))
+	}
 	return nil
 }
 

@@ -24,6 +24,10 @@ import (
 	"github.com/Masterminds/semver"
 )
 
+type ExternalProject struct {
+	Commands []string `json:"commands,omitempty"`
+}
+
 type Project struct {
 	Key           string            `json:"key,omitempty"`
 	Tag           *string           `json:"tag,omitempty"`
@@ -50,8 +54,8 @@ type Release struct {
 	ProductLine string `json:"product_line"`
 	Release     string `json:"release"`
 	// These projects can be released in sequence
-	Projects         []IndependentProjects `json:"projects"`
-	ExternalProjects IndependentProjects   `json:"external_projects,omitempty"`
+	Projects         []IndependentProjects      `json:"projects"`
+	ExternalProjects map[string]ExternalProject `json:"external_projects,omitempty"`
 }
 
 /*

@@ -166,7 +166,7 @@ func CreateReleaseFile() api.Release {
 				},
 			},
 		},
-		ExternalProjects: map[string]api.Project{
+		ExternalProjects: map[string]api.ExternalProject{
 			"github.com/kubedb/apimachinery": {},
 			"github.com/kubedb/cli":          {},
 			"github.com/kubedb/memcached":    {},
