@@ -188,6 +188,6 @@ func ResetRepo(sh *shell.Session) error {
 	if err != nil {
 		return err
 	}
-	sh.Command("git", "stash").Run()
+	_ = sh.Command("git", "stash").Run()
 	return nil
 }

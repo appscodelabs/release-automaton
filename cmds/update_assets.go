@@ -68,11 +68,11 @@ func updateAssets() error {
 	}
 
 	for _, projects := range release.Projects {
-		for repoURL, project := range projects {
+		for _, project := range projects {
 			if project.Key == "" {
 				continue
 			}
-			err = updateAsset(release, repoURL, project)
+			err = updateAsset(release, project)
 			if err != nil {
 				return err
 			}
@@ -81,7 +81,7 @@ func updateAssets() error {
 	return nil
 }
 
-func updateAsset(release api.Release, repoURL string, project api.Project) error {
+func updateAsset(release api.Release, project api.Project) error {
 	filename := filepath.Join(repoWorkspace, "data", "products", project.Key+".json")
 	if !lib.Exists(filename) {
 		// Avoid missing product files like stash-catalog key
@@ -195,7 +195,7 @@ func findProductVersion(x string, versions []saapi.ProductVersion) bool {
 }
 
 func showDocs(version string) bool {
-	if version == "master" {
+	if version == api.MasterBranch {
 		return false
 	}
 	v := semver.MustParse(version)
@@ -209,7 +209,7 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 
 	data := versions
 	for i := range versions {
-		if versions[i].Version == "master" {
+		if versions[i].Version == api.MasterBranch {
 			m = versions[i]
 			data = append(versions[:i], versions[i+1:]...)
 			break
@@ -223,7 +223,7 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	latestVersion := data[0].Version
 
 	// inject to the top
-	if m.Version == "master" {
+	if m.Version == api.MasterBranch {
 		data = append([]saapi.ProductVersion{m}, data...)
 	}
 	return data, latestVersion

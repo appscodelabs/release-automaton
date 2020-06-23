@@ -87,7 +87,6 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 					Commits: commits,
 				})
 			}
-			repoFound = true
 			break
 		}
 	}
