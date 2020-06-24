@@ -116,7 +116,7 @@ func CreateReleaseFile() api.Release {
 					Tag:           github.String("v2020.6.23"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/${TAG}/release.json --catalog-file=${WORKSPACE}/catalog.json",
+						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog.json",
 						"make gen fmt",
 					},
 				},
@@ -125,7 +125,7 @@ func CreateReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode-cloud/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --workspace=${WORKSPACE}",
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
@@ -156,7 +156,7 @@ func CreateReleaseFile() api.Release {
 				"github.com/stashed/bundles": api.Project{
 					Tag: github.String("v2020.6.23"),
 					Commands: []string{
-						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
+						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
 					},
 				},
 			},

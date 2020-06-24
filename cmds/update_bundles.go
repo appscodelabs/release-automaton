@@ -64,7 +64,7 @@ func updateBundles() error {
 	if err != nil {
 		return err
 	}
-	err = ylib.Unmarshal(data, &release)
+	err = yaml.Unmarshal(data, &release)
 	if err != nil {
 		return err
 	}

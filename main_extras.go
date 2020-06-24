@@ -33,6 +33,31 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+func main_UpdateChangelog() {
+	dir := "/home/tamal/go/src/github.com/tamalsaha/release-automaton-demo/CHANGELOG/v2020.6.23"
+
+	releaseFile := filepath.Join(dir, "release.json")
+	data, err := ioutil.ReadFile(releaseFile)
+	if err != nil {
+		panic(err)
+	}
+	var release api.Release
+	err = yaml.Unmarshal(data, &release)
+	if err != nil {
+		panic(err)
+	}
+
+	repoURL := "github.com/appscode-cloud/static-assets"
+	tag := "v1.0.0"
+	commits := []api.Commit{
+		{
+			SHA:     "DFGHJK45",
+			Subject: "This is a test",
+		},
+	}
+	lib.UpdateChangelog(dir, release, repoURL, tag, commits)
+}
+
 func main_ParsePullRequestURL() {
 	lib.ParsePullRequestURL("https://github.com/appscodelabs/gh-release-automation-testing/pull/21")
 	lib.ParseRepoURL("https://github.com/appscodelabs/gh-release-automation-testing")
