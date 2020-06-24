@@ -98,13 +98,26 @@ func LastCommitSubject(sh *shell.Session) string {
 	return strings.TrimSpace(string(data))
 }
 
-func LastCommitBody(sh *shell.Session) string {
+func LastCommitBody(sh *shell.Session, trimBlankLines bool) string {
 	// git show -s --format=%b
 	data, err := sh.Command("git", "show", "-s", "--format=%b").Output()
 	if err != nil {
 		panic(err)
 	}
-	return strings.TrimSpace(string(data))
+
+	if !trimBlankLines {
+		return strings.TrimSpace(string(data))
+	}
+
+	var out []string
+	lines := strings.Split(string(data), "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line != "" {
+			out = append(out, line)
+		}
+	}
+	return strings.Join(out, "\n")
 }
 
 func AnyRepoModified(wd string, sh *shell.Session) bool {

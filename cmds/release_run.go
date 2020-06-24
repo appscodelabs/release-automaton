@@ -565,7 +565,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
 				Head:                github.String(headBranch),
 				Base:                github.String(branch),
-				Body:                github.String(lib.LastCommitBody(sh)),
+				Body:                github.String(lib.LastCommitBody(sh, true)),
 				MaintainerCanModify: github.Bool(true),
 				Draft:               github.Bool(false),
 			}, "automerge")
