@@ -561,14 +561,11 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}
 
 			// open pr against project repo
-			prBody := fmt.Sprintf(`ProductLine: %s
-Release: %s
-Release-tracker: %s`, release.ProductLine, release.Release, releaseTracker)
 			pr, err := lib.CreatePR(gh, owner, repo, &github.NewPullRequest{
 				Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
 				Head:                github.String(headBranch),
 				Base:                github.String(branch),
-				Body:                github.String(prBody),
+				Body:                github.String(lib.LastCommitBody(sh)),
 				MaintainerCanModify: github.Bool(true),
 				Draft:               github.Bool(false),
 			}, "automerge")
@@ -579,7 +576,7 @@ Release-tracker: %s`, release.ProductLine, release.Release, releaseTracker)
 			// add comments to release repo
 			comments = append(comments, fmt.Sprintf("%s %s", api.PR, pr.GetHTMLURL()))
 		} else {
-			comments = append(comments, fmt.Sprintf("%s %s %s", api.ReadyToTag, repoURL, lib.LatestCommit(sh)))
+			comments = append(comments, fmt.Sprintf("%s %s %s", api.ReadyToTag, repoURL, lib.LastCommitSHA(sh)))
 			// TODO: add to replies map?
 		}
 

@@ -79,14 +79,32 @@ func FirstCommit(sh *shell.Session) string {
 	return commits[len(commits)-1]
 }
 
-func LatestCommit(sh *shell.Session) string {
-	// // git show -s --format=%H
+func LastCommitSHA(sh *shell.Session) string {
+	// git show -s --format=%H
 	data, err := sh.Command("git", "show", "-s", "--format=%H").Output()
 	if err != nil {
 		panic(err)
 	}
 	commits := strings.Fields(string(data))
 	return commits[0]
+}
+
+func LastCommitSubject(sh *shell.Session) string {
+	// git show -s --format=%s
+	data, err := sh.Command("git", "show", "-s", "--format=%s").Output()
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(data))
+}
+
+func LastCommitBody(sh *shell.Session) string {
+	// git show -s --format=%b
+	data, err := sh.Command("git", "show", "-s", "--format=%b").Output()
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(data))
 }
 
 func AnyRepoModified(wd string, sh *shell.Session) bool {
