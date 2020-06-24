@@ -52,21 +52,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 
 	filenameChlog := filepath.Join(dir, "CHANGELOG.json")
-
-	var chlog api.Changelog
-	data, err := ioutil.ReadFile(filenameChlog)
-	if err == nil {
-		err = json.Unmarshal(data, &chlog)
-		if err != nil {
-			panic(err)
-		}
-	}
-	chlog.ProductLine = release.ProductLine
-	chlog.Release = release.Release
-	chlog.ReleaseProjectURL = fmt.Sprintf("https://github.com/%s", os.Getenv("GITHUB_REPOSITORY"))
-	chlog.DocsURL = fmt.Sprintf(release.DocsURLTemplate, release.Release)
-	chlog.ReleaseDate = time.Now().UTC()
-	chlog.KubernetesVersion = release.KubernetesVersion
+	chlog := LoadChangelog(dir, release)
 
 	var repoFound bool
 	for repoIdx := range chlog.Projects {
@@ -103,7 +89,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 	chlog.Sort()
 
-	data, err = MarshalJson(chlog)
+	data, err := MarshalJson(chlog)
 	if err != nil {
 		panic(err)
 	}
@@ -113,11 +99,27 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	}
 
 	WriteChangelogMarkdown(filepath.Join(dir, "README.md"), "changelog.tpl", chlog)
-	if status == api.StandaloneWebsiteChangelog {
-		WriteChangelogMarkdown(filepath.Join(dir, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
-	} else if status == api.SharedWebsiteChangelog {
-		WriteChangelogMarkdown(filepath.Join(dir, "docs_changelog.md"), "shared-changelog.tpl", chlog)
+}
+
+func LoadChangelog(dir string, release api.Release) api.Changelog {
+	var chlog api.Changelog
+
+	filename := filepath.Join(dir, "CHANGELOG.json")
+	data, err := ioutil.ReadFile(filename)
+	if err == nil {
+		err = json.Unmarshal(data, &chlog)
+		if err != nil {
+			panic(err)
+		}
 	}
+	chlog.ProductLine = release.ProductLine
+	chlog.Release = release.Release
+	chlog.ReleaseProjectURL = fmt.Sprintf("https://github.com/%s", os.Getenv("GITHUB_REPOSITORY"))
+	chlog.DocsURL = fmt.Sprintf(release.DocsURLTemplate, release.Release)
+	chlog.ReleaseDate = time.Now().UTC()
+	chlog.KubernetesVersion = release.KubernetesVersion
+
+	return chlog
 }
 
 func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {

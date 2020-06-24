@@ -277,7 +277,18 @@ func runAutomaton() {
 		// Now, open pr for notTagged
 		for _, repoURL := range notTagged.UnsortedList() {
 			oneliners.FILE()
-			err = PrepareProject(gh, sh, releaseTracker, repoURL, projects[repoURL])
+			project := projects[repoURL]
+			if project.Tag == nil && len(project.Tags) == 0 {
+				err = PrepareExternalProject(gh, sh, releaseTracker, repoURL, project)
+				chlog := lib.LoadChangelog(filepath.Join(changelogRoot, release.Release), release)
+				if project.Changelog == api.StandaloneWebsiteChangelog {
+					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
+				} else if project.Changelog == api.SharedWebsiteChangelog {
+					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "shared-changelog.tpl", chlog)
+				}
+			} else {
+				err = PrepareProject(gh, sh, releaseTracker, repoURL, project)
+			}
 			if err != nil {
 				panic(err)
 			}
@@ -346,7 +357,8 @@ func runAutomaton() {
 	}
 	for repoURL, project := range release.ExternalProjects {
 		if !openPRs.Has(repoURL) {
-			err = PrepareExternalProject(gh, sh, repoURL, project)
+			// Do not want external projects to report back, so releaseTracker is not set.
+			err = PrepareExternalProject(gh, sh, "", repoURL, project)
 			if err != nil {
 				break
 			}
@@ -856,7 +868,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 	return nil
 }
 
-func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string, project api.ExternalProject) error {
+func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.ProjectMeta) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
@@ -925,7 +937,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string
 		}
 	}
 
-	for _, cmd := range project.Commands {
+	for _, cmd := range project.GetCommands() {
 		cmd, err = envsubst.EvalMap(cmd, vars)
 		if err != nil {
 			return err
@@ -949,6 +961,9 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string
 			fmt.Sprintf("Update for release %s@%s", release.ProductLine, release.Release),
 			"ProductLine: " + release.ProductLine,
 			"Release: " + release.Release,
+		}
+		if releaseTracker != "" {
+			messages = append(messages, "Release-tracker: "+releaseTracker)
 		}
 		err = lib.CommitRepo(sh, "", messages...)
 		if err != nil {

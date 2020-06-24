@@ -134,7 +134,7 @@ func CreateReleaseFile() api.Release {
 				"github.com/appscode-cloud/docs": api.Project{
 					Tag: github.String("v2020.6.23"),
 					Commands: []string{
-						"mv ${SCRIPT_ROOT}/${RELEASE}/docs_changelog.md --workspace=${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+						"mv ${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
 					},
 				},
 			},
