@@ -68,7 +68,8 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/cli": api.Project{
-					Key: "stash-cli",
+					// NOT a sub project anymore
+					// Key: "stash-cli",
 					Tag: github.String("v0.10.0-alpha.3"),
 				},
 			},
@@ -89,7 +90,6 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/stash": api.Project{
-					Key: "stash",
 					Tag: github.String("v0.10.0-alpha.3"),
 				},
 			},
@@ -132,7 +132,9 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/docs": api.Project{
-					Tag: github.String("v2020.6.23"),
+					Key:           "stash",
+					Tag:           github.String("v2020.6.23"),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
 					},
@@ -142,7 +144,6 @@ func CreateReleaseFile() api.Release {
 				"github.com/appscode-cloud/website": api.Project{
 					Tag:           github.String("v2020.6.23"),
 					ReleaseBranch: "master",
-					ReadyToTag:    true,
 					Commands: []string{
 						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode-cloud/static-assets",
 						"make docs",
