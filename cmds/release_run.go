@@ -813,46 +813,48 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			}
 		}
 
-		tags, err := lib.ListTags(sh)
-		if err != nil {
-			return err
-		}
-		tagSet := sets.NewString(tags...)
-		tagSet.Insert(tag)
-
-		vs := make([]*semver.Version, 0, tagSet.Len())
-		for _, x := range tagSet.UnsortedList() {
-			v := semver.MustParse(x)
-			// filter out lower importance tags
-			if api.AtLeastAsImp(vTag, v) {
-				vs = append(vs, v)
-			}
-		}
-		sort.Sort(api.SemverCollection(vs))
-
-		var tagIdx = -1
-		for idx, vs := range vs {
-			if vs.Equal(vTag) {
-				tagIdx = idx
-				break
-			}
-		}
-
-		var commits []api.Commit
-		if tagIdx == 0 {
-			commits = lib.ListCommits(sh, lib.FirstCommit(sh), vs[tagIdx].Original())
-		} else {
-			commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
-		}
-		lib.UpdateChangelog(filepath.Join(changelogRoot, release.Release), release, repoURL, tag, commits)
-		if lib.AnyRepoModified(scriptRoot, sh) {
-			err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
+		if project.Changelog == api.AddToChangelog {
+			tags, err := lib.ListTags(sh)
 			if err != nil {
 				return err
 			}
-			err = lib.PushAnyRepo(scriptRoot, sh, false)
-			if err != nil {
-				return err
+			tagSet := sets.NewString(tags...)
+			tagSet.Insert(tag)
+
+			vs := make([]*semver.Version, 0, tagSet.Len())
+			for _, x := range tagSet.UnsortedList() {
+				v := semver.MustParse(x)
+				// filter out lower importance tags
+				if api.AtLeastAsImp(vTag, v) {
+					vs = append(vs, v)
+				}
+			}
+			sort.Sort(api.SemverCollection(vs))
+
+			var tagIdx = -1
+			for idx, vs := range vs {
+				if vs.Equal(vTag) {
+					tagIdx = idx
+					break
+				}
+			}
+
+			var commits []api.Commit
+			if tagIdx == 0 {
+				commits = lib.ListCommits(sh, lib.FirstCommit(sh), vs[tagIdx].Original())
+			} else {
+				commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
+			}
+			lib.UpdateChangelog(filepath.Join(changelogRoot, release.Release), release, repoURL, tag, commits)
+			if lib.AnyRepoModified(scriptRoot, sh) {
+				err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
+				if err != nil {
+					return err
+				}
+				err = lib.PushAnyRepo(scriptRoot, sh, false)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
