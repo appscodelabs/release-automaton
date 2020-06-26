@@ -128,15 +128,43 @@ func runAutomaton() {
 	}
 	if pr.GetDraft() {
 		fmt.Println("Release tracker pr is currently in draft mode")
-		os.Exit(0)
+		return
 	}
 	if pr.GetState() != "open" {
 		fmt.Println("Release tracker pr is not open")
-		os.Exit(0)
+		return
 	}
 	if !lib.PRApproved(gh, releaseOwner, releaseRepo, releasePR) {
 		fmt.Println("PR must be approved to continue")
-		os.Exit(0)
+		return
+	}
+
+	defer func() {
+		err = lib.RemoveLabel(gh, releaseOwner, releaseRepo, releasePR, "locked")
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+	defer func() {
+		oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
+		if len(comments) > 0 {
+			comments = lib.UniqComments(comments)
+			_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
+				Body: github.String(strings.Join(comments, "\n")),
+			})
+			if err != nil {
+				panic(err)
+			}
+			return // Let next execution to pick up
+		}
+	}()
+
+	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), releaseOwner, releaseRepo, releasePR, []string{
+		"locked",
+	})
+	if err != nil {
+		panic(err)
 	}
 
 	// Build state
@@ -170,7 +198,7 @@ func runAutomaton() {
 
 	if _, ok := replies[api.OkToRelease]; !ok {
 		fmt.Println("Not /ok-to-release yet")
-		os.Exit(0)
+		return
 	}
 
 	for groupIdx, projects := range release.Projects {
@@ -310,24 +338,24 @@ func runAutomaton() {
 			}
 		}
 
-		oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
-		if len(comments) > 0 {
-			comments = lib.UniqComments(comments)
-			_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
-				Body: github.String(strings.Join(comments, "\n")),
-			})
-			if err != nil {
-				panic(err)
-			}
-			os.Exit(0) // Let next execution to pick up
-		}
+		//oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
+		//if len(comments) > 0 {
+		//	comments = lib.UniqComments(comments)
+		//	_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
+		//		Body: github.String(strings.Join(comments, "\n")),
+		//	})
+		//	if err != nil {
+		//		panic(err)
+		//	}
+		//	return // Let next execution to pick up
+		//}
 
 		if openPRs.Len() > 0 {
 			fmt.Println("Waiting for prs to close:")
 			for _, pr := range openPRs.List() {
 				fmt.Println(">>> " + pr)
 			}
-			os.Exit(0)
+			return
 		}
 
 		if len(chartsYetToMerge) > 0 {
@@ -335,7 +363,7 @@ func runAutomaton() {
 			for data := range chartsYetToMerge {
 				fmt.Println(">>> ", data)
 			}
-			os.Exit(0)
+			return
 		}
 
 		if chartsReadyToPublish.Len() > 0 {
@@ -343,7 +371,7 @@ func runAutomaton() {
 			for _, repoURL := range chartsReadyToPublish.List() {
 				fmt.Println(">>> ", repoURL)
 			}
-			os.Exit(0)
+			return
 		}
 	}
 
@@ -361,17 +389,17 @@ func runAutomaton() {
 			}
 		}
 	}
-	oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
-	if len(comments) > 0 {
-		comments = lib.UniqComments(comments)
-		_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
-			Body: github.String(strings.Join(comments, "\n")),
-		})
-		if err != nil {
-			panic(err)
-		}
-		os.Exit(0) // Let next execution to pick up
-	}
+	//oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
+	//if len(comments) > 0 {
+	//	comments = lib.UniqComments(comments)
+	//	_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
+	//		Body: github.String(strings.Join(comments, "\n")),
+	//	})
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	return // Let next execution to pick up
+	//}
 }
 
 func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.Project) error {
