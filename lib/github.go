@@ -19,6 +19,7 @@ package lib
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/appscodelabs/release-automaton/api"
@@ -215,6 +216,16 @@ func LabelPR(gh *github.Client, owner string, repo, head, base string, labels ..
 		}
 	}
 	return nil
+}
+
+func RemoveLabel(gh *github.Client, owner string, repo string, number int, label string) error {
+	_, err := gh.Issues.RemoveLabelForIssue(context.TODO(), owner, repo, number, label)
+	if ge, ok := err.(*github.ErrorResponse); ok {
+		if ge.Response.StatusCode == http.StatusNotFound {
+			return nil
+		}
+	}
+	return err
 }
 
 func ListTags2(ctx context.Context, gh *github.Client, owner, repo string) ([]*github.RepositoryTag, error) {
