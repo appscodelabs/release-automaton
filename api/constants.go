@@ -19,6 +19,6 @@ package api
 const (
 	Workspace      = "/tmp/workspace"
 	GitHubUserKey  = "GITHUB_USER"
-	GitHubTokenKey = "LGTM_GITHUB_TOKEN"
+	GitHubTokenKey = "GITHUB_TOKEN"
 	MasterBranch   = "master"
 )
