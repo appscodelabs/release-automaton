@@ -497,7 +497,9 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		tags[release.Release] = api.MasterBranch // if cherry pick is used, there must be an extra pr against the master branch
 	}
 
-	for tag, branch := range tags {
+	for _, pair := range lib.ToOrderedPair(tags) {
+		tag, branch := pair.Key, pair.Value
+
 		if usesCherryPick {
 			// remote branch must already exist
 			if !lib.RemoteBranchExists(sh, branch) {
@@ -688,7 +690,9 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 
 	usesCherryPick := project.Tags != nil && project.Tag == nil
 
-	for tag, branch := range tags {
+	for _, pair := range lib.ToOrderedPair(tags) {
+		tag, branch := pair.Key, pair.Value
+
 		vTag, err := semver.NewVersion(tag)
 		if err != nil {
 			return err

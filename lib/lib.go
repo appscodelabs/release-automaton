@@ -18,9 +18,29 @@ package lib
 
 import (
 	"os"
+	"sort"
 
 	"k8s.io/apimachinery/pkg/util/sets"
 )
+
+type Pair struct {
+	Key   string
+	Value string
+}
+
+func ToOrderedPair(in map[string]string) []Pair {
+	out := make([]Pair, 0, len(in))
+	for k, v := range in {
+		out = append(out, Pair{
+			Key:   k,
+			Value: v,
+		})
+	}
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].Key < out[j].Key
+	})
+	return out
+}
 
 func MergeMaps(dst, src map[string]string) map[string]string {
 	for k, v := range src {
