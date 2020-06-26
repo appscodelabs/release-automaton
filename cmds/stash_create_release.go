@@ -52,7 +52,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateReleaseFile() api.Release {
 	updateEnvVars := []string{
-		"echo STASH_VERSION=${STASH_VERSION} > Makefile.env",
+		"echo STASH_VERSION=${APPSCODE_CLOUD_STASH_TAG} > Makefile.env",
 		"echo STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} >> Makefile.env",
 	}
 	return api.Release{
@@ -154,17 +154,18 @@ func CreateReleaseFile() api.Release {
 			},
 			// Bundle
 			{
-				"github.com/stashed/bundles": api.Project{
-					Tag: github.String("v2020.6.23"),
+				"github.com/appscode-cloud/bundles": api.Project{
+					Tag:           github.String("v2020.6.23"),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
 					},
 				},
 			},
 			{
-				"github.com/bytebuilders/bundles": api.Project{
+				"github.com/appscode-cloud/bb-bundles": api.Project{
 					Charts: []string{
-						"github.com/stashed/bundles",
+						"github.com/appscode-cloud/bundles",
 					},
 					Changelog: api.SkipChangelog,
 				},

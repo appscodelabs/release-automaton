@@ -217,8 +217,6 @@ func runAutomaton() {
 					notTagged.Insert(repoURL)
 				}
 			} else {
-				var someYetToMerge bool
-
 				for _, chartRepo := range project.Charts {
 					if tags, ok := findRepoTags(chartRepo); ok {
 						for _, tag := range tags {
@@ -228,13 +226,12 @@ func runAutomaton() {
 							}
 							if _, ok := chartsMerged[mergeKey]; !ok {
 								chartsYetToMerge[mergeKey] = empty
-								someYetToMerge = true
 							}
 						}
 					}
 				}
 
-				if !someYetToMerge {
+				if len(chartsYetToMerge) == 0 && !chartPublished.Has(repoURL) {
 					chartsReadyToPublish.Insert(repoURL)
 				}
 			}
@@ -539,17 +536,9 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			if err != nil {
 				return err
 			}
-			fields := strings.Fields(cmd)
-			if len(fields) > 0 {
-				args := make([]interface{}, len(fields)-1)
-				for i := range fields[1:] {
-					args[i] = fields[i+1]
-				}
-
-				err = sh.Command(fields[0], args...).Run()
-				if err != nil {
-					return err
-				}
+			err = lib.Execute(sh, cmd)
+			if err != nil {
+				return err
 			}
 		}
 
@@ -944,17 +933,10 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 		if err != nil {
 			return err
 		}
-		fields := strings.Fields(cmd)
-		if len(fields) > 0 {
-			args := make([]interface{}, len(fields)-1)
-			for i := range fields[1:] {
-				args[i] = fields[i+1]
-			}
 
-			err = sh.Command(fields[0], args...).Run()
-			if err != nil {
-				return err
-			}
+		err = lib.Execute(sh, cmd)
+		if err != nil {
+			return err
 		}
 	}
 

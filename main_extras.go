@@ -33,6 +33,22 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+func main_Execute() {
+	sh := shell.NewSession()
+	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
+
+	err := lib.Execute(sh, "echo A=B > /tmp/abc.txt")
+	if err != nil {
+		panic(err)
+	}
+	err = lib.Execute(sh, "echo C=D >> /tmp/abc.txt")
+	if err != nil {
+		panic(err)
+	}
+}
+
 func main_UpdateChangelog() {
 	dir := "/home/tamal/go/src/github.com/tamalsaha/release-automaton-demo/CHANGELOG/v2020.6.23"
 

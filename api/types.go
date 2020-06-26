@@ -173,7 +173,7 @@ func (r Reply) Key() ReplyKey {
 	case Chart:
 		return ReplyKey{Repo: r.Chart.Repo, B: r.Chart.Tag}
 	case ChartPublished:
-		return ReplyKey{}
+		return ReplyKey{Repo: r.ChartPublished.Repo}
 	default:
 		panic(fmt.Errorf("unknown reply type %s", r.Type))
 	}
