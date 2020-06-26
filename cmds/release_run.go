@@ -45,7 +45,6 @@ var (
 	release        api.Release
 	releaseFile    string
 	releaseTracker string
-	commentId      int64
 
 	empty          = struct{}{}
 	scriptRoot, _  = os.Getwd()
@@ -73,7 +72,6 @@ func NewCmdReleaseRun() *cobra.Command {
 
 	cmd.Flags().StringVar(&releaseFile, "release-file", "", "Path of release file (local file or url is accepted)")
 	cmd.Flags().StringVar(&releaseTracker, "release-tracker", "", "URL of release tracker pull request")
-	cmd.Flags().Int64Var(&commentId, "comment-id", 0, "Comment Id that triggered this run")
 	return cmd
 }
 
@@ -157,20 +155,6 @@ func runAutomaton() {
 	if err != nil {
 		panic(err)
 	}
-	if commentId > 0 {
-		// This is done to avoid using any comments that was added after this action was triggered
-		idx := -1
-		for i, comment := range prComments {
-			if comment.GetID() == commentId {
-				idx = i
-				break
-			}
-		}
-		if idx > -1 {
-			prComments = prComments[:idx+1]
-		}
-	}
-
 	for _, comment := range prComments {
 		replies = api.MergeReplies(replies, lib.ParseComment(comment.GetBody())...)
 	}
