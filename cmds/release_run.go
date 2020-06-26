@@ -226,6 +226,13 @@ func runAutomaton() {
 		openPRs := sets.NewString()
 		for repoURL, project := range projects {
 			if len(project.Charts) == 0 {
+				// Skip if invoked by /chart comment
+				for _, reply := range lib.ParseComment(prComments[len(prComments)-1].GetBody()) {
+					if reply.Type == api.Chart {
+						return
+					}
+				}
+
 				if !tagged.Has(repoURL) {
 					notTagged.Insert(repoURL)
 				}
