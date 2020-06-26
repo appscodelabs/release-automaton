@@ -18,6 +18,7 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -32,6 +33,39 @@ import (
 	"github.com/hashicorp/go-getter"
 	"sigs.k8s.io/yaml"
 )
+
+func main_RemoveLabel() {
+	gh := lib.NewGitHubClient()
+	u := "https://github.com/appscodelabs/release-automaton-demo/pull/1"
+	fmt.Println(u)
+
+	var err error
+
+	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), "appscodelabs", "release-automaton-demo", 1, []string{
+		"xyz",
+	})
+	if ge, ok := err.(*github.ErrorResponse); ok {
+		panic(ge)
+	}
+	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), "appscodelabs", "release-automaton-demo", 1, []string{
+		"xyz",
+	})
+	if ge, ok := err.(*github.ErrorResponse); ok {
+		panic(ge)
+	}
+	err = lib.RemoveLabel(gh, "appscodelabs", "release-automaton-demo", 1, "xyz")
+	if err != nil {
+		panic(err)
+	}
+	err = lib.RemoveLabel(gh, "appscodelabs", "release-automaton-demo", 1, "xyz")
+	if err != nil {
+		panic(err)
+	}
+	err = lib.RemoveLabel(gh, "appscodelabs", "release-automaton-demo", 1, "xyz")
+	if err != nil {
+		panic(err)
+	}
+}
 
 func main_Execute() {
 	sh := shell.NewSession()
