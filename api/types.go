@@ -25,8 +25,16 @@ import (
 	"github.com/Masterminds/semver"
 )
 
+type ProjectMeta interface {
+	GetCommands() []string
+}
+
 type ExternalProject struct {
 	Commands []string `json:"commands,omitempty"`
+}
+
+func (p ExternalProject) GetCommands() []string {
+	return p.Commands
 }
 
 type Project struct {
@@ -38,6 +46,10 @@ type Project struct {
 	ReleaseBranch string            `json:"release_branch,omitempty"`
 	ReadyToTag    bool              `json:"ready_to_tag,omitempty"`
 	Changelog     ChangelogStatus   `json:"changelog,omitempty"`
+}
+
+func (p Project) GetCommands() []string {
+	return p.Commands
 }
 
 type ChangelogStatus string
@@ -161,7 +173,7 @@ func (r Reply) Key() ReplyKey {
 	case Chart:
 		return ReplyKey{Repo: r.Chart.Repo, B: r.Chart.Tag}
 	case ChartPublished:
-		return ReplyKey{}
+		return ReplyKey{Repo: r.ChartPublished.Repo}
 	default:
 		panic(fmt.Errorf("unknown reply type %s", r.Type))
 	}

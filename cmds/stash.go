@@ -30,6 +30,7 @@ func NewCmdStash() *cobra.Command {
 	}
 
 	cmd.AddCommand(NewCmdStashCreateCatalog())
+	cmd.AddCommand(NewCmdStashCreateRelease())
 	cmd.AddCommand(NewCmdStashGenCatalog())
 	cmd.AddCommand(NewCmdStashRecordLegacyReleases())
 	return cmd

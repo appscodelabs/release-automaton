@@ -217,8 +217,6 @@ func runAutomaton() {
 					notTagged.Insert(repoURL)
 				}
 			} else {
-				var someYetToMerge bool
-
 				for _, chartRepo := range project.Charts {
 					if tags, ok := findRepoTags(chartRepo); ok {
 						for _, tag := range tags {
@@ -228,13 +226,12 @@ func runAutomaton() {
 							}
 							if _, ok := chartsMerged[mergeKey]; !ok {
 								chartsYetToMerge[mergeKey] = empty
-								someYetToMerge = true
 							}
 						}
 					}
 				}
 
-				if !someYetToMerge {
+				if len(chartsYetToMerge) == 0 && !chartPublished.Has(repoURL) {
 					chartsReadyToPublish.Insert(repoURL)
 				}
 			}
@@ -277,7 +274,18 @@ func runAutomaton() {
 		// Now, open pr for notTagged
 		for _, repoURL := range notTagged.UnsortedList() {
 			oneliners.FILE()
-			err = PrepareProject(gh, sh, releaseTracker, repoURL, projects[repoURL])
+			project := projects[repoURL]
+			if project.Tag == nil && len(project.Tags) == 0 {
+				err = PrepareExternalProject(gh, sh, releaseTracker, repoURL, project)
+				chlog := lib.LoadChangelog(filepath.Join(changelogRoot, release.Release), release)
+				if project.Changelog == api.StandaloneWebsiteChangelog {
+					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
+				} else if project.Changelog == api.SharedWebsiteChangelog {
+					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "shared-changelog.tpl", chlog)
+				}
+			} else {
+				err = PrepareProject(gh, sh, releaseTracker, repoURL, project)
+			}
 			if err != nil {
 				panic(err)
 			}
@@ -346,7 +354,8 @@ func runAutomaton() {
 	}
 	for repoURL, project := range release.ExternalProjects {
 		if !openPRs.Has(repoURL) {
-			err = PrepareExternalProject(gh, sh, repoURL, project)
+			// Do not want external projects to report back, so releaseTracker is not set.
+			err = PrepareExternalProject(gh, sh, "", repoURL, project)
 			if err != nil {
 				break
 			}
@@ -527,17 +536,9 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			if err != nil {
 				return err
 			}
-			fields := strings.Fields(cmd)
-			if len(fields) > 0 {
-				args := make([]interface{}, len(fields)-1)
-				for i := range fields[1:] {
-					args[i] = fields[i+1]
-				}
-
-				err = sh.Command(fields[0], args...).Run()
-				if err != nil {
-					return err
-				}
+			err = lib.Execute(sh, cmd)
+			if err != nil {
+				return err
 			}
 		}
 
@@ -561,14 +562,11 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}
 
 			// open pr against project repo
-			prBody := fmt.Sprintf(`ProductLine: %s
-Release: %s
-Release-tracker: %s`, release.ProductLine, release.Release, releaseTracker)
 			pr, err := lib.CreatePR(gh, owner, repo, &github.NewPullRequest{
 				Title:               github.String(fmt.Sprintf("Prepare for release %s", tag)),
 				Head:                github.String(headBranch),
 				Base:                github.String(branch),
-				Body:                github.String(prBody),
+				Body:                github.String(lib.LastCommitBody(sh, true)),
 				MaintainerCanModify: github.Bool(true),
 				Draft:               github.Bool(false),
 			}, "automerge")
@@ -579,7 +577,7 @@ Release-tracker: %s`, release.ProductLine, release.Release, releaseTracker)
 			// add comments to release repo
 			comments = append(comments, fmt.Sprintf("%s %s", api.PR, pr.GetHTMLURL()))
 		} else {
-			comments = append(comments, fmt.Sprintf("%s %s %s", api.ReadyToTag, repoURL, lib.LatestCommit(sh)))
+			comments = append(comments, fmt.Sprintf("%s %s %s", api.ReadyToTag, repoURL, lib.LastCommitSHA(sh)))
 			// TODO: add to replies map?
 		}
 
@@ -804,46 +802,48 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			}
 		}
 
-		tags, err := lib.ListTags(sh)
-		if err != nil {
-			return err
-		}
-		tagSet := sets.NewString(tags...)
-		tagSet.Insert(tag)
-
-		vs := make([]*semver.Version, 0, tagSet.Len())
-		for _, x := range tagSet.UnsortedList() {
-			v := semver.MustParse(x)
-			// filter out lower importance tags
-			if api.AtLeastAsImp(vTag, v) {
-				vs = append(vs, v)
-			}
-		}
-		sort.Sort(api.SemverCollection(vs))
-
-		var tagIdx = -1
-		for idx, vs := range vs {
-			if vs.Equal(vTag) {
-				tagIdx = idx
-				break
-			}
-		}
-
-		var commits []api.Commit
-		if tagIdx == 0 {
-			commits = lib.ListCommits(sh, lib.FirstCommit(sh), vs[tagIdx].Original())
-		} else {
-			commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
-		}
-		lib.UpdateChangelog(filepath.Join(changelogRoot, release.Release), release, repoURL, tag, commits)
-		if lib.AnyRepoModified(scriptRoot, sh) {
-			err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
+		if project.Changelog == api.AddToChangelog {
+			tags, err := lib.ListTags(sh)
 			if err != nil {
 				return err
 			}
-			err = lib.PushAnyRepo(scriptRoot, sh, false)
-			if err != nil {
-				return err
+			tagSet := sets.NewString(tags...)
+			tagSet.Insert(tag)
+
+			vs := make([]*semver.Version, 0, tagSet.Len())
+			for _, x := range tagSet.UnsortedList() {
+				v := semver.MustParse(x)
+				// filter out lower importance tags
+				if api.AtLeastAsImp(vTag, v) {
+					vs = append(vs, v)
+				}
+			}
+			sort.Sort(api.SemverCollection(vs))
+
+			var tagIdx = -1
+			for idx, vs := range vs {
+				if vs.Equal(vTag) {
+					tagIdx = idx
+					break
+				}
+			}
+
+			var commits []api.Commit
+			if tagIdx == 0 {
+				commits = lib.ListCommits(sh, lib.FirstCommit(sh), vs[tagIdx].Original())
+			} else {
+				commits = lib.ListCommits(sh, vs[tagIdx-1].Original(), vs[tagIdx].Original())
+			}
+			lib.UpdateChangelog(filepath.Join(changelogRoot, release.Release), release, repoURL, tag, commits)
+			if lib.AnyRepoModified(scriptRoot, sh) {
+				err = lib.CommitAnyRepo(scriptRoot, sh, "", "Update changelog")
+				if err != nil {
+					return err
+				}
+				err = lib.PushAnyRepo(scriptRoot, sh, false)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -859,7 +859,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 	return nil
 }
 
-func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string, project api.ExternalProject) error {
+func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.ProjectMeta) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
@@ -928,22 +928,15 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string
 		}
 	}
 
-	for _, cmd := range project.Commands {
+	for _, cmd := range project.GetCommands() {
 		cmd, err = envsubst.EvalMap(cmd, vars)
 		if err != nil {
 			return err
 		}
-		fields := strings.Fields(cmd)
-		if len(fields) > 0 {
-			args := make([]interface{}, len(fields)-1)
-			for i := range fields[1:] {
-				args[i] = fields[i+1]
-			}
 
-			err = sh.Command(fields[0], args...).Run()
-			if err != nil {
-				return err
-			}
+		err = lib.Execute(sh, cmd)
+		if err != nil {
+			return err
 		}
 	}
 
@@ -952,6 +945,9 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, repoURL string
 			fmt.Sprintf("Update for release %s@%s", release.ProductLine, release.Release),
 			"ProductLine: " + release.ProductLine,
 			"Release: " + release.Release,
+		}
+		if releaseTracker != "" {
+			messages = append(messages, "Release-tracker: "+releaseTracker)
 		}
 		err = lib.CommitRepo(sh, "", messages...)
 		if err != nil {

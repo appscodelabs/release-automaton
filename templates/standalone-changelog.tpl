@@ -16,4 +16,4 @@ aliases:
   - /docs/{{ "{{.version}}" }}/CHANGELOG-{{ .Release }}/
 ---
 
-{{template "changelog"}}
+{{template "changelog.tpl" .}}

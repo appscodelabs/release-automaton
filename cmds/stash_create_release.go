@@ -27,9 +27,9 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func NewCmdReleaseCreate() *cobra.Command {
+func NewCmdStashCreateRelease() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "create",
+		Use:               "create-release",
 		Short:             "Create release file",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -52,24 +52,25 @@ func NewCmdReleaseCreate() *cobra.Command {
 
 func CreateReleaseFile() api.Release {
 	updateEnvVars := []string{
-		"echo STASH_VERSION=${STASH_VERSION} > Makefile.env",
+		"echo STASH_VERSION=${APPSCODE_CLOUD_STASH_TAG} > Makefile.env",
 		"echo STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} >> Makefile.env",
 	}
 	return api.Release{
 		ProductLine:       "Stash",
-		Release:           "v2020.6.16",
+		Release:           "v2020.6.23",
 		DocsURLTemplate:   "https://stash.run/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/apimachinery": api.Project{
-					Tag: github.String("v0.10.0-alpha.2"),
+					Tag: github.String("v0.10.0-alpha.3"),
 				},
 			},
 			{
 				"github.com/appscode-cloud/cli": api.Project{
-					Key: "stash-cli",
-					Tag: github.String("v0.10.0-alpha.2"),
+					// NOT a sub project anymore
+					// Key: "stash-cli",
+					Tag: github.String("v0.10.0-alpha.3"),
 				},
 			},
 			{
@@ -89,13 +90,12 @@ func CreateReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode-cloud/stash": api.Project{
-					Key: "stash",
-					Tag: github.String("v0.10.0-alpha.2"),
+					Tag: github.String("v0.10.0-alpha.3"),
 				},
 			},
 			{
 				"github.com/appscode-cloud/installer": api.Project{
-					Tag: github.String("v0.10.0-alpha.2"),
+					Tag: github.String("v0.10.0-alpha.3"),
 					Commands: []string{
 						"make chart-stash CHART_VERSION=${TAG}",
 					},
@@ -113,10 +113,10 @@ func CreateReleaseFile() api.Release {
 			{
 				"github.com/appscode-cloud/catalog": api.Project{
 					Key:           "stash-catalog",
-					Tag:           github.String("v2020.6.16"),
+					Tag:           github.String("v2020.6.23"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/${TAG}/release.json --catalog-file=${WORKSPACE}/catalog.json",
+						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog.json",
 						"make gen fmt",
 					},
 				},
@@ -125,25 +125,27 @@ func CreateReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode-cloud/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --workspace=${WORKSPACE}",
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
 			},
 			{
 				"github.com/appscode-cloud/docs": api.Project{
-					Tag: github.String("v2020.6.16"),
+					Key:           "stash",
+					Tag:           github.String("v2020.6.23"),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"mv ${SCRIPT_ROOT}/${RELEASE}/docs_changelog.md --workspace=${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+						"mv ${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
 					},
 				},
 			},
 			{
 				"github.com/appscode-cloud/website": api.Project{
-					Tag:           github.String("v2020.6.16"),
+					Tag:           github.String("v2020.6.23"),
 					ReleaseBranch: "master",
-					ReadyToTag:    true,
 					Commands: []string{
+						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode-cloud/static-assets",
 						"make docs",
 						"make set-version VERSION=${TAG}",
 					},
@@ -152,17 +154,18 @@ func CreateReleaseFile() api.Release {
 			},
 			// Bundle
 			{
-				"github.com/stashed/bundles": api.Project{
-					Tag: github.String("v2020.6.16"),
+				"github.com/appscode-cloud/bundles": api.Project{
+					Tag:           github.String("v2020.6.23"),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
+						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/CHANGELOG/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
 					},
 				},
 			},
 			{
-				"github.com/bytebuilders/bundles": api.Project{
+				"github.com/appscode-cloud/bb-bundles": api.Project{
 					Charts: []string{
-						"github.com/stashed/bundles",
+						"github.com/appscode-cloud/bundles",
 					},
 					Changelog: api.SkipChangelog,
 				},

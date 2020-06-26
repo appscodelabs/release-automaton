@@ -16,4 +16,4 @@ aliases:
   - /products/{{ lower .ProductLine }}/{{ "{{.version}}" }}/CHANGELOG/
 ---
 
-{{template "changelog"}}
+{{template "changelog.tpl" .}}
