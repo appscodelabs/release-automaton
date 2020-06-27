@@ -139,19 +139,6 @@ func runAutomaton() {
 		return
 	}
 
-	defer func() {
-		err = lib.RemoveLabel(gh, releaseOwner, releaseRepo, releasePR, "locked")
-		if err != nil {
-			panic(err)
-		}
-	}()
-	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), releaseOwner, releaseRepo, releasePR, []string{
-		"locked",
-	})
-	if err != nil {
-		panic(err)
-	}
-
 	// Build state
 	prComments, err := lib.ListComments(context.TODO(), gh, releaseOwner, releaseRepo, releasePR)
 	if err != nil {
@@ -190,6 +177,28 @@ func runAutomaton() {
 		return
 	}
 
+	existingLabels, err := lib.ListLabelsByIssue(context.TODO(), gh, releaseOwner, releaseRepo, releasePR)
+	if err != nil {
+		panic(err)
+	}
+	if existingLabels.Has(api.LabelLocked) {
+		fmt.Println("Already locked, exiting ...")
+		return
+	}
+
+	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), releaseOwner, releaseRepo, releasePR, []string{
+		api.LabelLocked,
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		err = lib.RemoveLabel(gh, releaseOwner, releaseRepo, releasePR, api.LabelLocked)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	for groupIdx, projects := range release.Projects {
 		firstGroup := groupIdx == 0
 
@@ -200,7 +209,7 @@ func runAutomaton() {
 		for _, reply := range replies[api.ReadyToTag] {
 			merged[api.MergeData{
 				Repo: reply.ReadyToTag.Repo,
-				Ref:  api.MasterBranch,
+				Ref:  api.BranchMaster,
 			}] = reply.ReadyToTag.MergeCommitSHA
 		}
 		for _, reply := range replies[api.CherryPicked] {
@@ -338,7 +347,7 @@ func runAutomaton() {
 		for _, repoURL := range chartsReadyToPublish.UnsortedList() {
 			oneliners.FILE()
 			owner, repo := lib.ParseRepoURL(repoURL)
-			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.MasterBranch, "automerge")
+			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.BranchMaster, "automerge")
 			if err != nil {
 				panic(err)
 			}
@@ -464,7 +473,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	tags := project.Tags
 	if project.Tag != nil {
 		tags = map[string]string{
-			*project.Tag: api.MasterBranch, // pr always opened against master branch
+			*project.Tag: api.BranchMaster, // pr always opened against master branch
 		}
 	}
 
@@ -517,7 +526,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 	usesCherryPick := project.Tags != nil && project.Tag == nil
 	if usesCherryPick {
-		tags[release.Release] = api.MasterBranch // if cherry pick is used, there must be an extra pr against the master branch
+		tags[release.Release] = api.BranchMaster // if cherry pick is used, there must be an extra pr against the master branch
 	}
 
 	for _, pair := range lib.ToOrderedPair(tags) {
@@ -585,7 +594,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				"ProductLine: " + release.ProductLine,
 				"Release: " + release.Release,
 			}
-			if !usesCherryPick || branch != api.MasterBranch {
+			if !usesCherryPick || branch != api.BranchMaster {
 				// repos that use cherry pick, a pr is opened against the master branch
 				// That pr MUST NOT report back to release tracker.
 				messages = append(messages, "Release-tracker: "+releaseTracker)
@@ -797,8 +806,8 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 				if err != nil {
 					return err
 				}
-				if branch != api.MasterBranch {
-					ref := api.MasterBranch
+				if branch != api.BranchMaster {
+					ref := api.BranchMaster
 					if sha, found := MergedCommitSHA(repoURL, branch, usesCherryPick); found {
 						ref = sha
 					}
@@ -816,7 +825,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 					return err
 				}
 			} else {
-				err = sh.Command("git", "checkout", api.MasterBranch).Run()
+				err = sh.Command("git", "checkout", api.BranchMaster).Run()
 				if err != nil {
 					return err
 				}
@@ -943,7 +952,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 
 	headBranch := fmt.Sprintf("%s-%s", release.ProductLine, release.Release)
 
-	err = sh.Command("git", "checkout", api.MasterBranch).Run()
+	err = sh.Command("git", "checkout", api.BranchMaster).Run()
 	if err != nil {
 		return err
 	}
@@ -1002,7 +1011,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 		pr, err := lib.CreatePR(gh, owner, repo, &github.NewPullRequest{
 			Title:               github.String(messages[0]),
 			Head:                github.String(headBranch),
-			Base:                github.String(api.MasterBranch),
+			Base:                github.String(api.BranchMaster),
 			Body:                github.String(strings.Join(messages[1:], "\n")),
 			MaintainerCanModify: github.Bool(true),
 			Draft:               github.Bool(false),
@@ -1023,7 +1032,7 @@ func MergedCommitSHA(repoURL, branch string, useCherryPick bool) (string, bool) 
 		Ref:  branch,
 	}
 	if !useCherryPick {
-		key.Ref = api.MasterBranch
+		key.Ref = api.BranchMaster
 	}
 	sha, ok := merged[key]
 	return sha, ok
