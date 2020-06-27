@@ -81,7 +81,9 @@ type Release struct {
 type ReplyType string
 
 const (
-	OkToRelease  ReplyType = "/ok-to-release"
+	OkToRelease ReplyType = "/ok-to-release"
+	Done        ReplyType = "/done"
+
 	Tagged       ReplyType = "/tagged"
 	Go           ReplyType = "/go"
 	ReadyToTag   ReplyType = "/ready-to-tag"
@@ -159,6 +161,8 @@ type ReplyKey struct {
 func (r Reply) Key() ReplyKey {
 	switch r.Type {
 	case OkToRelease:
+		fallthrough
+	case Done:
 		return ReplyKey{}
 	case Tagged:
 		return ReplyKey{Repo: r.Tagged.Repo}

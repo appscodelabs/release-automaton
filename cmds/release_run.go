@@ -185,6 +185,10 @@ func runAutomaton() {
 		fmt.Println("Not /ok-to-release yet")
 		return
 	}
+	if _, ok := replies[api.Done]; ok {
+		fmt.Println("Already done!")
+		return
+	}
 
 	for groupIdx, projects := range release.Projects {
 		firstGroup := groupIdx == 0
@@ -391,8 +395,10 @@ func runAutomaton() {
 			}
 		}
 	}
+
 	oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
-	if len(comments) > 0 {
+	{
+		comments = append(comments, string(api.Done))
 		comments = lib.UniqComments(comments)
 		_, _, err := gh.Issues.CreateComment(context.TODO(), releaseOwner, releaseRepo, releasePR, &github.IssueComment{
 			Body: github.String(strings.Join(comments, "\n")),
