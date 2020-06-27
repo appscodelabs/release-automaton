@@ -34,6 +34,8 @@ func ParseReply(s string) *api.Reply {
 
 	switch rt {
 	case api.OkToRelease:
+		fallthrough
+	case api.Done:
 		if len(params) > 0 {
 			panic(fmt.Errorf("unsupported parameters with reply %s", s))
 		}

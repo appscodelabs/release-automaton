@@ -20,5 +20,7 @@ const (
 	Workspace      = "/tmp/workspace"
 	GitHubUserKey  = "GITHUB_USER"
 	GitHubTokenKey = "GITHUB_TOKEN"
-	MasterBranch   = "master"
+	BranchMaster   = "master"
+	LabelLocked    = "locked"
+	LabelAutoMerge = "automerge"
 )

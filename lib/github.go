@@ -44,6 +44,28 @@ func NewGitHubClient() *github.Client {
 	return github.NewClient(tc)
 }
 
+func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo string, number int) (sets.String, error) {
+	opt := &github.ListOptions{
+		PerPage: 100,
+	}
+
+	result := sets.NewString()
+	for {
+		labels, resp, err := gh.Issues.ListLabelsByIssue(ctx, owner, repo, number, opt)
+		if err != nil {
+			break
+		}
+		for _, entry := range labels {
+			result.Insert(entry.GetName())
+		}
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+	}
+	return result, nil
+}
+
 func ListReviews(ctx context.Context, gh *github.Client, owner, repo string, number int) ([]*github.PullRequestReview, error) {
 	opt := &github.ListOptions{
 		PerPage: 100,

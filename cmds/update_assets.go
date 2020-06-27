@@ -196,7 +196,7 @@ func findProductVersion(x string, versions []saapi.ProductVersion) bool {
 }
 
 func showDocs(version string) bool {
-	if version == api.MasterBranch {
+	if version == api.BranchMaster {
 		return false
 	}
 	v := semver.MustParse(version)
@@ -210,7 +210,7 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 
 	data := versions
 	for i := range versions {
-		if versions[i].Version == api.MasterBranch {
+		if versions[i].Version == api.BranchMaster {
 			m = versions[i]
 			data = append(versions[:i], versions[i+1:]...)
 			break
@@ -224,7 +224,7 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	latestVersion := data[0].Version
 
 	// inject to the top
-	if m.Version == api.MasterBranch {
+	if m.Version == api.BranchMaster {
 		data = append([]saapi.ProductVersion{m}, data...)
 	}
 	return data, latestVersion
