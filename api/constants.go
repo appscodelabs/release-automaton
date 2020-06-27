@@ -22,4 +22,5 @@ const (
 	GitHubTokenKey = "GITHUB_TOKEN"
 	BranchMaster   = "master"
 	LabelLocked    = "locked"
+	LabelAutoMerge = "automerge"
 )

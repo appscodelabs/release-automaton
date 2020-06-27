@@ -347,7 +347,7 @@ func runAutomaton() {
 		for _, repoURL := range chartsReadyToPublish.UnsortedList() {
 			oneliners.FILE()
 			owner, repo := lib.ParseRepoURL(repoURL)
-			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.BranchMaster, "automerge")
+			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.BranchMaster, api.LabelAutoMerge)
 			if err != nil {
 				panic(err)
 			}
@@ -616,7 +616,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 				Body:                github.String(lib.LastCommitBody(sh, true)),
 				MaintainerCanModify: github.Bool(true),
 				Draft:               github.Bool(false),
-			}, "automerge")
+			}, api.LabelAutoMerge)
 			if err != nil {
 				panic(err)
 			}
@@ -1015,7 +1015,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 			Body:                github.String(strings.Join(messages[1:], "\n")),
 			MaintainerCanModify: github.Bool(true),
 			Draft:               github.Bool(false),
-		}, "automerge")
+		}, api.LabelAutoMerge)
 		if err != nil {
 			panic(err)
 		}
