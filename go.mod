@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
+	github.com/alessio/shellescape v1.2.2
 	github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
 	github.com/appscode/static-assets v0.5.0
 	github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27

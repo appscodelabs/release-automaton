@@ -22,6 +22,9 @@ github.com/Masterminds/sprig
 github.com/PuerkitoBio/purell
 # github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
 github.com/PuerkitoBio/urlesc
+# github.com/alessio/shellescape v1.2.2
+## explicit
+github.com/alessio/shellescape
 # github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
 ## explicit
 github.com/appscode/go/encoding/json/types
