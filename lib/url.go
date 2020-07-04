@@ -21,6 +21,8 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 func ParsePullRequestURL(prURL string) (string, string, int) {
@@ -63,4 +65,27 @@ func ParseRepoURL(repoURL string) (string, string) {
 	owner := parts[1]
 	repo := parts[2]
 	return owner, repo
+}
+
+func GetQueryParameter(v url.Values, key string) sets.String {
+	out := sets.NewString()
+
+	if v == nil {
+		return out
+	}
+	vs := v[key]
+	if len(vs) == 0 {
+		return out
+	}
+
+	for _, s := range vs {
+		entries := strings.Split(s, ",")
+		for _, e := range entries {
+			e = strings.TrimSpace(e)
+			if e != "" {
+				out.Insert(e)
+			}
+		}
+	}
+	return out
 }
