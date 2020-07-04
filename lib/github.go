@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/appscodelabs/release-automaton/api"
 
@@ -157,9 +158,13 @@ func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullR
 	labelSet := sets.NewString(labels...)
 	var result *github.PullRequest
 
+	head := req.GetHead()
+	if !strings.ContainsRune(head, ':') {
+		head = owner + ":" + req.GetHead()
+	}
 	prs, _, err := gh.PullRequests.List(context.TODO(), owner, repo, &github.PullRequestListOptions{
 		State: "open",
-		Head:  req.GetHead(),
+		Head:  head,
 		Base:  req.GetBase(),
 		ListOptions: github.ListOptions{
 			PerPage: 1,
@@ -212,6 +217,9 @@ func LabelPR(gh *github.Client, owner string, repo, head, base string, labels ..
 	labelSet := sets.NewString(labels...)
 	var result *github.PullRequest
 
+	if !strings.ContainsRune(head, ':') {
+		head = owner + ":" + head
+	}
 	prs, _, err := gh.PullRequests.List(context.TODO(), owner, repo, &github.PullRequestListOptions{
 		State: "open",
 		Head:  head,
