@@ -213,6 +213,32 @@ func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullR
 	return result, err
 }
 
+func ClosePR(gh *github.Client, owner string, repo string, head, base string) (*github.PullRequest, error) {
+	if !strings.ContainsRune(head, ':') {
+		head = owner + ":" + head
+	}
+	prs, _, err := gh.PullRequests.List(context.TODO(), owner, repo, &github.PullRequestListOptions{
+		State: "open",
+		Head:  head,
+		Base:  base,
+		ListOptions: github.ListOptions{
+			PerPage: 1,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if len(prs) == 1 {
+		pr, _, err := gh.PullRequests.Edit(context.TODO(), owner, repo, prs[0].GetNumber(), &github.PullRequest{
+			State: github.String("closed"),
+		})
+		return pr, err
+	}
+
+	return nil, fmt.Errorf("pr not found")
+}
+
 func LabelPR(gh *github.Client, owner string, repo, head, base string, labels ...string) error {
 	labelSet := sets.NewString(labels...)
 	var result *github.PullRequest
