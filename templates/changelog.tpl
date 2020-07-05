@@ -1,4 +1,4 @@
-# {{ .ProductLine }} {{ .Release }}
+# {{ .ProductLine }} {{ .Release }} ({{ .ReleaseDate | date "2006-01-02" }})
 
 {{ range $p := .Projects }}
 ## [{{ trimPrefix "github.com/" $p.URL }}](https://{{ $p.URL }})
