@@ -23,4 +23,5 @@ const (
 	BranchMaster   = "master"
 	LabelLocked    = "locked"
 	LabelAutoMerge = "automerge"
+	ReleasesDir    = "releases"
 )

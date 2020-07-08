@@ -49,7 +49,7 @@ var (
 
 	empty          = struct{}{}
 	scriptRoot, _  = os.Getwd()
-	changelogRoot  = filepath.Join(scriptRoot, "releases")
+	changelogRoot  = filepath.Join(scriptRoot, api.ReleasesDir)
 	replies        api.Replies
 	repoVersion    = map[string]string{}          // repo url -> version
 	envVars        = map[string]string{}          // ENV var format(repo url) -> version

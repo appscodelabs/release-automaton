@@ -83,7 +83,7 @@ func GenerateTable() api.ReleaseTable {
 				ReleaseDate:       chlog.ReleaseDate,
 				KubernetesVersion: chlog.KubernetesVersion,
 				ReleaseURL:        path.Join(chlog.ReleaseProjectURL, "releases", "tag", chlog.Release),
-				ChangelogURL:      path.Join(chlog.ReleaseProjectURL, "tree/master/CHANGELOG", chlog.Release, "README.md"),
+				ChangelogURL:      path.Join(chlog.ReleaseProjectURL, "tree/master", api.ReleasesDir, chlog.Release, "README.md"),
 				DocsURL:           chlog.DocsURL,
 			})
 		}
@@ -94,7 +94,9 @@ func GenerateTable() api.ReleaseTable {
 	var mostRecentRelease api.ReleaseSummary
 	for _, r := range table.Releases {
 		v := semver.MustParse(r.Release)
-		if v.Prerelease() == "" || strings.HasPrefix(v.Prerelease(), "v") {
+		if v.Prerelease() == "" ||
+			strings.HasPrefix(v.Prerelease(), "v") ||
+			strings.HasPrefix(v.Prerelease(), "rc.") {
 			releases = append(releases, r)
 		} else {
 			if mostRecentRelease.Release == "" {
@@ -111,6 +113,9 @@ func GenerateTable() api.ReleaseTable {
 	sort.Slice(releases, func(i, j int) bool {
 		return !api.CompareVersions(semver.MustParse(releases[i].Release), semver.MustParse(releases[j].Release))
 	})
+	for i := range releases {
+		releases[i].ReleaseDate = releases[i].ReleaseDate.UTC()
+	}
 	table.Releases = releases
 
 	return table
