@@ -68,13 +68,6 @@ func CreateStashReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/stashed/cli": api.Project{
-					// NOT a sub project anymore
-					// Key: "stash-cli",
-					Tag: github.String("v0.10.0-beta.0"),
-				},
-			},
-			{
 				"github.com/stashed/postgres": api.Project{
 					Key: "stash-postgres",
 					Tags: map[string]string{
@@ -154,6 +147,13 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/stash": api.Project{
+					Tag: github.String("v0.10.0-beta.0"),
+				},
+			},
+			{
+				"github.com/stashed/cli": api.Project{
+					// NOT a sub project anymore
+					// Key: "stash-cli",
 					Tag: github.String("v0.10.0-beta.0"),
 				},
 			},
