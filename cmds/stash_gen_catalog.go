@@ -24,6 +24,7 @@ import (
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
 
+	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 )
@@ -72,6 +73,12 @@ func generateCatalog() error {
 		return err
 	}
 
+	v := semver.MustParse(release.Release)
+	if strings.HasPrefix(v.Prerelease(), "alpha.") || strings.HasPrefix(v.Prerelease(), "beta.") {
+		catalog.ChartRegistryURL = api.TestChartRegistryURL
+	} else {
+		catalog.ChartRegistryURL = api.StableChartRegistryURL
+	}
 	for i, addon := range catalog.Addons {
 		if versions, ok := findAddonVersions(addon.Name); ok {
 			catalog.Addons[i].Versions = versions

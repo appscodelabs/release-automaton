@@ -26,7 +26,8 @@ type Addon struct {
 }
 
 type StashCatalog struct {
-	Addons []Addon `json:"addons"`
+	ChartRegistryURL string  `json:"chart_registry_url"`
+	Addons           []Addon `json:"addons"`
 }
 
 func (c *StashCatalog) Sort() {
