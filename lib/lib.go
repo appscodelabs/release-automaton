@@ -51,6 +51,11 @@ func MergeMaps(dst, src map[string]string) map[string]string {
 	return dst
 }
 
+func HasKey(m map[string]string, key string) bool {
+	_, ok := m[key]
+	return ok
+}
+
 func Keys(m map[string]string) []string {
 	keys := make([]string, 0, len(m))
 	for k := range m {

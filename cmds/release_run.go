@@ -232,6 +232,14 @@ func runAutomaton() {
 			continue
 		}
 
+		// Skip if invoked by /chart comment for same project
+		commentReplies := lib.ParseComment(prComments[len(prComments)-1].GetBody())
+		if len(commentReplies) == 1 &&
+			commentReplies[0].Type == api.Chart &&
+			contains(projects, commentReplies[0].Chart.Repo) {
+			return
+		}
+
 		chartsReadyToPublish := sets.NewString()
 		chartsYetToMerge := map[api.MergeData]struct{}{}
 
@@ -239,15 +247,6 @@ func runAutomaton() {
 		openPRs := sets.NewString()
 		for repoURL, project := range projects {
 			if len(project.Charts) == 0 {
-				// Skip if invoked by /chart comment
-				commentReplies := lib.ParseComment(prComments[len(prComments)-1].GetBody())
-				if len(commentReplies) == 1 &&
-					commentReplies[0].Type == api.Chart &&
-					len(projects) == 1 &&
-					commentReplies[0].Chart.Repo == repoURL {
-					return
-				}
-
 				if !tagged.Has(repoURL) {
 					notTagged.Insert(repoURL)
 				}
@@ -1186,4 +1185,9 @@ func findRepoTags(reg string) ([]string, bool) {
 		}
 	}
 	return nil, false
+}
+
+func contains(m map[string]api.Project, key string) bool {
+	_, ok := m[key]
+	return ok
 }
