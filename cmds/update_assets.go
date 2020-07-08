@@ -178,7 +178,7 @@ func updateAsset(release api.Release, project api.Project) error {
 func findProjectByKey(key string, release api.Release) (string, api.Project, bool) {
 	for _, projects := range release.Projects {
 		for repoURL, project := range projects {
-			if project.Key == key {
+			if project.Key == key || stringz.Contains(project.ChartNames, key) {
 				return repoURL, project, true
 			}
 		}

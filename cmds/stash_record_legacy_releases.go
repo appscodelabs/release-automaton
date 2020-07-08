@@ -32,7 +32,7 @@ import (
 func NewCmdStashRecordLegacyReleases() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "record-legacy-releases",
-		Short:             "Writes legacy releases in CHANGELOG/legacy_releases.json",
+		Short:             "Writes legacy releases in releases/legacy_releases.json",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			table := CreateStashReleaseTable()

@@ -41,6 +41,7 @@ type Project struct {
 	Key           string            `json:"key,omitempty"`
 	Tag           *string           `json:"tag,omitempty"`
 	Tags          map[string]string `json:"tags,omitempty"` // tag-> branch
+	ChartNames    []string          `json:"chartNames,omitempty"`
 	Charts        []string          `json:"charts,omitempty"`
 	Commands      []string          `json:"commands,omitempty"`
 	ReleaseBranch string            `json:"release_branch,omitempty"`

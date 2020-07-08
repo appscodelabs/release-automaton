@@ -24,7 +24,6 @@ import (
 
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
 )
 
 func NewCmdKubeVaultCreateRelease() *cobra.Command {
@@ -34,13 +33,7 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			rel := CreateKubeVaultReleaseFile()
-			data, err := yaml.Marshal(rel)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(string(data))
-
-			data, err = lib.MarshalJson(rel)
+			data, err := lib.MarshalJson(rel)
 			if err != nil {
 				panic(err)
 			}
@@ -52,13 +45,17 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 
 func CreateKubeVaultReleaseFile() api.Release {
 	return api.Release{
-		ProductLine:       "Stash",
+		ProductLine:       "KubeVault",
 		Release:           "v2020.07.08-beta.0",
-		DocsURLTemplate:   "https://stash.run/docs/%s",
+		DocsURLTemplate:   "https://kubevault.com/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/operator": api.Project{
+					Key: "vault-operator",
+					ChartNames: []string{
+						"vault-catalog",
+					},
 					Tag: github.String("v0.4.0-beta.0"),
 				},
 			},
@@ -74,6 +71,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/csi-driver": api.Project{
+					Key: "csi-vault",
 					Tag: github.String("v0.4.0-beta.0"),
 				},
 			},
@@ -81,7 +79,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				"github.com/kubevault/installer": api.Project{
 					Tag: github.String("v0.4.0-beta.0"),
 					Commands: []string{
-						"make chart-stash CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG}",
 					},
 				},
 			},
