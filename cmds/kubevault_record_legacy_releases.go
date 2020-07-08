@@ -29,13 +29,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCmdStashRecordLegacyReleases() *cobra.Command {
+func NewCmdKubeVaultRecordLegacyReleases() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "record-legacy-releases",
 		Short:             "Writes legacy releases in CHANGELOG/legacy_releases.json",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			table := CreateStashReleaseTable()
+			table := CreateKubeVaultReleaseTable()
 
 			data, err := lib.MarshalJson(table)
 			if err != nil {
@@ -61,9 +61,9 @@ func NewCmdStashRecordLegacyReleases() *cobra.Command {
 	return cmd
 }
 
-func CreateStashReleaseTable() api.ReleaseTable {
+func CreateKubeVaultReleaseTable() api.ReleaseTable {
 	return api.ReleaseTable{
-		ProductLine: "Stash",
+		ProductLine: "KubeVault",
 		Releases: []api.ReleaseSummary{
 			{
 				Release:           "v0.9.0-rc.6",
@@ -107,11 +107,4 @@ func CreateStashReleaseTable() api.ReleaseTable {
 			},
 		},
 	}
-}
-
-func MustTime(t time.Time, e error) time.Time {
-	if e != nil {
-		panic(e)
-	}
-	return t
 }
