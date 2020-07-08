@@ -240,10 +240,12 @@ func runAutomaton() {
 		for repoURL, project := range projects {
 			if len(project.Charts) == 0 {
 				// Skip if invoked by /chart comment
-				for _, reply := range lib.ParseComment(prComments[len(prComments)-1].GetBody()) {
-					if reply.Type == api.Chart {
-						return
-					}
+				commentReplies := lib.ParseComment(prComments[len(prComments)-1].GetBody())
+				if len(commentReplies) == 1 &&
+					commentReplies[0].Type == api.Chart &&
+					len(projects) == 1 &&
+					commentReplies[0].Chart.Repo == repoURL {
+					return
 				}
 
 				if !tagged.Has(repoURL) {
