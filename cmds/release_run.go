@@ -31,6 +31,7 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/Masterminds/semver"
+	stringz "github.com/appscode/go/strings"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
@@ -1187,7 +1188,17 @@ func findRepoTags(reg string) ([]string, bool) {
 	return nil, false
 }
 
-func contains(m map[string]api.Project, key string) bool {
-	_, ok := m[key]
-	return ok
+func contains(projects map[string]api.Project, repoURL string) bool {
+	_, ok := projects[repoURL]
+	if !ok {
+		return false
+	}
+	for _, project := range projects {
+		// A separate group of charts are published by this project.
+		// So, we need to process this project
+		if len(project.Charts) > 0 && !stringz.Contains(project.Charts, repoURL) {
+			return false
+		}
+	}
+	return true
 }
