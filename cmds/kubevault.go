@@ -17,28 +17,19 @@ limitations under the License.
 package cmds
 
 import (
-	"flag"
-
-	v "github.com/appscode/go/version"
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd() *cobra.Command {
-	rootCmd := &cobra.Command{
-		Use:               "release-automaton [command]",
-		Short:             `release-automaton by AppsCode - Release often`,
+func NewCmdKubeVault() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:               "kubevault",
+		Short:             "KubeVault catalog commands",
 		DisableAutoGenTag: true,
+		Run: func(cmd *cobra.Command, args []string) {
+		},
 	}
 
-	flags := rootCmd.PersistentFlags()
-	flags.AddGoFlagSet(flag.CommandLine)
-
-	rootCmd.AddCommand(NewCmdRelease())
-	rootCmd.AddCommand(NewCmdStash())
-	rootCmd.AddCommand(NewCmdKubeDB())
-	rootCmd.AddCommand(NewCmdKubeVault())
-	rootCmd.AddCommand(NewCmdUpdateBundles())
-	rootCmd.AddCommand(NewCmdUpdateAssets())
-	rootCmd.AddCommand(v.NewCmdVersion())
-	return rootCmd
+	cmd.AddCommand(NewCmdKubeVaultCreateRelease())
+	cmd.AddCommand(NewCmdKubeVaultRecordLegacyReleases())
+	return cmd
 }
