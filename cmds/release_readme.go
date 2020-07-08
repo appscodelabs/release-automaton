@@ -91,25 +91,14 @@ func GenerateTable() api.ReleaseTable {
 
 	// Now keep the full releases and last rc
 	var releases []api.ReleaseSummary
-	var mostRecentRelease api.ReleaseSummary
 	for _, r := range table.Releases {
 		v := semver.MustParse(r.Release)
 		if v.Prerelease() == "" ||
 			strings.HasPrefix(v.Prerelease(), "v") ||
 			strings.HasPrefix(v.Prerelease(), "rc.") {
 			releases = append(releases, r)
-		} else {
-			if mostRecentRelease.Release == "" {
-				mostRecentRelease = r
-			} else if api.CompareVersions(semver.MustParse(mostRecentRelease.Release), v) {
-				mostRecentRelease = r
-			}
 		}
 	}
-	if mostRecentRelease.Release != "" {
-		releases = append(releases, mostRecentRelease)
-	}
-
 	sort.Slice(releases, func(i, j int) bool {
 		return !api.CompareVersions(semver.MustParse(releases[i].Release), semver.MustParse(releases[j].Release))
 	})
