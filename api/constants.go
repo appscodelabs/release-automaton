@@ -25,7 +25,7 @@ const (
 	LabelAutoMerge         = "automerge"
 	ReleasesDir            = "releases"
 	StableChartRegistry    = "appscode"
-	StableChartRegistryURL = "https://charts.appscode.com/stable"
+	StableChartRegistryURL = "https://charts.appscode.com/stable/"
 	TestChartRegistry      = "appscode-testing"
-	TestChartRegistryURL   = "https://charts.appscode.com/testing"
+	TestChartRegistryURL   = "https://charts.appscode.com/testing/"
 )
