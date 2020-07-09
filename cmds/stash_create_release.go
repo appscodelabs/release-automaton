@@ -51,24 +51,36 @@ func CreateStashReleaseFile() api.Release {
 	}
 	return api.Release{
 		ProductLine:       "Stash",
-		Release:           "v2020.07.08-beta.0",
+		Release:           "v2020.07.09-beta.0",
 		DocsURLTemplate:   "https://stash.run/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.10.0-beta.0"),
+					Tag: github.String("v0.10.0-beta.1"),
+				},
+			},
+			{
+				"github.com/stashed/stash": api.Project{
+					Tag: github.String("v0.10.0-beta.1"),
+				},
+			},
+			{
+				"github.com/stashed/cli": api.Project{
+					// NOT a sub project anymore
+					Key: "stash-cli",
+					Tag: github.String("v0.10.0-beta.1"),
 				},
 			},
 			{
 				"github.com/stashed/postgres": api.Project{
 					Key: "stash-postgres",
 					Tags: map[string]string{
-						"9.6-beta.20200708":  "release-9.6",
-						"10.2-beta.20200708": "release-10.2",
-						"10.6-beta.20200708": "release-10.6",
-						"11.1-beta.20200708": "release-11.1",
-						"11.2-beta.20200708": "release-11.2",
+						"9.6-beta.20200709":  "release-9.6",
+						"10.2-beta.20200709": "release-10.2",
+						"10.6-beta.20200709": "release-10.6",
+						"11.1-beta.20200709": "release-11.1",
+						"11.2-beta.20200709": "release-11.2",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG}",
@@ -79,14 +91,14 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/elasticsearch": api.Project{
 					Key: "stash-elasticsearch",
 					Tags: map[string]string{
-						"5.6.4-beta.20200708": "release-5.6.4",
-						"6.2.4-beta.20200708": "release-6.2.4",
-						"6.3.0-beta.20200708": "release-6.3.0",
-						"6.4.0-beta.20200708": "release-6.4.0",
-						"6.5.3-beta.20200708": "release-6.5.3",
-						"6.8.0-beta.20200708": "release-6.8.0",
-						"7.2.0-beta.20200708": "release-7.2.0",
-						"7.3.2-beta.20200708": "release-7.3.2",
+						"5.6.4-beta.20200709": "release-5.6.4",
+						"6.2.4-beta.20200709": "release-6.2.4",
+						"6.3.0-beta.20200709": "release-6.3.0",
+						"6.4.0-beta.20200709": "release-6.4.0",
+						"6.5.3-beta.20200709": "release-6.5.3",
+						"6.8.0-beta.20200709": "release-6.8.0",
+						"7.2.0-beta.20200709": "release-7.2.0",
+						"7.3.2-beta.20200709": "release-7.3.2",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG}",
@@ -97,17 +109,17 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/mongodb": api.Project{
 					Key: "stash-mongodb",
 					Tags: map[string]string{
-						"3.4.1-beta.20200708": "release-3.4.17",
-						"3.4.2-beta.20200708": "release-3.4.22",
-						"3.6.1-beta.20200708": "release-3.6.13",
-						"3.6.8-beta.20200708": "release-3.6.8",
-						"4.0.1-beta.20200708": "release-4.0.11",
-						"4.0.3-beta.20200708": "release-4.0.3",
-						"4.0.5-beta.20200708": "release-4.0.5",
-						"4.1.1-beta.20200708": "release-4.1.13",
-						"4.1.4-beta.20200708": "release-4.1.4",
-						"4.1.7-beta.20200708": "release-4.1.7",
-						"4.2.3-beta.20200708": "release-4.2.3",
+						"3.4.1-beta.20200709": "release-3.4.17",
+						"3.4.2-beta.20200709": "release-3.4.22",
+						"3.6.1-beta.20200709": "release-3.6.13",
+						"3.6.8-beta.20200709": "release-3.6.8",
+						"4.0.1-beta.20200709": "release-4.0.11",
+						"4.0.3-beta.20200709": "release-4.0.3",
+						"4.0.5-beta.20200709": "release-4.0.5",
+						"4.1.1-beta.20200709": "release-4.1.13",
+						"4.1.4-beta.20200709": "release-4.1.4",
+						"4.1.7-beta.20200709": "release-4.1.7",
+						"4.2.3-beta.20200709": "release-4.2.3",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG}",
@@ -118,9 +130,9 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/mysql": api.Project{
 					Key: "stash-mysql",
 					Tags: map[string]string{
-						"5.7.25-beta.20200708": "release-5.7.25",
-						"8.0.14-beta.20200708": "release-8.0.14",
-						"8.0.3-beta.20200708":  "release-8.0.3",
+						"5.7.25-beta.20200709": "release-5.7.25",
+						"8.0.14-beta.20200709": "release-8.0.14",
+						"8.0.3-beta.20200709":  "release-8.0.3",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG}",
@@ -131,7 +143,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/percona-xtradb": api.Project{
 					Key: "stash-percona-xtradb",
 					Tags: map[string]string{
-						"5.7-beta.20200708": "release-5.7",
+						"5.7-beta.20200709": "release-5.7",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG}",
@@ -139,20 +151,8 @@ func CreateStashReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/stashed/stash": api.Project{
-					Tag: github.String("v0.10.0-beta.0"),
-				},
-			},
-			{
-				"github.com/stashed/cli": api.Project{
-					// NOT a sub project anymore
-					Key: "stash-cli",
-					Tag: github.String("v0.10.0-beta.0"),
-				},
-			},
-			{
 				"github.com/stashed/installer": api.Project{
-					Tag: github.String("v0.10.0-beta.0"),
+					Tag: github.String("v0.10.0-beta.1"),
 					Commands: []string{
 						"make chart-stash CHART_VERSION=${TAG}",
 					},
@@ -174,7 +174,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/catalog": api.Project{
 					Key:           "stash-catalog",
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog.json",
@@ -194,7 +194,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/docs": api.Project{
 					Key:           "stash",
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -203,7 +203,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/website": api.Project{
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "master",
 					Commands: []string{
 						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
@@ -216,7 +216,7 @@ func CreateStashReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/stashed/bundles": api.Project{
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
