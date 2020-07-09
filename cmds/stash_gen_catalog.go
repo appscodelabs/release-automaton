@@ -75,8 +75,10 @@ func generateCatalog() error {
 
 	v := semver.MustParse(release.Release)
 	if strings.HasPrefix(v.Prerelease(), "alpha.") || strings.HasPrefix(v.Prerelease(), "beta.") {
+		catalog.ChartRegistry = api.TestChartRegistry
 		catalog.ChartRegistryURL = api.TestChartRegistryURL
 	} else {
+		catalog.ChartRegistry = api.StableChartRegistry
 		catalog.ChartRegistryURL = api.StableChartRegistryURL
 	}
 	for i, addon := range catalog.Addons {

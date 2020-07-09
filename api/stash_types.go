@@ -26,6 +26,7 @@ type Addon struct {
 }
 
 type StashCatalog struct {
+	ChartRegistry    string  `json:"chart_registry"`
 	ChartRegistryURL string  `json:"chart_registry_url"`
 	Addons           []Addon `json:"addons"`
 }
