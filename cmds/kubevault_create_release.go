@@ -46,7 +46,7 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 func CreateKubeVaultReleaseFile() api.Release {
 	return api.Release{
 		ProductLine:       "KubeVault",
-		Release:           "v2020.07.08-beta.0",
+		Release:           "v2020.07.09-beta.0",
 		DocsURLTemplate:   "https://kubevault.com/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
@@ -103,7 +103,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			{
 				"github.com/kubevault/docs": api.Project{
 					Key:           "kubevault",
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -112,7 +112,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/website": api.Project{
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "master",
 					Commands: []string{
 						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
@@ -125,7 +125,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubevault/bundles": api.Project{
-					Tag:           github.String("v2020.07.08-beta.0"),
+					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
