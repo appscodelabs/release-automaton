@@ -17,15 +17,18 @@ limitations under the License.
 package cmds
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"time"
+	"sort"
+	"strings"
 
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
 
+	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
 
@@ -54,7 +57,7 @@ func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
 				panic(err)
 			}
 
-			filename := filepath.Join(changelogRoot, "README.md")
+			filename := filepath.Join(scriptRoot, "README.md")
 			lib.WriteChangelogMarkdown(filename, "release-table.tpl", table)
 		},
 	}
@@ -62,49 +65,34 @@ func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
 }
 
 func CreateKubeDBReleaseTable() api.ReleaseTable {
+	gh := lib.NewGitHubClient()
+	releases, err := lib.ListRelease(context.TODO(), gh, "kubedb", "cli")
+	if err != nil {
+		panic(err)
+	}
+
+	var summaries []api.ReleaseSummary
+	for _, r := range releases {
+		v := semver.MustParse(r.GetTagName())
+		if v.Prerelease() == "" ||
+			strings.HasPrefix(v.Prerelease(), "v") ||
+			strings.HasPrefix(v.Prerelease(), "rc.") {
+			summaries = append(summaries, api.ReleaseSummary{
+				Release:           r.GetTagName(),
+				ReleaseDate:       r.GetCreatedAt().UTC(),
+				KubernetesVersion: "",
+				ReleaseURL:        r.GetHTMLURL(),
+				ChangelogURL:      r.GetHTMLURL(),
+				DocsURL:           fmt.Sprintf("https://kubedb.com/docs/%s", r.GetTagName()),
+			})
+		}
+	}
+	sort.Slice(summaries, func(i, j int) bool {
+		return !api.CompareVersions(semver.MustParse(summaries[i].Release), semver.MustParse(summaries[j].Release))
+	})
+
 	return api.ReleaseTable{
 		ProductLine: "KubeDB",
-		Releases: []api.ReleaseSummary{
-			{
-				Release:           "v0.9.0-rc.6",
-				ReleaseDate:       MustTime(time.Parse(time.RFC3339, "2020-02-24T14:19:15Z")),
-				KubernetesVersion: "1.11.x+",
-				ReleaseURL:        "https://github.com/stashed/stash/releases/tag/v0.9.0-rc.6",
-				ChangelogURL:      "https://github.com/stashed/stash/releases/tag/v0.9.0-rc.6",
-				DocsURL:           "https://stash.run/docs/v0.9.0-rc.6",
-			},
-			{
-				Release:           "0.8.3",
-				ReleaseDate:       MustTime(time.Parse(time.RFC3339, "2019-02-19T02:57:32Z")),
-				KubernetesVersion: "1.9.x+",
-				ReleaseURL:        "https://github.com/stashed/stash/releases/tag/0.8.3",
-				ChangelogURL:      "https://github.com/stashed/stash/releases/tag/0.8.3",
-				DocsURL:           "https://stash.run/docs/0.8.3",
-			},
-			{
-				Release:           "0.7.0",
-				ReleaseDate:       MustTime(time.Parse(time.RFC3339, "2018-05-29T01:13:56Z")),
-				KubernetesVersion: "1.8.x",
-				ReleaseURL:        "https://github.com/stashed/stash/releases/tag/0.7.0",
-				ChangelogURL:      "https://github.com/stashed/stash/releases/tag/0.7.0",
-				DocsURL:           "https://stash.run/docs/0.7.0",
-			},
-			{
-				Release:           "0.6.4",
-				ReleaseDate:       MustTime(time.Parse(time.RFC3339, "2018-02-20T07:56:43Z")),
-				KubernetesVersion: "1.7.x",
-				ReleaseURL:        "https://github.com/stashed/stash/releases/tag/0.6.4",
-				ChangelogURL:      "https://github.com/stashed/stash/releases/tag/0.6.4",
-				DocsURL:           "https://stash.run/docs/0.6.4",
-			},
-			{
-				Release:           "0.4.2",
-				ReleaseDate:       MustTime(time.Parse(time.RFC3339, "2017-11-03T14:31:55Z")),
-				KubernetesVersion: "1.5.x - 1.6.x",
-				ReleaseURL:        "https://github.com/stashed/stash/releases/tag/0.4.2",
-				ChangelogURL:      "https://github.com/stashed/stash/releases/tag/0.4.2",
-				DocsURL:           "https://github.com/stashed/docs/tree/0.4.2/docs",
-			},
-		},
+		Releases:    summaries,
 	}
 }

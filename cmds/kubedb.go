@@ -22,7 +22,7 @@ import (
 
 func NewCmdKubeDB() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "KubeDB",
+		Use:               "kubedb",
 		Short:             "KubeDB catalog commands",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {

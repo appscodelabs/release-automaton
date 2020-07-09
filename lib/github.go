@@ -67,6 +67,26 @@ func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo strin
 	return result, nil
 }
 
+func ListRelease(ctx context.Context, gh *github.Client, owner, repo string) ([]*github.RepositoryRelease, error) {
+	opt := &github.ListOptions{
+		PerPage: 100,
+	}
+
+	var result []*github.RepositoryRelease
+	for {
+		releases, resp, err := gh.Repositories.ListReleases(ctx, owner, repo, opt)
+		if err != nil {
+			break
+		}
+		result = append(result, releases...)
+		if resp.NextPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+	}
+	return result, nil
+}
+
 func ListReviews(ctx context.Context, gh *github.Client, owner, repo string, number int) ([]*github.PullRequestReview, error) {
 	opt := &github.ListOptions{
 		PerPage: 100,

@@ -54,7 +54,7 @@ func NewCmdStashRecordLegacyReleases() *cobra.Command {
 				panic(err)
 			}
 
-			filename := filepath.Join(changelogRoot, "README.md")
+			filename := filepath.Join(scriptRoot, "README.md")
 			lib.WriteChangelogMarkdown(filename, "release-table.tpl", table)
 		},
 	}

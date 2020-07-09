@@ -19,12 +19,14 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/appscodelabs/release-automaton/api"
+	"github.com/appscodelabs/release-automaton/cmds"
 	"github.com/appscodelabs/release-automaton/lib"
 
 	shell "github.com/codeskyblue/go-sh"
@@ -33,6 +35,15 @@ import (
 	"github.com/hashicorp/go-getter"
 	"sigs.k8s.io/yaml"
 )
+
+func main_CreateKubeDBReleaseTable() {
+	table := cmds.CreateKubeDBReleaseTable()
+	data, err := json.MarshalIndent(table, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(data))
+}
 
 func main_RemoveLabel() {
 	gh := lib.NewGitHubClient()
