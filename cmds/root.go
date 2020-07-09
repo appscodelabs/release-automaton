@@ -39,6 +39,7 @@ func NewRootCmd() *cobra.Command {
 	rootCmd.AddCommand(NewCmdKubeVault())
 	rootCmd.AddCommand(NewCmdUpdateBundles())
 	rootCmd.AddCommand(NewCmdUpdateAssets())
+	rootCmd.AddCommand(NewCmdUpdateEnvVars())
 	rootCmd.AddCommand(v.NewCmdVersion())
 	return rootCmd
 }

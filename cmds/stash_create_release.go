@@ -44,14 +44,21 @@ func NewCmdStashCreateRelease() *cobra.Command {
 }
 
 func CreateStashReleaseFile() api.Release {
+	releaseNumber := "v2020.07.09-beta.0"
+	updateVars := "release-automaton update-vars " +
+		"--env-file=${WORKSPACE}/Makefile.env " +
+		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
+		"--vars=STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} " +
+		"--vars=CHART_REGISTRY=${CHART_REGISTRY} " +
+		"--vars=CHART_REGISTRY_URL=${CHART_REGISTRY_URL}"
 	updateEnvVars := []string{
-		"echo STASH_VERSION=${STASHED_STASH_TAG} > Makefile.env",
-		"echo STASH_CATALOG_VERSION=${STASH_CATALOG_VERSION} >> Makefile.env",
+		updateVars,
 		"make add-license fmt",
 	}
+
 	return api.Release{
 		ProductLine:       "Stash",
-		Release:           "v2020.07.09-beta.0",
+		Release:           releaseNumber,
 		DocsURLTemplate:   "https://stash.run/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
@@ -174,7 +181,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/catalog": api.Project{
 					Key:           "stash-catalog",
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog.json",
@@ -194,7 +201,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/docs": api.Project{
 					Key:           "stash",
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -203,7 +210,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/website": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "master",
 					Commands: []string{
 						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
@@ -216,7 +223,7 @@ func CreateStashReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/stashed/bundles": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",

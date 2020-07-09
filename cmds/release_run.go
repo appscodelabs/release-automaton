@@ -120,6 +120,15 @@ func runAutomaton() {
 		}
 	}
 
+	vRelease := semver.MustParse(release.Release)
+	if strings.HasPrefix(vRelease.Prerelease(), "alpha.") || strings.HasPrefix(vRelease.Prerelease(), "beta.") {
+		envVars["CHART_REGISTRY"] = api.TestChartRegistry
+		envVars["CHART_REGISTRY_URL"] = api.TestChartRegistryURL
+	} else {
+		envVars["CHART_REGISTRY"] = api.StableChartRegistry
+		envVars["CHART_REGISTRY_URL"] = api.StableChartRegistryURL
+	}
+
 	releaseOwner, releaseRepo, releasePR := lib.ParsePullRequestURL(releaseTracker)
 
 	gh := lib.NewGitHubClient()
