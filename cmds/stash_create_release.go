@@ -90,7 +90,7 @@ func CreateStashReleaseFile() api.Release {
 						"11.2-beta.20200709": "release-11.2",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
@@ -108,7 +108,7 @@ func CreateStashReleaseFile() api.Release {
 						"7.3.2-beta.20200709": "release-7.3.2",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
@@ -129,7 +129,7 @@ func CreateStashReleaseFile() api.Release {
 						"4.2.3-beta.20200709": "release-4.2.3",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
@@ -142,7 +142,7 @@ func CreateStashReleaseFile() api.Release {
 						"8.0.3-beta.20200709":  "release-8.0.3",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
@@ -153,7 +153,7 @@ func CreateStashReleaseFile() api.Release {
 						"5.7-beta.20200709": "release-5.7",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
@@ -161,7 +161,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/installer": api.Project{
 					Tag: github.String("v0.10.0-beta.1"),
 					Commands: []string{
-						"make chart-stash CHART_VERSION=${TAG}",
+						"make chart-stash CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},

@@ -45,7 +45,7 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 
 func CreateKubeDBReleaseFile() api.Release {
 	return api.Release{
-		ProductLine:       "Stash",
+		ProductLine:       "KubeDB",
 		Release:           "v2020.07.08-beta.0",
 		DocsURLTemplate:   "https://stash.run/docs/%s",
 		KubernetesVersion: "1.12+",
@@ -119,7 +119,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/installer": api.Project{
 					Tag: github.String("v0.14.0-beta.1"),
 					Commands: []string{
-						"make chart-stash CHART_VERSION=${TAG}",
+						"make chart-stash CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},

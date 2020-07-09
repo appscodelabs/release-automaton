@@ -79,7 +79,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				"github.com/kubevault/installer": api.Project{
 					Tag: github.String("v0.4.0-beta.0"),
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
