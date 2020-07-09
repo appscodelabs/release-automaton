@@ -231,7 +231,7 @@ func CreateStashReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/bytebuilders/bundles": api.Project{
+				"github.com/bytebuilders/bundle-registry": api.Project{
 					Charts: []string{
 						"github.com/stashed/bundles",
 					},
