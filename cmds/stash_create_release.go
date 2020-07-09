@@ -24,7 +24,6 @@ import (
 
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
 )
 
 func NewCmdStashCreateRelease() *cobra.Command {
@@ -34,13 +33,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			rel := CreateStashReleaseFile()
-			data, err := yaml.Marshal(rel)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(string(data))
-
-			data, err = lib.MarshalJson(rel)
+			data, err := lib.MarshalJson(rel)
 			if err != nil {
 				panic(err)
 			}
@@ -153,7 +146,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
-					// Key: "stash-cli",
+					Key: "stash-cli",
 					Tag: github.String("v0.10.0-beta.0"),
 				},
 			},

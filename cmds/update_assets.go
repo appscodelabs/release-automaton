@@ -113,6 +113,10 @@ func updateAsset(release api.Release, project api.Project) error {
 		}
 
 		for subKey, ref := range prod.SubProjects {
+			if subKey == "stash-cli" {
+				// NOT a sub project anymore
+				continue
+			}
 			if _, subProject, ok := findProjectByKey(subKey, release); ok {
 				subTags := sets.NewString()
 				if subProject.Tag != nil {
@@ -121,7 +125,6 @@ func updateAsset(release api.Release, project api.Project) error {
 					subTags.Insert(lib.Keys(subProject.Tags)...)
 				}
 				for _, subTag := range subTags.UnsortedList() {
-					var mappingFound bool
 					for idx, mapping := range ref.Mappings {
 						if stringz.Contains(mapping.SubProjectVersions, subTag) {
 							vs, err := api.SortVersions(sets.NewString(mapping.Versions...).Insert(*project.Tag).UnsortedList())
@@ -130,20 +133,22 @@ func updateAsset(release api.Release, project api.Project) error {
 							}
 							mapping.Versions = vs
 							ref.Mappings[idx] = mapping
-							mappingFound = true
+							subTags.Delete(subTag)
 							break
 						}
 					}
-					if !mappingFound {
-						ref.Mappings = append(ref.Mappings, saapi.Mapping{
-							Versions: []string{
-								*project.Tag,
-							},
-							SubProjectVersions: []string{
-								subTag,
-							},
-						})
+				}
+				if subTags.Len() > 0 {
+					subVersions, err := api.SortVersions(subTags.UnsortedList())
+					if err != nil {
+						return err
 					}
+					ref.Mappings = append(ref.Mappings, saapi.Mapping{
+						Versions: []string{
+							*project.Tag,
+						},
+						SubProjectVersions: subVersions,
+					})
 				}
 				sort.Slice(ref.Mappings, func(i, j int) bool {
 					return !api.CompareVersions(
@@ -222,6 +227,15 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 		return !api.CompareVersions(semver.MustParse(data[i].Version), semver.MustParse(data[j].Version))
 	})
 	latestVersion := data[0].Version
+	for i := range data {
+		v := semver.MustParse(data[i].Version)
+		if strings.HasPrefix(v.Prerelease(), "alpha.") || strings.HasPrefix(v.Prerelease(), "beta.") {
+			continue
+		}
+		// Use the latest non alpha/beta release
+		latestVersion = data[i].Version
+		break
+	}
 
 	// inject to the top
 	if m.Version == api.BranchMaster {

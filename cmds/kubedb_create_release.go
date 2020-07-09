@@ -24,7 +24,6 @@ import (
 
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
-	"sigs.k8s.io/yaml"
 )
 
 func NewCmdKubeDBCreateRelease() *cobra.Command {
@@ -34,13 +33,7 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			rel := CreateKubeDBReleaseFile()
-			data, err := yaml.Marshal(rel)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(string(data))
-
-			data, err = lib.MarshalJson(rel)
+			data, err := lib.MarshalJson(rel)
 			if err != nil {
 				panic(err)
 			}
