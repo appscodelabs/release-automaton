@@ -85,7 +85,7 @@ func CreateKubeDBReleaseTable() api.ReleaseTable {
 				ChangelogURL:      r.GetHTMLURL(),
 				DocsURL:           fmt.Sprintf("https://kubedb.com/docs/%s", r.GetTagName()),
 			}
-			if v.LessThan(semver.MustParse("0.6.0")) {
+			if v.LessThan(semver.MustParse("0.8.0-beta.0")) {
 				summary.DocsURL = fmt.Sprintf("https://github.com/kubedb/docs/tree/%s/docs", r.GetTagName())
 			}
 			summaries = append(summaries, summary)
