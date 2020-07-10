@@ -77,14 +77,18 @@ func CreateKubeDBReleaseTable() api.ReleaseTable {
 		if v.Prerelease() == "" ||
 			strings.HasPrefix(v.Prerelease(), "v") ||
 			strings.HasPrefix(v.Prerelease(), "rc.") {
-			summaries = append(summaries, api.ReleaseSummary{
+			summary := api.ReleaseSummary{
 				Release:           r.GetTagName(),
 				ReleaseDate:       r.GetCreatedAt().UTC(),
 				KubernetesVersion: "",
 				ReleaseURL:        r.GetHTMLURL(),
 				ChangelogURL:      r.GetHTMLURL(),
 				DocsURL:           fmt.Sprintf("https://kubedb.com/docs/%s", r.GetTagName()),
-			})
+			}
+			if v.LessThan(semver.MustParse("0.6.0")) {
+				summary.DocsURL = fmt.Sprintf("https://github.com/kubedb/docs/tree/%s/docs", r.GetTagName())
+			}
+			summaries = append(summaries, summary)
 		}
 	}
 	sort.Slice(summaries, func(i, j int) bool {
