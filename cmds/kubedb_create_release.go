@@ -46,52 +46,52 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 func CreateKubeDBReleaseFile() api.Release {
 	return api.Release{
 		ProductLine:       "KubeDB",
-		Release:           "v2020.07.09-beta.0",
+		Release:           "v2020.07.10-beta.0",
 		DocsURLTemplate:   "https://kubedb.com/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubedb/apimachinery": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
 				},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
 				},
 				"github.com/kubedb/elasticsearch": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
 				},
 				"github.com/kubedb/memcached": api.Project{
-					Tag: github.String("v0.7.0-beta.0"),
+					Tag: github.String("v0.7.0-beta.1"),
 				},
 				"github.com/kubedb/mongodb": api.Project{
-					Tag: github.String("v0.7.0-beta.0"),
+					Tag: github.String("v0.7.0-beta.1"),
 				},
 				"github.com/kubedb/mysql": api.Project{
-					Tag: github.String("v0.7.0-beta.0"),
+					Tag: github.String("v0.7.0-beta.1"),
 				},
 				"github.com/kubedb/postgres": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
 				},
 				"github.com/kubedb/redis": api.Project{
-					Tag: github.String("v0.7.0-beta.0"),
+					Tag: github.String("v0.7.0-beta.1"),
 				},
 				"github.com/kubedb/percona-xtradb": api.Project{
-					Tag: github.String("v0.1.0-beta.0"),
+					Tag: github.String("v0.1.0-beta.1"),
 				},
 				"github.com/kubedb/pg-leader-election": api.Project{
-					Tag: github.String("v0.2.0-beta.0"),
+					Tag: github.String("v0.2.0-beta.1"),
 					// update catalog
 				},
 				"github.com/kubedb/mysql-replication-mode-detector": api.Project{
-					Tag: github.String("v0.1.0-beta.0"),
+					Tag: github.String("v0.1.0-beta.1"),
 					// update catalog
 				},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
-					Tag: github.String("v0.1.0-beta.0"),
+					Tag: github.String("v0.1.0-beta.1"),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -100,7 +100,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubedb/proxysql": api.Project{
-					Tag: github.String("v0.1.0-beta.0"),
+					Tag: github.String("v0.1.0-beta.1"),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -112,13 +112,16 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/operator": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
+					ChartNames: []string{
+						"kubedb-catalog",
+					},
 				},
 			},
 			// Build Enterprise image
 			{
 				"github.com/kubedb/installer": api.Project{
-					Tag: github.String("v0.14.0-beta.0"),
+					Tag: github.String("v0.14.0-beta.1"),
 					Commands: []string{
 						"make chart-kubedb CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-catalog CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -145,7 +148,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/docs": api.Project{
 					Key:           "kubedb",
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.10-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -154,7 +157,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/website": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.10-beta.0"),
 					ReleaseBranch: "master",
 					Commands: []string{
 						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
@@ -167,7 +170,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubedb/bundles": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.10-beta.0"),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
