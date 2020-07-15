@@ -54,6 +54,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				"github.com/kubevault/operator": api.Project{
 					Key: "vault-operator",
 					ChartNames: []string{
+						"vault-operator",
 						"vault-catalog",
 					},
 					Tag: github.String("v0.4.0-beta.0"),
@@ -72,6 +73,9 @@ func CreateKubeVaultReleaseFile() api.Release {
 			{
 				"github.com/kubevault/csi-driver": api.Project{
 					Key: "csi-vault",
+					ChartNames: []string{
+						"csi-vault",
+					},
 					Tag: github.String("v0.4.0-beta.0"),
 				},
 			},

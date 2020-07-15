@@ -162,7 +162,7 @@ func updateBundles() error {
 					pkg.Bundle.Version = release.Release
 				}
 			} else if pkg.Chart != nil {
-				if _, project, ok := findProjectByKey(pkg.Chart.Name, release); ok {
+				if _, project, ok := findProjectByChart(pkg.Chart.Name, release); ok {
 					if project.Tag != nil && !pkg.Chart.MultiSelect && len(pkg.Chart.Versions) == 1 {
 						pkg.Chart.Versions[0].Version = *project.Tag
 					}

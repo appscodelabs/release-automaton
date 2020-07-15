@@ -114,6 +114,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/operator": api.Project{
 					Tag: github.String("v0.14.0-beta.1"),
 					ChartNames: []string{
+						"kubedb",
 						"kubedb-catalog",
 					},
 				},

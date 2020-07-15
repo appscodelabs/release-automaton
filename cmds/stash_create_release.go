@@ -70,6 +70,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Tag: github.String("v0.10.0-beta.1"),
+					ChartNames: []string{
+						"stash",
+					},
 				},
 			},
 			{
@@ -82,6 +85,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/postgres": api.Project{
 					Key: "stash-postgres",
+					ChartNames: []string{
+						"stash-postgres",
+					},
 					Tags: map[string]string{
 						"9.6-beta.20200709":  "release-9.6",
 						"10.2-beta.20200709": "release-10.2",
@@ -97,6 +103,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/elasticsearch": api.Project{
 					Key: "stash-elasticsearch",
+					ChartNames: []string{
+						"stash-elasticsearch",
+					},
 					Tags: map[string]string{
 						"5.6.4-beta.20200709": "release-5.6.4",
 						"6.2.4-beta.20200709": "release-6.2.4",
@@ -115,6 +124,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/mongodb": api.Project{
 					Key: "stash-mongodb",
+					ChartNames: []string{
+						"stash-mongodb",
+					},
 					Tags: map[string]string{
 						"3.4.1-beta.20200709": "release-3.4.17",
 						"3.4.2-beta.20200709": "release-3.4.22",
@@ -136,6 +148,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/mysql": api.Project{
 					Key: "stash-mysql",
+					ChartNames: []string{
+						"stash-mysql",
+					},
 					Tags: map[string]string{
 						"5.7.25-beta.20200709": "release-5.7.25",
 						"8.0.14-beta.20200709": "release-8.0.14",
@@ -149,6 +164,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/percona-xtradb": api.Project{
 					Key: "stash-percona-xtradb",
+					ChartNames: []string{
+						"stash-percona-xtradb",
+					},
 					Tags: map[string]string{
 						"5.7-beta.20200709": "release-5.7",
 					},
