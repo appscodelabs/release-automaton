@@ -261,6 +261,7 @@ func runAutomaton() {
 					notTagged.Insert(repoURL)
 				}
 			} else {
+				yetToMerge := map[api.MergeData]struct{}{}
 				for _, chartRepo := range project.Charts {
 					if tags, ok := findRepoTags(chartRepo); ok {
 						for _, tag := range tags {
@@ -269,13 +270,17 @@ func runAutomaton() {
 								Ref:  tag,
 							}
 							if _, ok := chartsMerged[mergeKey]; !ok {
-								chartsYetToMerge[mergeKey] = empty
+								yetToMerge[mergeKey] = empty
 							}
 						}
 					}
 				}
 
-				if len(chartsYetToMerge) == 0 && !chartPublished.Has(repoURL) {
+				if len(yetToMerge) > 0 {
+					for k, v := range yetToMerge {
+						chartsYetToMerge[k] = v
+					}
+				} else if !chartPublished.Has(repoURL) {
 					chartsReadyToPublish.Insert(repoURL)
 				}
 			}
