@@ -44,7 +44,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 }
 
 func CreateStashReleaseFile() api.Release {
-	releaseNumber := "v2020.08.26-rc.0"
+	releaseNumber := "v2020.08.26-rc.1"
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -64,14 +64,22 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.10.0-rc.0"),
+					Tag: github.String("v0.10.0-rc.1"),
 				},
 			},
 			{
 				"github.com/stashed/stash": api.Project{
-					Tag: github.String("v0.10.0-rc.0"),
+					Tag: github.String("v0.10.0-rc.1"),
 					ChartNames: []string{
 						"stash",
+					},
+				},
+			},
+			{
+				"github.com/appscode/stash-enterprise": api.Project{
+					Tag: github.String("v0.10.0-rc.1"),
+					ChartNames: []string{
+						"stash-enterprise",
 					},
 				},
 			},
@@ -79,7 +87,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.10.0-rc.0"),
+					Tag: github.String("v0.10.0-rc.1"),
 				},
 			},
 			{
@@ -132,7 +140,7 @@ func CreateStashReleaseFile() api.Release {
 						"3.4.2-rc.20200826": "release-3.4.22",
 						"3.6.1-rc.20200826": "release-3.6.13",
 						"3.6.8-rc.20200826": "release-3.6.8",
-						"4.0.1-rc.20200826": "release-4.0.11",
+						"4.0.11-rc.20200826": "release-4.0.11",
 						"4.0.3-rc.20200826": "release-4.0.3",
 						"4.0.5-rc.20200826": "release-4.0.5",
 						"4.1.1-rc.20200826": "release-4.1.13",
@@ -177,9 +185,9 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/installer": api.Project{
-					Tag: github.String("v0.10.0-rc.0"),
+					Tag: github.String("v0.10.0-rc.1"),
 					Commands: []string{
-						"make chart-stash CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
