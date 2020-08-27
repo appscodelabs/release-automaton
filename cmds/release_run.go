@@ -362,11 +362,15 @@ func runAutomaton() {
 		// Publish chart registry
 		for _, repoURL := range chartsReadyToPublish.UnsortedList() {
 			oneliners.FILE()
-			owner, repo := lib.ParseRepoURL(repoURL)
-			err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.BranchMaster, api.LabelAutoMerge)
+			err = UpdateChartIndex(gh, sh, repoURL)
 			if err != nil {
 				panic(err)
 			}
+			//owner, repo := lib.ParseRepoURL(repoURL)
+			//err = lib.LabelPR(gh, owner, repo, fmt.Sprintf("%s@%s", release.ProductLine, release.Release), api.BranchMaster, api.LabelAutoMerge)
+			//if err != nil {
+			//	panic(err)
+			//}
 		}
 
 		oneliners.FILE("COMMENTS>>>>", strings.Join(comments, "\n"))
@@ -433,6 +437,63 @@ func runAutomaton() {
 		}
 		return // Let next execution to pick up
 	}
+}
+
+func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) error {
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
+
+	owner, repo := lib.ParseRepoURL(repoURL)
+
+	// TODO: cache git repo
+	wdCur := filepath.Join(api.Workspace, owner)
+	err := os.MkdirAll(wdCur, 0755)
+	if err != nil {
+		return err
+	}
+
+	if !lib.Exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
+
+		err = sh.Command("git",
+			"clone",
+			// "--no-tags", //TODO: ok?
+			"--no-recurse-submodules",
+			//"--depth=1",
+			//"--no-single-branch",
+			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
+		).Run()
+		if err != nil {
+			return err
+		}
+	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
+
+	err = sh.Command("git", "fetch", "origin").Run()
+	if err != nil {
+		return err
+	}
+
+	branch := fmt.Sprintf("%s@%s", release.ProductLine, release.Release)
+	err = sh.Command("git", "checkout", branch).Run()
+	if err != nil {
+		return err
+	}
+
+	err = sh.Command("git", "pull", "origin", branch, "-X", "theirs").Run()
+	if err != nil {
+		return err
+	}
+
+	if lib.Exists(filepath.Join(wdCur, "tmp")) {
+		err = sh.Command("./hack/scripts/update-index.sh").Run()
+		if err != nil {
+			return err
+		}
+	}
+	return lib.LabelPR(gh, owner, repo, branch, api.BranchMaster, api.LabelAutoMerge)
 }
 
 func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoURL string, project api.Project) error {
