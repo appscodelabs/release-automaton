@@ -69,6 +69,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/stash": api.Project{
+					Key: "stash-community",
 					Tag: github.String("v0.10.0-rc.1"),
 					ChartNames: []string{
 						"stash",
@@ -77,6 +78,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
+					Key: "stash-enterprise",
 					Tag: github.String("v0.10.0-rc.1"),
 					ChartNames: []string{
 						"stash-enterprise",
