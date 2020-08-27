@@ -83,7 +83,7 @@ func GenerateTable() api.ReleaseTable {
 				ReleaseDate:       chlog.ReleaseDate,
 				KubernetesVersion: chlog.KubernetesVersion,
 				ReleaseURL:        path.Join(chlog.ReleaseProjectURL, "releases", "tag", chlog.Release),
-				ChangelogURL:      path.Join(chlog.ReleaseProjectURL, "tree/master", api.ReleasesDir, chlog.Release, "README.md"),
+				ChangelogURL:      path.Join("/", api.ReleasesDir, chlog.Release, "README.md"),
 				DocsURL:           chlog.DocsURL,
 			})
 		}
