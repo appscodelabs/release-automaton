@@ -42,6 +42,15 @@ type MetaData struct {
 	GoImport string `meta:"go-import"`
 }
 
+func IsPublicGitRepo(repoURL string) bool {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+
+	_, err := http.Get(repoURL)
+	return err == nil
+}
+
 func DetectVCSRoot(repoURL string) (string, error) {
 	if !strings.Contains(repoURL, "://") {
 		repoURL = "https://" + repoURL

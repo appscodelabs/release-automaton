@@ -532,19 +532,22 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	wdCur = filepath.Join(wdCur, repo)
 	sh.SetDir(wdCur)
 
-	modPath := DetectGoMod(wdCur)
-	if modPath != "" {
-		gm := lib.GoImport{
-			RepoRoot: repoURL,
+	var modPath string
+	if lib.IsPublicGitRepo(repoURL) {
+		modPath = DetectGoMod(wdCur)
+		if modPath != "" {
+			gm := lib.GoImport{
+				RepoRoot: repoURL,
+			}
+			vcs, err := lib.DetectVCSRoot(modPath)
+			if err != nil {
+				panic(err)
+			}
+			if vcs != repoURL {
+				gm.VCSRoot = vcs
+			}
+			modCache[modPath] = gm
 		}
-		vcs, err := lib.DetectVCSRoot(modPath)
-		if err != nil {
-			panic(err)
-		}
-		if vcs != repoURL {
-			gm.VCSRoot = vcs
-		}
-		modCache[modPath] = gm
 	}
 
 	tags := project.Tags
@@ -1154,9 +1157,9 @@ func DetectGoMod(dir string) string {
 	if err != nil {
 		panic(err)
 	}
-	path := gomod.Module.Mod.Path
-	if _, ok := modCache[path]; !ok {
-		return path
+	modPath := gomod.Module.Mod.Path
+	if _, ok := modCache[modPath]; !ok {
+		return modPath
 	}
 	return ""
 }
