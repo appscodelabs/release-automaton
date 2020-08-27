@@ -482,7 +482,7 @@ func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) erro
 		return err
 	}
 
-	err = sh.Command("git", "pull", "origin", branch, "-X", "theirs").Run()
+	err = sh.Command("git", "reset", "--hard", "origin/"+branch).Run()
 	if err != nil {
 		return err
 	}
