@@ -34,7 +34,7 @@ github.com/appscode/go/sets
 github.com/appscode/go/strings
 github.com/appscode/go/types
 github.com/appscode/go/version
-# github.com/appscode/static-assets v0.5.0
+# github.com/appscode/static-assets v0.6.0
 ## explicit
 github.com/appscode/static-assets/api
 # github.com/aws/aws-sdk-go v1.28.2

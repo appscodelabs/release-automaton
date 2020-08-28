@@ -265,12 +265,12 @@ func shouldAddInfo(p saapi.Product) bool {
 	return false
 }
 
-func generateInfo(p saapi.Product, release api.Release) map[string]string {
-	info := map[string]string{}
+func generateInfo(p saapi.Product, release api.Release) map[string]interface{} {
+	info := make(map[string]interface{})
 
 	for _, projects := range release.Projects {
 		for _, project := range projects {
-			if project.Key == "" || project.Tag == nil || project.Key == p.Key {
+			if project.Key == "" || project.Key == p.Key {
 				continue
 			}
 
@@ -278,7 +278,12 @@ func generateInfo(p saapi.Product, release api.Release) map[string]string {
 			if strings.HasPrefix(key, p.Key+"-") {
 				key = strings.TrimPrefix(key, p.Key+"-")
 			}
-			info[key] = *project.Tag
+
+			if project.Tag != nil {
+				info[key] = *project.Tag
+			} else if len(project.Tags) > 0 {
+				info[key] = lib.Keys(project.Tags)
+			}
 		}
 	}
 
