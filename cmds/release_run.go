@@ -572,6 +572,17 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			}); ok {
 				comments = append(comments, fmt.Sprintf("%s %s %s", api.ReadyToTag, repoURL, sha))
 			}
+			if len(project.ChartNames) > 0 {
+				if replies, ok = api.AppendReplyIfMissing(replies, api.Reply{
+					Type: api.Chart,
+					Chart: &api.ChartReplyData{
+						Repo: repoURL,
+						Tag:  *project.Tag,
+					},
+				}); ok {
+					comments = append(comments, fmt.Sprintf("%s %s %s", api.Chart, repoURL, *project.Tag))
+				}
+			}
 		}
 		if project.Tags != nil {
 			for tag, branch := range project.Tags {
@@ -585,6 +596,17 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 					},
 				}); ok {
 					comments = append(comments, fmt.Sprintf("%s %s %s %s", api.CherryPicked, repoURL, branch, sha))
+				}
+				if len(project.ChartNames) > 0 {
+					if replies, ok = api.AppendReplyIfMissing(replies, api.Reply{
+						Type: api.Chart,
+						Chart: &api.ChartReplyData{
+							Repo: repoURL,
+							Tag:  tag,
+						},
+					}); ok {
+						comments = append(comments, fmt.Sprintf("%s %s %s", api.Chart, repoURL, tag))
+					}
 				}
 			}
 		}
