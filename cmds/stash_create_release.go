@@ -64,13 +64,13 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.11.1"),
+					Tag: github.String("v0.11.2"),
 				},
 			},
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.11.1"),
+					Tag: github.String("v0.11.2"),
 					ChartNames: []string{
 						"stash",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.11.1"),
+					Tag: github.String("v0.11.2"),
 					ChartNames: []string{
 						"stash-enterprise",
 					},
@@ -89,7 +89,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.11.1"),
+					Tag: github.String("v0.11.2"),
 				},
 			},
 			{
@@ -186,7 +186,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/installer": api.Project{
-					Tag: github.String("v0.11.1"),
+					Tag: github.String("v0.11.2"),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
