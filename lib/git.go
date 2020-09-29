@@ -83,6 +83,16 @@ func GetRemoteTag(sh *shell.Session, tag string) string {
 	return strings.Fields(string(data))[0]
 }
 
+// IsTagged checks if the current commit is tagged.
+func IsTagged(sh *shell.Session) (string, bool) {
+	// git describe --exact-match --abbrev=0 2>/dev/null || echo ""
+	data, err := sh.Command("git", "describe", "--exact-match", "--abbrev=0").Output()
+	if err != nil {
+		return "", false
+	}
+	return strings.TrimSpace(string(data)), true
+}
+
 type ConditionFunc func(*shell.Session, string) bool
 
 func MeetsCondition(fn ConditionFunc, sh *shell.Session, items ...string) bool {

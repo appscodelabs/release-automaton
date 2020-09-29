@@ -893,7 +893,11 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 					return err
 				}
 			}
-
+			// if the commit is already tagged with something else, then throw error.
+			// This usually happens as a mistake because release engineer forgot to cherry pick commits to release branch for a patch release
+			if existingTag, ok := lib.IsTagged(sh); ok && existingTag != tag {
+				return fmt.Errorf("%s branch %s is already tagged as %s, did you forget to cherry pick?", repoURL, branch, existingTag)
+			}
 			err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
 			if err != nil {
 				return err
