@@ -93,6 +93,9 @@ const (
 
 	Chart          ReplyType = "/chart"
 	ChartPublished ReplyType = "/chart-published"
+
+	KrewManifest          ReplyType = "/krew-manifest"
+	KrewManifestPublished ReplyType = "/krew-manifest-published"
 )
 
 type Replies map[ReplyType][]Reply
@@ -144,14 +147,16 @@ func AppendReplyIfMissing(replies Replies, r Reply) (Replies, bool) {
 }
 
 type Reply struct {
-	Type           ReplyType
-	Tagged         *TaggedReplyData
-	PR             *PullRequestReplyData
-	ReadyToTag     *ReadyToTagReplyData
-	CherryPicked   *CherryPickedReplyData
-	Go             *GoReplyData
-	Chart          *ChartReplyData
-	ChartPublished *ChartPublishedReplyData
+	Type                  ReplyType
+	Tagged                *TaggedReplyData
+	PR                    *PullRequestReplyData
+	ReadyToTag            *ReadyToTagReplyData
+	CherryPicked          *CherryPickedReplyData
+	Go                    *GoReplyData
+	Chart                 *ChartReplyData
+	ChartPublished        *ChartPublishedReplyData
+	KrewManifest          *KrewManifestReplyData
+	KrewManifestPublished *KrewManifestPublishedReplyData
 }
 
 type ReplyKey struct {
@@ -179,6 +184,10 @@ func (r Reply) Key() ReplyKey {
 		return ReplyKey{Repo: r.Chart.Repo, B: r.Chart.Tag}
 	case ChartPublished:
 		return ReplyKey{Repo: r.ChartPublished.Repo}
+	case KrewManifest:
+		return ReplyKey{Repo: r.KrewManifest.Repo}
+	case KrewManifestPublished:
+		return ReplyKey{Repo: r.KrewManifestPublished.Repo}
 	default:
 		panic(fmt.Errorf("unknown reply type %s", r.Type))
 	}
@@ -225,6 +234,15 @@ type ChartReplyData struct {
 }
 
 type ChartPublishedReplyData struct {
+	Repo string
+}
+
+type KrewManifestReplyData struct {
+	Repo string
+	Tag  string
+}
+
+type KrewManifestPublishedReplyData struct {
 	Repo string
 }
 
