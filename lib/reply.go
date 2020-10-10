@@ -100,6 +100,21 @@ func ParseReply(s string) *api.Reply {
 		return &api.Reply{Type: rt, ChartPublished: &api.ChartPublishedReplyData{
 			Repo: params[0],
 		}}
+	case api.KrewManifest:
+		if len(params) != 2 {
+			panic(fmt.Errorf("unsupported parameters with reply %s", s))
+		}
+		return &api.Reply{Type: rt, KrewManifest: &api.KrewManifestReplyData{
+			Repo: params[0],
+			Tag:  params[1],
+		}}
+	case api.KrewManifestPublished:
+		if len(params) != 1 {
+			panic(fmt.Errorf("unsupported parameters with reply %s", s))
+		}
+		return &api.Reply{Type: rt, KrewManifestPublished: &api.KrewManifestPublishedReplyData{
+			Repo: params[0],
+		}}
 	default:
 		fmt.Printf("unknown reply type found in %s\n", s)
 		return nil
