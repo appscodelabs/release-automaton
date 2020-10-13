@@ -108,10 +108,3 @@ func CreateStashReleaseTable() api.ReleaseTable {
 		},
 	}
 }
-
-func MustTime(t time.Time, e error) time.Time {
-	if e != nil {
-		panic(e)
-	}
-	return t
-}
