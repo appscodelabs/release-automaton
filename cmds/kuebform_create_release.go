@@ -52,12 +52,12 @@ func CreateKubeformReleaseFile() api.Release {
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubeform/apimachinery": api.Project{
+				"github.com/kubeform/kubeform": api.Project{
 					Tag: github.String("v0.1.1"),
 				},
 			},
 			{
-				"github.com/kubeform/kubeform": api.Project{
+				"github.com/kubeform/kfc": api.Project{
 					Key: "kubeform-community",
 					Tag: github.String("v0.1.1"),
 					ChartNames: []string{
