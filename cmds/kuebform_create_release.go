@@ -53,13 +53,13 @@ func CreateKubeformReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubeform/kubeform": api.Project{
-					Tag: github.String("v0.1.1"),
+					Tag: github.String("v0.2.0"),
 				},
 			},
 			{
 				"github.com/kubeform/kfc": api.Project{
 					Key: "kubeform-community",
-					Tag: github.String("v0.1.1"),
+					Tag: github.String("v0.2.0"),
 					ChartNames: []string{
 						"kubeform",
 					},
@@ -67,7 +67,7 @@ func CreateKubeformReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubeform/installer": api.Project{
-					Tag: github.String("v0.1.1"),
+					Tag: github.String("v0.2.0"),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
