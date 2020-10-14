@@ -67,6 +67,7 @@ func CreateKubeformReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubeform/installer": api.Project{
+					Key: "kubeform-installer",
 					Tag: github.String("v0.2.0"),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",

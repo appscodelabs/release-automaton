@@ -52,7 +52,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/operator": api.Project{
-					Key: "vault-operator",
+					Key: "kubevault-operator",
 					ChartNames: []string{
 						"vault-operator",
 						"vault-catalog",
@@ -62,17 +62,19 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/unsealer": api.Project{
+					Key: "kubevault-unsealer",
 					Tag: github.String("v0.4.0-beta.0"),
 				},
 			},
 			{
 				"github.com/kubevault/cli": api.Project{
+					Key: "kubevault-cli",
 					Tag: github.String("v0.4.0-beta.0"),
 				},
 			},
 			{
 				"github.com/kubevault/csi-driver": api.Project{
-					Key: "csi-vault",
+					Key: "kubevault-csi",
 					ChartNames: []string{
 						"csi-vault",
 					},
@@ -81,6 +83,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/installer": api.Project{
+					Key: "kubevault-installer",
 					Tag: github.String("v0.4.0-beta.0"),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",

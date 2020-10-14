@@ -63,6 +63,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
+					Key: "kubedb-cli",
 					Tag: github.String("v0.14.0-beta.3"),
 				},
 				"github.com/kubedb/elasticsearch": api.Project{
@@ -114,6 +115,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/operator": api.Project{
+					Key: "kubedb-community",
 					Tag: github.String("v0.14.0-beta.3"),
 					ChartNames: []string{
 						"kubedb",
@@ -123,13 +125,17 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/kubedb-enterprise": api.Project{
+					Key: "kubedb-enterprise",
 					Tag: github.String("v0.1.0-beta.3"),
-					// update catalog
+					ChartNames: []string{
+						"kubedb-enterprise",
+					},
 				},
 			},
 			// Build Enterprise image
 			{
 				"github.com/kubedb/installer": api.Project{
+					Key: "kubedb-installer",
 					Tag: github.String("v0.14.0-beta.3"),
 					Commands: []string{
 						"make chart-kubedb CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",

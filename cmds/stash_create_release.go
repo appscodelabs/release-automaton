@@ -186,6 +186,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/installer": api.Project{
+					Key: "stash-installer",
 					Tag: github.String("v0.11.2"),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
