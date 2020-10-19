@@ -106,9 +106,7 @@ func updateAsset(release api.Release, project api.Project) error {
 				HostDocs: true,
 				Show:     showDocs(tag),
 			}
-			if shouldAddInfo(prod) {
-				nuV.Info = generateInfo(prod, release)
-			}
+			nuV.Info = generateInfo(prod, release)
 			prod.Versions = append(prod.Versions, nuV)
 		}
 
@@ -254,15 +252,6 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 		data = append([]saapi.ProductVersion{m}, data...)
 	}
 	return data, latestVersion
-}
-
-func shouldAddInfo(p saapi.Product) bool {
-	for _, v := range p.Versions {
-		if v.Version == p.LatestVersion {
-			return len(v.Info) > 0
-		}
-	}
-	return false
 }
 
 func generateInfo(p saapi.Product, release api.Release) map[string]interface{} {
