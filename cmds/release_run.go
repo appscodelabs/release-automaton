@@ -20,9 +20,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -103,9 +101,9 @@ func runAutomaton() {
 		for repoURL, project := range projects {
 			if project.Tag != nil {
 				repoVersion[repoURL] = *project.Tag
-				envVars[repoURL2EnvKey(repoURL)] = *project.Tag
+				envVars[lib.RepoURL2EnvKey(repoURL)] = *project.Tag
 				if project.Key != "" {
-					envVars[key2EnvKey(project.Key)] = *project.Tag
+					envVars[lib.Key2EnvKey(project.Key)] = *project.Tag
 				}
 			}
 			if project.ReadyToTag {
@@ -644,13 +642,13 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		// -----------------------
 
 		vars := lib.MergeMaps(map[string]string{
-			repoURL2EnvKey(repoURL): tag,
-			"SCRIPT_ROOT":           scriptRoot,
-			"WORKSPACE":             sh.Getwd(),
-			"TAG":                   tag,
-			"PRODUCT_LINE":          release.ProductLine,
-			"RELEASE":               release.Release,
-			"RELEASE_TRACKER":       releaseTracker,
+			lib.RepoURL2EnvKey(repoURL): tag,
+			"SCRIPT_ROOT":               scriptRoot,
+			"WORKSPACE":                 sh.Getwd(),
+			"TAG":                       tag,
+			"PRODUCT_LINE":              release.ProductLine,
+			"RELEASE":                   release.Release,
+			"RELEASE_TRACKER":           releaseTracker,
 		}, envVars)
 
 		headBranch := fmt.Sprintf("%s-%s", release.Release, branch)
@@ -841,13 +839,13 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		} else {
 			if project.ReleaseBranch != "" {
 				vars := lib.MergeMaps(map[string]string{
-					repoURL2EnvKey(repoURL): tag,
-					"SCRIPT_ROOT":           scriptRoot,
-					"WORKSPACE":             sh.Getwd(),
-					"TAG":                   tag,
-					"PRODUCT_LINE":          release.ProductLine,
-					"RELEASE":               release.Release,
-					"RELEASE_TRACKER":       releaseTracker,
+					lib.RepoURL2EnvKey(repoURL): tag,
+					"SCRIPT_ROOT":               scriptRoot,
+					"WORKSPACE":                 sh.Getwd(),
+					"TAG":                       tag,
+					"PRODUCT_LINE":              release.ProductLine,
+					"RELEASE":                   release.Release,
+					"RELEASE_TRACKER":           releaseTracker,
 				}, envVars)
 				branch, err = envsubst.EvalMap(project.ReleaseBranch, vars)
 				if err != nil {
@@ -1250,29 +1248,6 @@ func UpdateGoMod(dir string) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func repoURL2EnvKey(repoURL string) string {
-	if !strings.Contains(repoURL, "://") {
-		repoURL = "https://" + repoURL
-	}
-
-	u, err := url.Parse(repoURL)
-	if err != nil {
-		panic(err)
-	}
-	return toEnvKey(path.Join(u.Path, "tag"))
-}
-
-func key2EnvKey(key string) string {
-	return toEnvKey(path.Join(key, "version"))
-}
-
-func toEnvKey(key string) string {
-	key = strings.Trim(key, "/")
-	key = strings.ReplaceAll(key, "/", "_")
-	key = strings.ReplaceAll(key, "-", "_")
-	return strings.ToUpper(key)
 }
 
 func findRepoTags(reg string) ([]string, bool) {

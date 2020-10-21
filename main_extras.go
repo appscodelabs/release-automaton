@@ -36,6 +36,11 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+func main_RepoURL2EnvKey() {
+	fmt.Println(lib.RepoURL2EnvKey("http://github.com/kubedb/mysql-replication-mode-detector"))
+	fmt.Println(lib.RepoURL2EnvKey("github.com/kubedb/mysql-replication-mode-detector"))
+}
+
 func main_CreateKubeDBReleaseTable() {
 	table := cmds.CreateKubeDBReleaseTable()
 	data, err := json.MarshalIndent(table, "", "  ")
