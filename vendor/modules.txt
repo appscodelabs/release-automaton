@@ -25,7 +25,7 @@ github.com/PuerkitoBio/urlesc
 # github.com/alessio/shellescape v1.2.2
 ## explicit
 github.com/alessio/shellescape
-# github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
+# github.com/appscode/go v0.0.0-20201006035845-a0302ac8e3d3
 ## explicit
 github.com/appscode/go/encoding/json/types
 github.com/appscode/go/encoding/yaml
@@ -34,7 +34,7 @@ github.com/appscode/go/sets
 github.com/appscode/go/strings
 github.com/appscode/go/types
 github.com/appscode/go/version
-# github.com/appscode/static-assets v0.6.0
+# github.com/appscode/static-assets v0.6.4
 ## explicit
 github.com/appscode/static-assets/api
 # github.com/aws/aws-sdk-go v1.28.2
@@ -82,7 +82,7 @@ github.com/aws/aws-sdk-go/service/sts/stsiface
 github.com/bgentry/go-netrc/netrc
 # github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
 github.com/codegangsta/inject
-# github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27 => github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29
+# github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe => github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29
 ## explicit
 github.com/codeskyblue/go-sh
 # github.com/davecgh/go-spew v1.1.1

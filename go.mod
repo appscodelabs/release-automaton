@@ -6,9 +6,9 @@ require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/alessio/shellescape v1.2.2
-	github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
-	github.com/appscode/static-assets v0.6.0
-	github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
+	github.com/appscode/go v0.0.0-20201006035845-a0302ac8e3d3
+	github.com/appscode/static-assets v0.6.4
+	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
 	github.com/google/go-github/v32 v32.0.0
 	github.com/google/uuid v1.1.1
 	github.com/hashicorp/go-getter v1.4.1
