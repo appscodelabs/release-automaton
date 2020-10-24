@@ -29,12 +29,41 @@ import (
 	"github.com/appscodelabs/release-automaton/cmds"
 	"github.com/appscodelabs/release-automaton/lib"
 
+	"github.com/alessio/shellescape"
+	"github.com/codeskyblue/go-sh"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/google/go-github/v32/github"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-getter"
+	"github.com/kballard/go-shellquote"
 	"sigs.k8s.io/yaml"
 )
+
+func main_Execute_ShellQuote() {
+	// find . -type f -exec sed -i 's/from/to/' {} \;
+	// sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:v0.1.0-beta.4"|g' charts/kubedb-catalog/templates/mysql/*
+
+	cmd := `find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:v0.1.0-beta.4"|g' {} \;`
+	fields, err := shellquote.Split(cmd)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(fields)
+
+	args := make([]interface{}, len(fields)-1)
+	for i := range fields[1:] {
+		args[i] = fields[i+1]
+	}
+
+	session := sh.NewSession()
+	session.SetDir("/home/tamal/go/src/kubedb.dev/installer")
+	session.ShowCMD = true
+	err = session.Command(fields[0], args...).Run()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(shellescape.Quote(""))
+}
 
 func main_DetectVCSRoot() {
 	vcs, err := lib.DetectVCSRoot("github.com/appscode/stash-enterprise")

@@ -171,6 +171,9 @@ github.com/json-iterator/go
 github.com/jstemmer/go-junit-report
 github.com/jstemmer/go-junit-report/formatter
 github.com/jstemmer/go-junit-report/parser
+# github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
+## explicit
+github.com/kballard/go-shellquote
 # github.com/keighl/metabolize v0.0.0-20150915210303-97ab655d4034
 ## explicit
 github.com/keighl/metabolize

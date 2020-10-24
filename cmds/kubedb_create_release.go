@@ -140,7 +140,8 @@ func CreateKubeDBReleaseFile() api.Release {
 					Commands: []string{
 						"make chart-kubedb CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-catalog CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						`sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:${KUBEDB_MYSQL_REPLICATION_MODE_DETECTOR_TAG}"|g' charts/kubedb-catalog/templates/mysql/*`,
+						// https://stackoverflow.com/a/48290678
+						`find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:v0.1.0-beta.4"|g' {} \;`,
 					},
 				},
 			},

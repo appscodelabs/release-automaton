@@ -24,6 +24,7 @@ import (
 	"strings"
 
 	shell "github.com/codeskyblue/go-sh"
+	"github.com/kballard/go-shellquote"
 )
 
 func Execute(sh *shell.Session, cmd string) error {
@@ -49,7 +50,10 @@ func Execute(sh *shell.Session, cmd string) error {
 		cmdlets = []string{cmd}
 	}
 
-	fields := strings.Fields(cmdlets[0])
+	fields, err := shellquote.Split(cmdlets[0])
+	if err != nil {
+		return err
+	}
 	if len(fields) == 0 {
 		return fmt.Errorf("missing command: %s", cmd)
 	}
