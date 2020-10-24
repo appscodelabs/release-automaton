@@ -14,6 +14,7 @@ require (
 	github.com/hashicorp/go-getter v1.4.1
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/imdario/mergo v0.3.9 // indirect
+	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/keighl/metabolize v0.0.0-20150915210303-97ab655d4034
 	github.com/spf13/cobra v1.0.0
 	github.com/tamalsaha/go-oneliners v0.0.0-20190126213733-6d24eabef827
