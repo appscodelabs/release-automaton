@@ -77,7 +77,8 @@ func DetectVCSRoot(repoURL string) (string, error) {
 
 	// GoImport: stash.appscode.dev/cli git https://github.com/stashed/cli
 	if data.GoImport == "" {
-		return "", fmt.Errorf("%s is missing go-import meta tag", uRepo.String())
+		fmt.Printf("%s is missing go-import meta tag", uRepo.String())
+		return "", nil
 	}
 	fmt.Printf("GoImport: %s\n", data.GoImport)
 

@@ -36,6 +36,14 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+func main_DetectVCSRoot() {
+	vcs, err := lib.DetectVCSRoot("github.com/appscode/stash-enterprise")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(vcs)
+}
+
 func main_RepoURL2EnvKey() {
 	fmt.Println(lib.RepoURL2EnvKey("http://github.com/kubedb/mysql-replication-mode-detector"))
 	fmt.Println(lib.RepoURL2EnvKey("github.com/kubedb/mysql-replication-mode-detector"))

@@ -541,10 +541,15 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			if err != nil {
 				panic(err)
 			}
-			if vcs != repoURL {
-				gm.VCSRoot = vcs
+			if vcs == "" {
+				// private module
+				modPath = ""
+			} else {
+				if vcs != repoURL {
+					gm.VCSRoot = vcs
+				}
+				modCache[modPath] = gm
 			}
-			modCache[modPath] = gm
 		}
 	}
 
@@ -787,10 +792,15 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		if err != nil {
 			panic(err)
 		}
-		if vcs != repoURL {
-			gm.VCSRoot = vcs
+		if vcs == "" {
+			// private module
+			modPath = ""
+		} else {
+			if vcs != repoURL {
+				gm.VCSRoot = vcs
+			}
+			modCache[modPath] = gm
 		}
-		modCache[modPath] = gm
 	}
 
 	tags := project.Tags
