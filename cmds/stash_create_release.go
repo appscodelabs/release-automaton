@@ -240,11 +240,14 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/website": api.Project{
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "master",
-					Commands: []string{
-						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
-						"make docs",
+					Commands: lib.AppendIf(
+						[]string{
+							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
+							"make docs",
+						},
+						!api.IsPrerelease(releaseNumber),
 						"make set-version VERSION=${TAG}",
-					},
+					),
 					Changelog: api.SkipChangelog,
 				},
 			},

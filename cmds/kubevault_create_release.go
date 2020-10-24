@@ -44,9 +44,10 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
+	releaseNumber := "v2020.07.09-beta.0"
 	return api.Release{
 		ProductLine:       "KubeVault",
-		Release:           "v2020.07.09-beta.0",
+		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubevault.com/docs/%s",
 		KubernetesVersion: "1.12+",
 		Projects: []api.IndependentProjects{
@@ -121,11 +122,14 @@ func CreateKubeVaultReleaseFile() api.Release {
 				"github.com/kubevault/website": api.Project{
 					Tag:           github.String("v2020.07.09-beta.0"),
 					ReleaseBranch: "master",
-					Commands: []string{
-						"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
-						"make docs",
+					Commands: lib.AppendIf(
+						[]string{
+							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
+							"make docs",
+						},
+						!api.IsPrerelease(releaseNumber),
 						"make set-version VERSION=${TAG}",
-					},
+					),
 					Changelog: api.SkipChangelog,
 				},
 			},
