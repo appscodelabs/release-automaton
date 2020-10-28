@@ -74,6 +74,30 @@ type Release struct {
 	ExternalProjects map[string]ExternalProject `json:"external_projects,omitempty"`
 }
 
+func (r Release) Validate() error {
+	if r.Release == "" {
+		return fmt.Errorf("missing release number")
+	}
+	v, err := semver.NewVersion(r.Release)
+	if err != nil {
+		return err
+	}
+	for _, projects := range r.Projects {
+		for repoURL, project := range projects {
+			if project.Tag != nil {
+				projectVersion, err := semver.NewVersion(*project.Tag)
+				if err != nil {
+					return fmt.Errorf("invalid tag for repo %s: %s", repoURL, err)
+				}
+				if v.Prerelease() != projectVersion.Prerelease() {
+					return fmt.Errorf("repo %s uses different prerelease version %s compared to product release number %s", repoURL, *project.Tag, r.Release)
+				}
+			}
+		}
+	}
+	return nil
+}
+
 /*
 - Only one pr per published_chart repo
 - Different chart repos can have different prs

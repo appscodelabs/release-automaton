@@ -33,6 +33,10 @@ func NewCmdStashCreateRelease() *cobra.Command {
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			rel := CreateStashReleaseFile()
+			err := rel.Validate()
+			if err != nil {
+				panic(err)
+			}
 			data, err := lib.MarshalJson(rel)
 			if err != nil {
 				panic(err)

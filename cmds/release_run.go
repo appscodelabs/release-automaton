@@ -97,6 +97,11 @@ func runAutomaton() {
 		panic(err)
 	}
 
+	err = release.Validate()
+	if err != nil {
+		panic(err)
+	}
+
 	for _, projects := range release.Projects {
 		for repoURL, project := range projects {
 			if project.Tag != nil {
