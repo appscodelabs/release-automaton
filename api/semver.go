@@ -102,3 +102,8 @@ func AtLeastAsImp(base *semver.Version, x *semver.Version) bool {
 func IsPrerelease(v string) bool {
 	return semver.MustParse(v).Prerelease() != ""
 }
+
+func IsPublicRelease(v string) bool {
+	prerelease := semver.MustParse(v).Prerelease()
+	return prerelease == "" || strings.Contains(prerelease, "rc.")
+}
