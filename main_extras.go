@@ -75,7 +75,8 @@ func main_DetectVCSRoot() {
 
 func main_RepoURL2EnvKey() {
 	fmt.Println(lib.RepoURL2EnvKey("http://github.com/kubedb/mysql-replication-mode-detector"))
-	fmt.Println(lib.RepoURL2EnvKey("github.com/kubedb/mysql-replication-mode-detector"))
+	fmt.Println(lib.RepoURL2EnvKey("github.com/kubedb/operator"))
+	fmt.Println(lib.RepoURL2EnvKey("github.com/appscode/kubedb-enterprise"))
 }
 
 func main_CreateKubeDBReleaseTable() {

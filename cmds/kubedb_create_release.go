@@ -139,9 +139,9 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key: "kubedb-installer",
 					Tag: github.String("v0.14.0-rc.2"),
 					Commands: []string{
-						"make chart-kubedb CHART_VERSION=${KUBEDB_OPERATOR} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						// https://stackoverflow.com/a/48290678
 						`find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:${KUBEDB_MYSQL_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
 					},
