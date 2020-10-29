@@ -48,7 +48,8 @@ func NewCmdStashCreateRelease() *cobra.Command {
 }
 
 func CreateStashReleaseFile() api.Release {
-	releaseNumber := "v2020.10.21"
+	prerelease := ""
+	releaseNumber := "v2020.10.21" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -64,17 +65,17 @@ func CreateStashReleaseFile() api.Release {
 		ProductLine:       "Stash",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://stash.run/docs/%s",
-		KubernetesVersion: "1.12+",
+		KubernetesVersion: "1.14+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.11.3"),
+					Tag: github.String("v0.11.3" + prerelease),
 				},
 			},
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.11.3"),
+					Tag: github.String("v0.11.3" + prerelease),
 					ChartNames: []string{
 						"stash",
 					},
@@ -83,7 +84,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.11.3"),
+					Tag: github.String("v0.11.3" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 					},
@@ -93,7 +94,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.11.3"),
+					Tag: github.String("v0.11.3" + prerelease),
 				},
 			},
 			{
@@ -191,7 +192,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/installer": api.Project{
 					Key: "stash-installer",
-					Tag: github.String("v0.11.3"),
+					Tag: github.String("v0.11.3" + prerelease),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
