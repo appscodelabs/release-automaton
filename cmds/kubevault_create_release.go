@@ -48,12 +48,13 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
-	releaseNumber := "v2020.07.09-beta.0"
+	prerelease := "-beta.0"
+	releaseNumber := "v2020.07.09" + prerelease
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubevault.com/docs/%s",
-		KubernetesVersion: "1.12+",
+		KubernetesVersion: "1.14+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/operator": api.Project{
@@ -62,19 +63,19 @@ func CreateKubeVaultReleaseFile() api.Release {
 						"vault-operator",
 						"vault-catalog",
 					},
-					Tag: github.String("v0.4.0-beta.0"),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
-					Tag: github.String("v0.4.0-beta.0"),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
-					Tag: github.String("v0.4.0-beta.0"),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
@@ -83,13 +84,13 @@ func CreateKubeVaultReleaseFile() api.Release {
 					ChartNames: []string{
 						"csi-vault",
 					},
-					Tag: github.String("v0.4.0-beta.0"),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubevault/installer": api.Project{
 					Key: "kubevault-installer",
-					Tag: github.String("v0.4.0-beta.0"),
+					Tag: github.String("v0.4.0" + prerelease),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
@@ -115,7 +116,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			{
 				"github.com/kubevault/docs": api.Project{
 					Key:           "kubevault",
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.09" + prerelease),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -124,7 +125,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/website": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.09" + prerelease),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
@@ -140,7 +141,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubevault/bundles": api.Project{
-					Tag:           github.String("v2020.07.09-beta.0"),
+					Tag:           github.String("v2020.07.09" + prerelease),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
@@ -157,7 +158,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			//{
 			//	"github.com/kubevault/vault_exporter": api.Project{
-			//		Tag: github.String("v0.4.0-beta.0"),
+			//		Tag: github.String("v0.4.0" + prerelease),
 			//	},
 			//},
 		},
