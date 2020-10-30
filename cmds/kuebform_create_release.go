@@ -49,7 +49,7 @@ func NewCmdKubeformCreateRelease() *cobra.Command {
 
 func CreateKubeformReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2020.10.13" + prerelease
+	releaseNumber := "v2020.10.30" + prerelease
 	return api.Release{
 		ProductLine:       "Kubeform",
 		Release:           releaseNumber,
@@ -58,13 +58,13 @@ func CreateKubeformReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubeform/kubeform": api.Project{
-					Tag: github.String("v0.2.0" + prerelease),
+					Tag: github.String("v0.3.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubeform/kfc": api.Project{
 					Key: "kubeform-community",
-					Tag: github.String("v0.2.0" + prerelease),
+					Tag: github.String("v0.3.0" + prerelease),
 					ChartNames: []string{
 						"kubeform",
 					},
@@ -73,7 +73,7 @@ func CreateKubeformReleaseFile() api.Release {
 			{
 				"github.com/kubeform/installer": api.Project{
 					Key: "kubeform-installer",
-					Tag: github.String("v0.2.0" + prerelease),
+					Tag: github.String("v0.3.0" + prerelease),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
