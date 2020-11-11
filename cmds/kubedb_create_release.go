@@ -173,7 +173,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/docs": api.Project{
 					Key:           "kubedb",
-					Tag:           github.String("v2020.11.08" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -182,7 +182,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/website": api.Project{
-					Tag:           github.String("v2020.11.08" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
@@ -198,7 +198,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubedb/bundles": api.Project{
-					Tag:           github.String("v2020.11.08" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
