@@ -93,7 +93,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/percona-xtradb": api.Project{
 					Tag: github.String("v0.1.1" + prerelease),
 				},
-				"github.com/kubedb/mysql-replication-mode-detector": api.Project{
+				"github.com/kubedb/replication-mode-detector": api.Project{
 					Tag: github.String("v0.1.1" + prerelease),
 					// update catalog
 				},
@@ -148,7 +148,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						// https://stackoverflow.com/a/48290678
-						`find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|mysql-replication-mode-detector:.*|mysql-replication-mode-detector:${KUBEDB_MYSQL_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
+						`find charts/kubedb-catalog/templates/mongodb -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
+						`find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
 					},
 				},
 			},
