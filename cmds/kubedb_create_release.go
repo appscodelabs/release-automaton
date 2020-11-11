@@ -48,8 +48,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-rc.2"
-	releaseNumber := "v2020.10.27" + prerelease
+	prerelease := ""
+	releaseNumber := "v2020.11.08" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -58,49 +58,49 @@ func CreateKubeDBReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubedb/apimachinery": api.Project{
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 				},
 			},
 			{
 				"github.com/kubedb/pg-leader-election": api.Project{
-					Tag: github.String("v0.2.0" + prerelease),
+					Tag: github.String("v0.2.1" + prerelease),
 					// update catalog
 				},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 				},
 				"github.com/kubedb/elasticsearch": api.Project{
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 				},
 				"github.com/kubedb/memcached": api.Project{
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.7.1" + prerelease),
 				},
 				"github.com/kubedb/mongodb": api.Project{
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.7.1" + prerelease),
 				},
 				"github.com/kubedb/mysql": api.Project{
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.7.1" + prerelease),
 				},
 				"github.com/kubedb/postgres": api.Project{
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 				},
 				"github.com/kubedb/redis": api.Project{
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.7.1" + prerelease),
 				},
 				"github.com/kubedb/percona-xtradb": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 				},
 				"github.com/kubedb/mysql-replication-mode-detector": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					// update catalog
 				},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -109,7 +109,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubedb/proxysql": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -122,7 +122,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/operator": api.Project{
 					Key: "kubedb-community",
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 					ChartNames: []string{
 						"kubedb",
 						"kubedb-catalog",
@@ -132,7 +132,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/appscode/kubedb-enterprise": api.Project{
 					Key: "kubedb-enterprise",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubedb-enterprise",
 					},
@@ -142,7 +142,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/installer": api.Project{
 					Key: "kubedb-installer",
-					Tag: github.String("v0.14.0" + prerelease),
+					Tag: github.String("v0.14.1" + prerelease),
 					Commands: []string{
 						"make chart-kubedb CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -172,7 +172,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/docs": api.Project{
 					Key:           "kubedb",
-					Tag:           github.String("v2020.10.27" + prerelease),
+					Tag:           github.String("v2020.11.08" + prerelease),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -181,7 +181,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/website": api.Project{
-					Tag:           github.String("v2020.10.27" + prerelease),
+					Tag:           github.String("v2020.11.08" + prerelease),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
@@ -197,7 +197,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubedb/bundles": api.Project{
-					Tag:           github.String("v2020.10.27" + prerelease),
+					Tag:           github.String("v2020.11.08" + prerelease),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
