@@ -104,10 +104,10 @@ func CreateStashReleaseFile() api.Release {
 						"stash-postgres",
 					},
 					Tags: map[string]string{
-						"9.6.19-v2":  "release-9.6.19",
-						"10.14.0-v2": "release-10.14",
-						"11.9.0-v2":  "release-11.9",
-						"12.4.0-v2":  "release-12.4",
+						"9.6.19-v3":  "release-9.6.19",
+						"10.14.0-v3": "release-10.14",
+						"11.9.0-v3":  "release-11.9",
+						"12.4.0-v3":  "release-12.4",
 						"13.1.0":     "release-13.1",
 					},
 					Commands: []string{
