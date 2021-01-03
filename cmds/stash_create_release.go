@@ -49,7 +49,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2020.11.17" + prerelease
+	releaseNumber := "v2020.12.17" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -69,13 +69,13 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.11.7" + prerelease),
+					Tag: github.String("v0.11.8" + prerelease),
 				},
 			},
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.11.7" + prerelease),
+					Tag: github.String("v0.11.8" + prerelease),
 					ChartNames: []string{
 						"stash",
 					},
@@ -84,7 +84,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.11.7" + prerelease),
+					Tag: github.String("v0.11.8" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 					},
@@ -94,7 +94,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.11.7" + prerelease),
+					Tag: github.String("v0.11.8" + prerelease),
 				},
 			},
 			{
@@ -104,11 +104,11 @@ func CreateStashReleaseFile() api.Release {
 						"stash-postgres",
 					},
 					Tags: map[string]string{
-						"9.6.19-v3":  "release-9.6.19",
-						"10.14.0-v3": "release-10.14",
-						"11.9.0-v3":  "release-11.9",
-						"12.4.0-v3":  "release-12.4",
-						"13.1.0":     "release-13.1",
+						"9.6.19-v4":  "release-9.6.19",
+						"10.14.0-v4": "release-10.14",
+						"11.9.0-v4":  "release-11.9",
+						"12.4.0-v4":  "release-12.4",
+						"13.1.0-v1":  "release-13.1",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -122,14 +122,14 @@ func CreateStashReleaseFile() api.Release {
 						"stash-elasticsearch",
 					},
 					Tags: map[string]string{
-						"5.6.4-v4": "release-5.6.4",
-						"6.2.4-v4": "release-6.2.4",
-						"6.3.0-v4": "release-6.3.0",
-						"6.4.0-v4": "release-6.4.0",
-						"6.5.3-v4": "release-6.5.3",
-						"6.8.0-v4": "release-6.8.0",
-						"7.2.0-v4": "release-7.2.0",
-						"7.3.2-v4": "release-7.3.2",
+						"5.6.4-v5": "release-5.6.4",
+						"6.2.4-v5": "release-6.2.4",
+						"6.3.0-v5": "release-6.3.0",
+						"6.4.0-v5": "release-6.4.0",
+						"6.5.3-v5": "release-6.5.3",
+						"6.8.0-v5": "release-6.8.0",
+						"7.2.0-v5": "release-7.2.0",
+						"7.3.2-v5": "release-7.3.2",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -143,17 +143,17 @@ func CreateStashReleaseFile() api.Release {
 						"stash-mongodb",
 					},
 					Tags: map[string]string{
-						"3.4.17-v4": "release-3.4.17",
-						"3.4.22-v4": "release-3.4.22",
-						"3.6.13-v4": "release-3.6.13",
-						"3.6.8-v4":  "release-3.6.8",
-						"4.0.11-v4": "release-4.0.11",
-						"4.0.3-v4":  "release-4.0.3",
-						"4.0.5-v4":  "release-4.0.5",
-						"4.1.4-v4":  "release-4.1.4",
-						"4.1.7-v4":  "release-4.1.7",
-						"4.1.13-v4": "release-4.1.13",
-						"4.2.3-v4":  "release-4.2.3",
+						"3.4.17-v5": "release-3.4.17",
+						"3.4.22-v5": "release-3.4.22",
+						"3.6.13-v5": "release-3.6.13",
+						"3.6.8-v5":  "release-3.6.8",
+						"4.0.11-v5": "release-4.0.11",
+						"4.0.3-v5":  "release-4.0.3",
+						"4.0.5-v5":  "release-4.0.5",
+						"4.1.4-v5":  "release-4.1.4",
+						"4.1.7-v5":  "release-4.1.7",
+						"4.1.13-v5": "release-4.1.13",
+						"4.2.3-v5":  "release-4.2.3",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -167,9 +167,23 @@ func CreateStashReleaseFile() api.Release {
 						"stash-mysql",
 					},
 					Tags: map[string]string{
-						"5.7.25-v4": "release-5.7.25",
-						"8.0.14-v4": "release-8.0.14",
-						"8.0.3-v4":  "release-8.0.3",
+						"5.7.25-v5": "release-5.7.25",
+						"8.0.14-v5": "release-8.0.14",
+						"8.0.3-v5":  "release-8.0.3",
+					},
+					Commands: []string{
+						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+					},
+				},
+			},
+			{
+				"github.com/stashed/mariadb": api.Project{
+					Key: "stash-mariadb",
+					ChartNames: []string{
+						"stash-mariadb",
+					},
+					Tags: map[string]string{
+						"10.5.8": "release-10.5.8",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -183,7 +197,7 @@ func CreateStashReleaseFile() api.Release {
 						"stash-percona-xtradb",
 					},
 					Tags: map[string]string{
-						"5.7.0": "release-5.7",
+						"5.7.0-v1": "release-5.7",
 					},
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -193,7 +207,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/installer": api.Project{
 					Key: "stash-installer",
-					Tag: github.String("v0.11.7" + prerelease),
+					Tag: github.String("v0.11.8" + prerelease),
 					Commands: []string{
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
@@ -206,6 +220,7 @@ func CreateStashReleaseFile() api.Release {
 						"github.com/stashed/elasticsearch",
 						"github.com/stashed/mongodb",
 						"github.com/stashed/mysql",
+						"github.com/stashed/mariadb",
 						"github.com/stashed/percona-xtradb",
 						"github.com/stashed/installer",
 					},
@@ -290,6 +305,9 @@ func CreateStashReleaseFile() api.Release {
 				Commands: updateEnvVars,
 			},
 			"github.com/kubedb/mysql": {
+				Commands: updateEnvVars,
+			},
+			"github.com/kubedb/mariadb": {
 				Commands: updateEnvVars,
 			},
 			"github.com/kubedb/operator": {},
