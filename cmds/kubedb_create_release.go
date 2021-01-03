@@ -141,7 +141,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/appscode/kubedb-autoscaler": api.Project{
 					Key: "kubedb-autocaler",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-autoscaler",
 					},
