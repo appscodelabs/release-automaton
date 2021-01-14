@@ -48,8 +48,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2021.01.02" + prerelease
+	prerelease := ""
+	releaseNumber := "v2021.01.14" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -96,6 +96,9 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/replication-mode-detector": api.Project{
 					Tag: github.String("v0.3.0" + prerelease),
 					// update catalog
+				},
+				"github.com/kubedb/tests": api.Project{
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 			},
 			{
