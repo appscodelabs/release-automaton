@@ -29,13 +29,14 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/Masterminds/semver"
-	stringz "github.com/appscode/go/strings"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
-	"github.com/tamalsaha/go-oneliners"
 	"golang.org/x/mod/modfile"
 	"gomodules.xyz/envsubst"
+	"gomodules.xyz/oneliners"
+	"gomodules.xyz/semvers"
+	stringz "gomodules.xyz/x/strings"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/yaml"
 )
@@ -982,11 +983,11 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			for _, x := range tagSet.UnsortedList() {
 				v := semver.MustParse(x)
 				// filter out lower importance tags
-				if api.AtLeastAsImp(vTag, v) {
+				if semvers.AtLeastAsImp(vTag, v) {
 					vs = append(vs, v)
 				}
 			}
-			sort.Sort(api.SemverCollection(vs))
+			sort.Sort(semvers.SemverCollection(vs))
 
 			var tagIdx = -1
 			for idx, vs := range vs {

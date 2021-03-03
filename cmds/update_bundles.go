@@ -21,13 +21,13 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/Masterminds/semver"
-	yu "github.com/appscode/go/encoding/yaml"
-	"github.com/appscode/go/sets"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
+	"gomodules.xyz/sets"
+	yu "gomodules.xyz/x/encoding/yaml"
 	ylib "gopkg.in/yaml.v2"
 	kpapi "kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"sigs.k8s.io/yaml"
@@ -168,7 +168,7 @@ func updateBundles() error {
 					}
 					if len(project.Tags) > 0 && pkg.Chart.MultiSelect {
 						sort.Slice(pkg.Chart.Versions, func(i, j int) bool {
-							return api.CompareVersions(semver.MustParse(pkg.Chart.Versions[i].Version), semver.MustParse(pkg.Chart.Versions[j].Version))
+							return semvers.CompareVersions(semver.MustParse(pkg.Chart.Versions[i].Version), semver.MustParse(pkg.Chart.Versions[j].Version))
 						})
 						latestDetail := pkg.Chart.Versions[len(pkg.Chart.Versions)-1]
 
@@ -184,7 +184,7 @@ func updateBundles() error {
 							}
 						}
 						sort.Slice(versions, func(i, j int) bool {
-							return !api.CompareVersions(semver.MustParse(versions[i].Version), semver.MustParse(versions[j].Version))
+							return !semvers.CompareVersions(semver.MustParse(versions[i].Version), semver.MustParse(versions[j].Version))
 						})
 						pkg.Chart.Versions = versions
 					}

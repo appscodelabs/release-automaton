@@ -27,6 +27,7 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
+	"stash.appscode.dev/catalog"
 )
 
 var (
@@ -63,7 +64,7 @@ func generateCatalog() error {
 		return err
 	}
 
-	var catalog api.StashCatalog
+	var catalog catalog.StashCatalog
 	data, err = ioutil.ReadFile(catalogFile)
 	if err != nil {
 		return err

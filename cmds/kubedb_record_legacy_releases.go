@@ -30,6 +30,7 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
 )
 
 func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
@@ -92,7 +93,7 @@ func CreateKubeDBReleaseTable() api.ReleaseTable {
 		}
 	}
 	sort.Slice(summaries, func(i, j int) bool {
-		return !api.CompareVersions(semver.MustParse(summaries[i].Release), semver.MustParse(summaries[j].Release))
+		return !semvers.CompareVersions(semver.MustParse(summaries[i].Release), semver.MustParse(summaries[j].Release))
 	})
 
 	return api.ReleaseTable{

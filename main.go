@@ -21,7 +21,7 @@ import (
 
 	"github.com/appscodelabs/release-automaton/cmds"
 
-	logs "github.com/appscode/go/log/golog"
+	logs "gomodules.xyz/x/log/golog"
 )
 
 func main() {

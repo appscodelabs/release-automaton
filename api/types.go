@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver"
+	"gomodules.xyz/semvers"
 )
 
 type ProjectMeta interface {
@@ -301,7 +302,7 @@ func (chlog *Changelog) Sort() {
 		sort.Slice(projects.Releases, func(i, j int) bool {
 			vi, _ := semver.NewVersion(projects.Releases[i].Tag)
 			vj, _ := semver.NewVersion(projects.Releases[j].Tag)
-			return CompareVersions(vi, vj)
+			return semvers.CompareVersions(vi, vj)
 		})
 		chlog.Projects[idx] = projects
 	}

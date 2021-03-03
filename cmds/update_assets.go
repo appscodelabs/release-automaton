@@ -26,9 +26,10 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/Masterminds/semver"
-	stringz "github.com/appscode/go/strings"
 	saapi "github.com/appscode/static-assets/api"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
+	stringz "gomodules.xyz/x/strings"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/yaml"
 )
@@ -125,7 +126,7 @@ func updateAsset(release api.Release, project api.Project) error {
 				for _, subTag := range subTags.UnsortedList() {
 					for idx, mapping := range ref.Mappings {
 						if stringz.Contains(mapping.SubProjectVersions, subTag) {
-							vs, err := api.SortVersions(sets.NewString(mapping.Versions...).Insert(*project.Tag).UnsortedList())
+							vs, err := semvers.SortVersions(sets.NewString(mapping.Versions...).Insert(*project.Tag).UnsortedList())
 							if err != nil {
 								return err
 							}
@@ -137,7 +138,7 @@ func updateAsset(release api.Release, project api.Project) error {
 					}
 				}
 				if subTags.Len() > 0 {
-					subVersions, err := api.SortVersions(subTags.UnsortedList())
+					subVersions, err := semvers.SortVersions(subTags.UnsortedList())
 					if err != nil {
 						return err
 					}
@@ -149,7 +150,7 @@ func updateAsset(release api.Release, project api.Project) error {
 					})
 				}
 				sort.Slice(ref.Mappings, func(i, j int) bool {
-					return !api.CompareVersions(
+					return !semvers.CompareVersions(
 						semver.MustParse(ref.Mappings[i].Versions[0]),
 						semver.MustParse(ref.Mappings[j].Versions[0]),
 					)
@@ -234,7 +235,7 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 
 	// sort
 	sort.Slice(data, func(i, j int) bool {
-		return !api.CompareVersions(semver.MustParse(data[i].Version), semver.MustParse(data[j].Version))
+		return !semvers.CompareVersions(semver.MustParse(data[i].Version), semver.MustParse(data[j].Version))
 	})
 	latestVersion := data[0].Version
 	for i := range data {
