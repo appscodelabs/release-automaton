@@ -20,9 +20,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/appscodelabs/release-automaton/api"
-
 	"github.com/spf13/cobra"
+	"stash.appscode.dev/catalog"
 )
 
 func NewCmdStashCreateCatalog() *cobra.Command {
@@ -44,9 +43,9 @@ func NewCmdStashCreateCatalog() *cobra.Command {
 	return cmd
 }
 
-func CreateCatalogData() api.StashCatalog {
-	return api.StashCatalog{
-		Addons: []api.Addon{
+func CreateCatalogData() catalog.StashCatalog {
+	return catalog.StashCatalog{
+		Addons: []catalog.Addon{
 			{
 				Name: "postgres",
 				Versions: []string{

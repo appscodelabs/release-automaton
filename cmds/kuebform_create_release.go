@@ -24,6 +24,7 @@ import (
 
 	"github.com/google/go-github/v32/github"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
 )
 
 func NewCmdKubeformCreateRelease() *cobra.Command {
@@ -115,7 +116,7 @@ func CreateKubeformReleaseFile() api.Release {
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
 							"make docs",
 						},
-						api.IsPublicRelease(releaseNumber),
+						semvers.IsPublicRelease(releaseNumber),
 						"make set-version VERSION=${TAG}",
 					),
 					Changelog: api.SkipChangelog,

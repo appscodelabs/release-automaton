@@ -29,6 +29,7 @@ import (
 
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
 )
 
 func NewCmdReleaseReadme() *cobra.Command {
@@ -100,7 +101,7 @@ func GenerateTable() api.ReleaseTable {
 		}
 	}
 	sort.Slice(releases, func(i, j int) bool {
-		return !api.CompareVersions(semver.MustParse(releases[i].Release), semver.MustParse(releases[j].Release))
+		return !semvers.CompareVersions(semver.MustParse(releases[i].Release), semver.MustParse(releases[j].Release))
 	})
 	for i := range releases {
 		releases[i].ReleaseDate = releases[i].ReleaseDate.UTC()
