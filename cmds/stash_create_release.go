@@ -71,6 +71,9 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/apimachinery": api.Project{
 					Tag: github.String("v0.11.10" + prerelease),
+					ChartNames: []string{
+						"stash-crds",
+					},
 				},
 			},
 			{
@@ -78,7 +81,7 @@ func CreateStashReleaseFile() api.Release {
 					Key: "stash-community",
 					Tag: github.String("v0.11.10" + prerelease),
 					ChartNames: []string{
-						"stash",
+						"stash-community",
 					},
 				},
 			},
@@ -211,6 +214,7 @@ func CreateStashReleaseFile() api.Release {
 					Key: "stash-installer",
 					Tag: github.String("v0.11.10" + prerelease),
 					Commands: []string{
+						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},

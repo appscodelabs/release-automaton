@@ -60,6 +60,9 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/apimachinery": api.Project{
 					Tag: github.String("v0.16.2" + prerelease),
+					ChartNames: []string{
+						"kubedb-crds",
+					},
 				},
 			},
 			{
@@ -128,7 +131,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key: "kubedb-community",
 					Tag: github.String("v0.16.2" + prerelease),
 					ChartNames: []string{
-						"kubedb",
+						"kubedb-community",
 						"kubedb-catalog",
 					},
 				},
@@ -157,13 +160,15 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key: "kubedb-installer",
 					Tag: github.String("v0.16.2" + prerelease),
 					Commands: []string{
-						"make chart-kubedb CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"./hack/scripts/import-crds.sh",
+						"make chart-kubedb-community CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-autoscaler CHART_VERSION=${APPSCODE_KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"go run ./hack/fmt/main.go --update-spec=spec.replicationModeDetector.image=kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG} --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						// https://stackoverflow.com/a/48290678
-						`find charts/kubedb-catalog/templates/mongodb -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
-						`find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
+						// `find charts/kubedb-catalog/templates/mongodb -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
+						// `find charts/kubedb-catalog/templates/mysql -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
 					},
 				},
 			},
