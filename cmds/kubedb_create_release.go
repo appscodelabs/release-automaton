@@ -50,7 +50,7 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 
 func CreateKubeDBReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.03.21" + prerelease
+	releaseNumber := "v2021.03.11" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
