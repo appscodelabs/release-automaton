@@ -73,6 +73,9 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/elasticsearch": api.Project{
 					Tag: github.String("v0.17.0" + prerelease),
 				},
+				"github.com/kubedb/mariadb": api.Project{
+					Tag: github.String("v0.1.0" + prerelease),
+				},
 				"github.com/kubedb/memcached": api.Project{
 					Tag: github.String("v0.10.0" + prerelease),
 				},
