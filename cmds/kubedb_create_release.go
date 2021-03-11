@@ -91,7 +91,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/percona-xtradb": api.Project{
 					Tag: github.String("v0.4.0" + prerelease),
 				},
-				"https://github.com/kubedb/pg-coordinator": api.Project{
+				"github.com/kubedb/pg-coordinator": api.Project{
 					Tag: github.String("v0.1.0" + prerelease),
 					// update catalog
 				},
