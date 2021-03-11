@@ -127,11 +127,11 @@ func main_Execute() {
 	sh.PipeFail = true
 	sh.PipeStdErrors = true
 
-	err := lib.Execute(sh, "echo A=B > /tmp/abc.txt")
+	err := lib.Execute(sh, "echo A=B > /tmp/abc.txt", nil)
 	if err != nil {
 		panic(err)
 	}
-	err = lib.Execute(sh, "echo C=D >> /tmp/abc.txt")
+	err = lib.Execute(sh, "echo C=D >> /tmp/abc.txt", nil)
 	if err != nil {
 		panic(err)
 	}

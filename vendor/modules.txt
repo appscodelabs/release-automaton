@@ -76,7 +76,7 @@ github.com/aws/aws-sdk-go/service/sts/stsiface
 github.com/bgentry/go-netrc/netrc
 # github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
 github.com/codegangsta/inject
-# github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe => github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29
+# github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe => github.com/gomodules/go-sh v0.0.0-20210311140041-6d1810c830ad
 ## explicit
 github.com/codeskyblue/go-sh
 # github.com/davecgh/go-spew v1.1.1
@@ -634,7 +634,7 @@ stash.appscode.dev/catalog
 # github.com/Azure/go-autorest/autorest/validation => github.com/Azure/go-autorest/autorest/validation v0.1.0
 # github.com/Azure/go-autorest/logger => github.com/Azure/go-autorest/logger v0.1.0
 # github.com/Azure/go-autorest/tracing => github.com/Azure/go-autorest/tracing v0.5.0
-# github.com/codeskyblue/go-sh => github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29
+# github.com/codeskyblue/go-sh => github.com/gomodules/go-sh v0.0.0-20210311140041-6d1810c830ad
 # github.com/go-openapi/analysis => github.com/go-openapi/analysis v0.19.5
 # github.com/go-openapi/errors => github.com/go-openapi/errors v0.19.2
 # github.com/go-openapi/jsonpointer => github.com/go-openapi/jsonpointer v0.19.3

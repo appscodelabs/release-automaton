@@ -27,7 +27,7 @@ import (
 	"github.com/kballard/go-shellquote"
 )
 
-func Execute(sh *shell.Session, cmd string) error {
+func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 	var cmdlets []string
 	var appendOut bool
 	var createOut bool
@@ -58,9 +58,14 @@ func Execute(sh *shell.Session, cmd string) error {
 		return fmt.Errorf("missing command: %s", cmd)
 	}
 
-	args := make([]interface{}, len(fields)-1)
+	args := make([]interface{}, len(fields))
 	for i := range fields[1:] {
 		args[i] = fields[i+1]
+	}
+	if env == nil {
+		args[len(fields)-1] = map[string]string{}
+	} else {
+		args[len(fields)-1] = env // pass env vars for this command only
 	}
 
 	s := sh.Command(fields[0], args...)

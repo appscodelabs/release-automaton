@@ -413,8 +413,8 @@ github.com/golangci/unconvert v0.0.0-20180507085042-28b1c447d1f4/go.mod h1:Izgrg
 github.com/golangplus/bytes v0.0.0-20160111154220-45c989fe5450/go.mod h1:Bk6SMAONeMXrxql8uvOKuAZSu8aM5RUGv+1C6IJaEho=
 github.com/golangplus/fmt v0.0.0-20150411045040-2a5d6d7d2995/go.mod h1:lJgMEyOkYFkPcDKwRXegd+iM6E7matEszMG5HhwytU8=
 github.com/golangplus/testing v0.0.0-20180327235837-af21d9c3145e/go.mod h1:0AA//k/eakGydO4jKRoRL2j92ZKSzTgj9tclaCrvXHk=
-github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29 h1:ak2NsMwwFQLHfl5Dam36nFrOdBOIcYM/07lzr/+GMSA=
-github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29/go.mod h1:VQx0hjo2oUeQkQUET7wRwradO6f+fN5jzXgB/zROxxE=
+github.com/gomodules/go-sh v0.0.0-20210311140041-6d1810c830ad h1:aLTjCouyD/VDimthWA+ZDxPVVi5Yy0AG/VHjgFyVbx4=
+github.com/gomodules/go-sh v0.0.0-20210311140041-6d1810c830ad/go.mod h1:VQx0hjo2oUeQkQUET7wRwradO6f+fN5jzXgB/zROxxE=
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/btree v1.0.0/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
 github.com/google/cadvisor v0.35.0/go.mod h1:1nql6U13uTHaLYB8rLS5x9IJc2qT6Xd/Tr1sTX6NE48=

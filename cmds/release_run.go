@@ -694,7 +694,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			if err != nil {
 				return err
 			}
-			err = lib.Execute(sh, cmd)
+			err = lib.Execute(sh, cmd, vars)
 			if err != nil {
 				return err
 			}
@@ -1103,7 +1103,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 			return err
 		}
 
-		err = lib.Execute(sh, cmd)
+		err = lib.Execute(sh, cmd, vars)
 		if err != nil {
 			return err
 		}

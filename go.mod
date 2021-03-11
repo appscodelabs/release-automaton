@@ -58,7 +58,7 @@ replace github.com/Azure/go-autorest/logger => github.com/Azure/go-autorest/logg
 
 replace github.com/Azure/go-autorest/tracing => github.com/Azure/go-autorest/tracing v0.5.0
 
-replace github.com/codeskyblue/go-sh => github.com/gomodules/go-sh v0.0.0-20200715230127-49575b7c0c29
+replace github.com/codeskyblue/go-sh => github.com/gomodules/go-sh v0.0.0-20210311140041-6d1810c830ad
 
 replace github.com/go-openapi/analysis => github.com/go-openapi/analysis v0.19.5
 
