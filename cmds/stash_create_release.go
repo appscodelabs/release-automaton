@@ -104,27 +104,18 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/postgres": api.Project{
 					Key: "stash-postgres",
-					ChartNames: []string{
-						"stash-postgres",
-					},
 					Tags: map[string]string{
-						"9.6.19-v5":  "release-9.6.19",
-						"10.14.0-v5": "release-10.14",
-						"11.9.0-v5":  "release-11.9",
-						"12.4.0-v5":  "release-12.4",
-						"13.1.0-v2":  "release-13.1",
-					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"9.6.19-v5": "release-9.6.19",
+						"10.14-v5":  "release-10.14",
+						"11.9-v5":   "release-11.9",
+						"12.4-v5":   "release-12.4",
+						"13.1-v2":   "release-13.1",
 					},
 				},
 			},
 			{
 				"github.com/stashed/elasticsearch": api.Project{
 					Key: "stash-elasticsearch",
-					ChartNames: []string{
-						"stash-elasticsearch",
-					},
 					Tags: map[string]string{
 						"5.6.4-v7": "release-5.6.4",
 						"6.2.4-v7": "release-6.2.4",
@@ -135,17 +126,11 @@ func CreateStashReleaseFile() api.Release {
 						"7.2.0-v7": "release-7.2.0",
 						"7.3.2-v7": "release-7.3.2",
 					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-					},
 				},
 			},
 			{
 				"github.com/stashed/mongodb": api.Project{
 					Key: "stash-mongodb",
-					ChartNames: []string{
-						"stash-mongodb",
-					},
 					Tags: map[string]string{
 						"3.4.17-v6": "release-3.4.17",
 						"3.4.22-v6": "release-3.4.22",
@@ -159,53 +144,32 @@ func CreateStashReleaseFile() api.Release {
 						"4.1.13-v6": "release-4.1.13",
 						"4.2.3-v6":  "release-4.2.3",
 					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-					},
 				},
 			},
 			{
 				"github.com/stashed/mysql": api.Project{
 					Key: "stash-mysql",
-					ChartNames: []string{
-						"stash-mysql",
-					},
 					Tags: map[string]string{
 						"5.7.25-v7": "release-5.7.25",
 						"8.0.3-v7":  "release-8.0.3",
 						"8.0.14-v7": "release-8.0.14",
 						"8.0.21-v1": "release-8.0.21",
 					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-					},
 				},
 			},
 			{
 				"github.com/stashed/mariadb": api.Project{
 					Key: "stash-mariadb",
-					ChartNames: []string{
-						"stash-mariadb",
-					},
 					Tags: map[string]string{
 						"10.5.8-v1": "release-10.5.8",
-					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},
 			{
 				"github.com/stashed/percona-xtradb": api.Project{
 					Key: "stash-percona-xtradb",
-					ChartNames: []string{
-						"stash-percona-xtradb",
-					},
 					Tags: map[string]string{
-						"5.7.0-v2": "release-5.7",
-					},
-					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"5.7-v2": "release-5.7",
 					},
 				},
 			},
@@ -213,35 +177,23 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/installer": api.Project{
 					Key: "stash-installer",
 					Tag: github.String("v0.11.11" + prerelease),
+					ChartNames: []string{
+						"stash-catalog",
+					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog/catalog.json",
+						"make gen fmt",
 					},
 				},
 			},
 			{
 				"github.com/appscode/charts": api.Project{
 					Charts: []string{
-						"github.com/stashed/postgres",
-						"github.com/stashed/elasticsearch",
-						"github.com/stashed/mongodb",
-						"github.com/stashed/mysql",
-						"github.com/stashed/mariadb",
-						"github.com/stashed/percona-xtradb",
 						"github.com/stashed/installer",
 					},
 					Changelog: api.SkipChangelog,
-				},
-			},
-			{
-				"github.com/stashed/catalog": api.Project{
-					Key:           "stash-catalog",
-					Tag:           github.String(releaseNumber),
-					ReleaseBranch: "release-${TAG}",
-					Commands: []string{
-						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog.json",
-						"make gen fmt",
-					},
 				},
 			},
 			{
