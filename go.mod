@@ -18,14 +18,14 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93
 	gomodules.xyz/envsubst v0.1.0
 	gomodules.xyz/oneliners v0.0.0-20200730052119-bccc7758058b
-	gomodules.xyz/semvers v0.0.0-20210303214013-a7245da66f4f
+	gomodules.xyz/semvers v0.0.0-20210310134147-b22f1a8bc683
 	gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
 	gomodules.xyz/x v0.0.0-20201105065653-91c568df6331
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/apimachinery v0.18.9
+	k8s.io/apimachinery v0.20.4
 	kubepack.dev/kubepack v0.3.3
 	sigs.k8s.io/yaml v1.2.0
-	stash.appscode.dev/catalog v0.0.0-20210303214218-1306ba59af95
+	stash.appscode.dev/installer v0.11.11
 )
 
 replace bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d

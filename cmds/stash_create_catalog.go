@@ -21,7 +21,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"stash.appscode.dev/catalog"
+	"stash.appscode.dev/installer/catalog"
 )
 
 func NewCmdStashCreateCatalog() *cobra.Command {
