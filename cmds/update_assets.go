@@ -99,6 +99,8 @@ func updateAsset(release api.Release, project api.Project) error {
 		return err
 	}
 
+	knownSubProjects := sets.NewString(project.SubProjects...)
+
 	if project.Tag != nil {
 		tag := *project.Tag
 		if !findProductVersion(tag, prod.Versions) {
@@ -112,7 +114,7 @@ func updateAsset(release api.Release, project api.Project) error {
 		}
 
 		for subKey, ref := range prod.SubProjects {
-			if subKey == "stash-cli" {
+			if !knownSubProjects.Has(subKey) {
 				// NOT a sub project anymore
 				continue
 			}
@@ -126,10 +128,7 @@ func updateAsset(release api.Release, project api.Project) error {
 				for _, subTag := range subTags.UnsortedList() {
 					for idx, mapping := range ref.Mappings {
 						if stringz.Contains(mapping.SubProjectVersions, subTag) {
-							vs, err := semvers.SortVersions(sets.NewString(mapping.Versions...).Insert(*project.Tag).UnsortedList())
-							if err != nil {
-								return err
-							}
+							vs := semvers.SortVersions(sets.NewString(mapping.Versions...).Insert(*project.Tag).UnsortedList(), semvers.Compare)
 							mapping.Versions = vs
 							ref.Mappings[idx] = mapping
 							subTags.Delete(subTag)
@@ -138,10 +137,7 @@ func updateAsset(release api.Release, project api.Project) error {
 					}
 				}
 				if subTags.Len() > 0 {
-					subVersions, err := semvers.SortVersions(subTags.UnsortedList())
-					if err != nil {
-						return err
-					}
+					subVersions := semvers.SortVersions(subTags.UnsortedList(), semvers.Compare)
 					ref.Mappings = append(ref.Mappings, saapi.Mapping{
 						Versions: []string{
 							*project.Tag,

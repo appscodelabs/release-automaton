@@ -18,7 +18,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93
 	gomodules.xyz/envsubst v0.1.0
 	gomodules.xyz/oneliners v0.0.0-20200730052119-bccc7758058b
-	gomodules.xyz/semvers v0.0.0-20210310134147-b22f1a8bc683
+	gomodules.xyz/semvers v0.0.0-20210317131320-984e32dd89ca
 	gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
 	gomodules.xyz/x v0.0.0-20201105065653-91c568df6331
 	gopkg.in/yaml.v2 v2.4.0
