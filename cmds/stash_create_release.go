@@ -91,6 +91,7 @@ func CreateStashReleaseFile() api.Release {
 					Tag: github.String("v0.11.11" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
+						"stash-catalog",
 					},
 				},
 			},
@@ -103,6 +104,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/postgres": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-postgres",
 					Tags: map[string]string{
 						"9.6.19-v5": "release-9.6.19",
@@ -115,6 +117,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/elasticsearch": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-elasticsearch",
 					Tags: map[string]string{
 						"5.6.4-v7": "release-5.6.4",
@@ -130,6 +133,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/mongodb": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-mongodb",
 					Tags: map[string]string{
 						"3.4.17-v6": "release-3.4.17",
@@ -148,6 +152,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/mysql": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-mysql",
 					Tags: map[string]string{
 						"5.7.25-v7": "release-5.7.25",
@@ -159,6 +164,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/mariadb": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-mariadb",
 					Tags: map[string]string{
 						"10.5.8-v1": "release-10.5.8",
@@ -167,6 +173,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/percona-xtradb": api.Project{
+					// NOT a sub project anymore
 					Key: "stash-percona-xtradb",
 					Tags: map[string]string{
 						"5.7-v2": "release-5.7",
@@ -177,14 +184,13 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/installer": api.Project{
 					Key: "stash-installer",
 					Tag: github.String("v0.11.11" + prerelease),
-					ChartNames: []string{
-						"stash-catalog",
-					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-stash CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog/catalog.json",
 						"make gen fmt",
+						"helm dependency update charts/stash",
 					},
 				},
 			},
