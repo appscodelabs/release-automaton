@@ -50,7 +50,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.03.11" + prerelease
+	releaseNumber := "v2021.03.17" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -70,7 +70,7 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.11.11" + prerelease),
+					Tag: github.String("v0.12.0" + prerelease),
 					ChartNames: []string{
 						"stash-crds",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.11.11" + prerelease),
+					Tag: github.String("v0.12.0" + prerelease),
 					ChartNames: []string{
 						"stash-community",
 					},
@@ -88,7 +88,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.11.11" + prerelease),
+					Tag: github.String("v0.12.0" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 						"stash-catalog",
@@ -99,7 +99,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.11.11" + prerelease),
+					Tag: github.String("v0.12.0" + prerelease),
 				},
 			},
 			{
@@ -183,7 +183,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/installer": api.Project{
 					Key: "stash-installer",
-					Tag: github.String("v0.11.11" + prerelease),
+					Tag: github.String("v0.12.0" + prerelease),
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
