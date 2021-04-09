@@ -158,8 +158,9 @@ func CreateKubeDBReleaseFile() api.Release {
 			// Build Enterprise image
 			{
 				"github.com/kubedb/installer": api.Project{
-					Key: "kubedb-installer",
-					Tag: github.String(releaseNumber),
+					Key:           "kubedb-installer",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"go run ./hack/fmt/main.go --update-spec=spec.replicationModeDetector.image=kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG} --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",

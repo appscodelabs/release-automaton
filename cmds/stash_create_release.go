@@ -182,8 +182,9 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/stashed/installer": api.Project{
-					Key: "stash-installer",
-					Tag: github.String(releaseNumber),
+					Key:           "stash-installer",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
