@@ -159,16 +159,17 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/installer": api.Project{
 					Key: "kubedb-installer",
-					Tag: github.String("v0.17.1" + prerelease),
+					Tag: github.String(releaseNumber),
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"go run ./hack/fmt/main.go --update-spec=spec.replicationModeDetector.image=kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG} --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
-						"make chart-kubedb-crds CHART_VERSION=${KUBEDB_APIMACHINERY_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						// "make chart-kubedb CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						// "make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						// "make chart-kubedb-crds CHART_VERSION=${KUBEDB_APIMACHINERY_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-community CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb-catalog CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-autoscaler CHART_VERSION=${APPSCODE_KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"helm dependency update charts/kubedb",
 						// https://stackoverflow.com/a/48290678
 						// `find charts/kubedb-catalog/templates/mongodb -type f -exec sed -i 's|replication-mode-detector:.*|replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}"|g' {} \;`,
