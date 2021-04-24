@@ -19,15 +19,21 @@ package lib
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/appscodelabs/release-automaton/api"
 
 	"github.com/google/go-github/v32/github"
 	"golang.org/x/oauth2"
 	"k8s.io/apimachinery/pkg/util/sets"
+)
+
+const (
+	skew = 10 * time.Second
 )
 
 func NewGitHubClient() *github.Client {
@@ -53,9 +59,26 @@ func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo strin
 	result := sets.NewString()
 	for {
 		labels, resp, err := gh.Issues.ListLabelsByIssue(ctx, owner, repo, number, opt)
-		if err != nil {
-			break
+		switch e := err.(type) {
+		case *github.RateLimitError:
+			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			continue
+		case *github.AbuseRateLimitError:
+			time.Sleep(e.GetRetryAfter())
+			continue
+		case *github.ErrorResponse:
+			if e.Response.StatusCode == http.StatusNotFound {
+				log.Println(err)
+				break
+			} else {
+				return nil, err
+			}
+		default:
+			if e != nil {
+				return nil, err
+			}
 		}
+
 		for _, entry := range labels {
 			result.Insert(entry.GetName())
 		}
@@ -67,7 +90,7 @@ func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo strin
 	return result, nil
 }
 
-func ListRelease(ctx context.Context, gh *github.Client, owner, repo string) ([]*github.RepositoryRelease, error) {
+func ListReleases(ctx context.Context, gh *github.Client, owner, repo string) ([]*github.RepositoryRelease, error) {
 	opt := &github.ListOptions{
 		PerPage: 100,
 	}
@@ -75,9 +98,26 @@ func ListRelease(ctx context.Context, gh *github.Client, owner, repo string) ([]
 	var result []*github.RepositoryRelease
 	for {
 		releases, resp, err := gh.Repositories.ListReleases(ctx, owner, repo, opt)
-		if err != nil {
-			break
+		switch e := err.(type) {
+		case *github.RateLimitError:
+			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			continue
+		case *github.AbuseRateLimitError:
+			time.Sleep(e.GetRetryAfter())
+			continue
+		case *github.ErrorResponse:
+			if e.Response.StatusCode == http.StatusNotFound {
+				log.Println(err)
+				break
+			} else {
+				return nil, err
+			}
+		default:
+			if e != nil {
+				return nil, err
+			}
 		}
+
 		result = append(result, releases...)
 		if resp.NextPage == 0 {
 			break
@@ -95,9 +135,26 @@ func ListReviews(ctx context.Context, gh *github.Client, owner, repo string, num
 	var result []*github.PullRequestReview
 	for {
 		reviews, resp, err := gh.PullRequests.ListReviews(ctx, owner, repo, number, opt)
-		if err != nil {
-			break
+		switch e := err.(type) {
+		case *github.RateLimitError:
+			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			continue
+		case *github.AbuseRateLimitError:
+			time.Sleep(e.GetRetryAfter())
+			continue
+		case *github.ErrorResponse:
+			if e.Response.StatusCode == http.StatusNotFound {
+				log.Println(err)
+				break
+			} else {
+				return nil, err
+			}
+		default:
+			if e != nil {
+				return nil, err
+			}
 		}
+
 		result = append(result, reviews...)
 		if resp.NextPage == 0 {
 			break
@@ -119,9 +176,26 @@ func ListPullRequestComment(ctx context.Context, gh *github.Client, owner, repo 
 	var result []*github.PullRequestComment
 	for {
 		comments, resp, err := gh.PullRequests.ListComments(ctx, owner, repo, number, opt)
-		if err != nil {
-			break
+		switch e := err.(type) {
+		case *github.RateLimitError:
+			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			continue
+		case *github.AbuseRateLimitError:
+			time.Sleep(e.GetRetryAfter())
+			continue
+		case *github.ErrorResponse:
+			if e.Response.StatusCode == http.StatusNotFound {
+				log.Println(err)
+				break
+			} else {
+				return nil, err
+			}
+		default:
+			if e != nil {
+				return nil, err
+			}
 		}
+
 		result = append(result, comments...)
 		if resp.NextPage == 0 {
 			break
@@ -143,9 +217,26 @@ func ListComments(ctx context.Context, gh *github.Client, owner, repo string, nu
 	var result []*github.IssueComment
 	for {
 		comments, resp, err := gh.Issues.ListComments(ctx, owner, repo, number, opt)
-		if err != nil {
-			break
+		switch e := err.(type) {
+		case *github.RateLimitError:
+			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			continue
+		case *github.AbuseRateLimitError:
+			time.Sleep(e.GetRetryAfter())
+			continue
+		case *github.ErrorResponse:
+			if e.Response.StatusCode == http.StatusNotFound {
+				log.Println(err)
+				break
+			} else {
+				return nil, err
+			}
+		default:
+			if e != nil {
+				return nil, err
+			}
 		}
+
 		result = append(result, comments...)
 		if resp.NextPage == 0 {
 			break

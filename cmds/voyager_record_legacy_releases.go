@@ -33,13 +33,16 @@ import (
 	"gomodules.xyz/semvers"
 )
 
-func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
+func NewCmdVoyagerRecordLegacyReleases() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "record-legacy-releases",
 		Short:             "Writes legacy releases in releases/legacy_releases.json",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			table := CreateKubeDBReleaseTable()
+			table, err := CreateVoyagerReleaseTable()
+			if err != nil {
+				panic(err)
+			}
 
 			data, err := lib.MarshalJson(table)
 			if err != nil {
@@ -65,11 +68,14 @@ func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
 	return cmd
 }
 
-func CreateKubeDBReleaseTable() api.ReleaseTable {
+func CreateVoyagerReleaseTable() (*api.ReleaseTable, error) {
+	owner := "voyagermesh"
+	repo := "voyager"
+
 	gh := lib.NewGitHubClient()
-	releases, err := lib.ListReleases(context.TODO(), gh, "kubedb", "cli")
+	releases, err := lib.ListReleases(context.TODO(), gh, owner, repo)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	var summaries []api.ReleaseSummary
@@ -84,10 +90,10 @@ func CreateKubeDBReleaseTable() api.ReleaseTable {
 				KubernetesVersion: "",
 				ReleaseURL:        r.GetHTMLURL(),
 				ChangelogURL:      r.GetHTMLURL(),
-				DocsURL:           fmt.Sprintf("https://kubedb.com/docs/%s", r.GetTagName()),
+				DocsURL:           fmt.Sprintf("https://voyagermesh.com/docs/%s", r.GetTagName()),
 			}
-			if v.LessThan(semver.MustParse("0.8.0-beta.0")) {
-				summary.DocsURL = fmt.Sprintf("https://github.com/kubedb/docs/tree/%s/docs", r.GetTagName())
+			if v.LessThan(semver.MustParse("5.0.0")) {
+				summary.DocsURL = fmt.Sprintf("https://github.com/%s/docs/tree/%s/docs", owner, r.GetTagName())
 			}
 			summaries = append(summaries, summary)
 		}
@@ -95,9 +101,8 @@ func CreateKubeDBReleaseTable() api.ReleaseTable {
 	sort.Slice(summaries, func(i, j int) bool {
 		return !semvers.CompareVersions(semver.MustParse(summaries[i].Release), semver.MustParse(summaries[j].Release))
 	})
-
-	return api.ReleaseTable{
-		ProductLine: "KubeDB",
+	return &api.ReleaseTable{
+		ProductLine: "Voyager",
 		Releases:    summaries,
-	}
+	}, nil
 }
