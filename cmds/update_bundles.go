@@ -34,7 +34,7 @@ import (
 )
 
 var (
-	chartsDir string = "charts"
+	chartsDir = "charts"
 )
 
 /*

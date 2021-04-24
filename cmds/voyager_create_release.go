@@ -49,8 +49,8 @@ func NewCmdVoyagerCreateRelease() *cobra.Command {
 }
 
 func CreateVoyagerReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2020.10.30" + prerelease
+	prerelease := "-beta.2"
+	releaseNumber := "v2021.04.20" + prerelease
 	return api.Release{
 		ProductLine:       "Voyager",
 		Release:           releaseNumber,
@@ -59,19 +59,21 @@ func CreateVoyagerReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/voyagermesh/voyager": api.Project{
-					Key: "voyager",
-					Tag: github.String("v0.3.0" + prerelease),
-					ChartNames: []string{
-						"voyager",
-					},
+					Tag: github.String("v13.0.0" + prerelease),
 				},
 			},
 			{
 				"github.com/voyagermesh/installer": api.Project{
-					Key: "voyager-installer",
-					Tag: github.String("v0.3.0" + prerelease),
+					Key:           "voyager-installer",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
+					ChartNames: []string{
+						"voyager",
+						"voyager-crds",
+					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"./hack/scripts/import-crds.sh",
+						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 					},
 				},
 			},

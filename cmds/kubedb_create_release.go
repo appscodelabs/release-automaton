@@ -60,9 +60,6 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/apimachinery": api.Project{
 					Tag: github.String("v0.18.0" + prerelease),
-					ChartNames: []string{
-						"kubedb-crds",
-					},
 				},
 			},
 			{
@@ -133,7 +130,6 @@ func CreateKubeDBReleaseFile() api.Release {
 					Tag: github.String("v0.18.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-community",
-						"kubedb-catalog",
 					},
 				},
 			},
@@ -161,6 +157,11 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key:           "kubedb-installer",
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
+					ChartNames: []string{
+						"kubedb-crds",
+						"kubedb-catalog",
+						"kubedb",
+					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"go run ./hack/fmt/main.go --update-spec=spec.replicationModeDetector.image=kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG} --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
