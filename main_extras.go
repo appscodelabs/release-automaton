@@ -32,7 +32,7 @@ import (
 	"github.com/alessio/shellescape"
 	"github.com/codeskyblue/go-sh"
 	shell "github.com/codeskyblue/go-sh"
-	"github.com/google/go-github/v32/github"
+	"github.com/google/go-github/v35/github"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-getter"
 	"github.com/kballard/go-shellquote"

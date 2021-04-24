@@ -30,7 +30,7 @@ import (
 
 	"github.com/Masterminds/semver"
 	shell "github.com/codeskyblue/go-sh"
-	"github.com/google/go-github/v32/github"
+	"github.com/google/go-github/v35/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/mod/modfile"
 	"gomodules.xyz/envsubst"

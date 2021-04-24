@@ -8,7 +8,7 @@ require (
 	github.com/alessio/shellescape v1.4.1
 	github.com/appscode/static-assets v0.6.7
 	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
-	github.com/google/go-github/v32 v32.1.0
+	github.com/google/go-github/v35 v35.1.0
 	github.com/google/uuid v1.1.2
 	github.com/hashicorp/go-getter v1.5.2
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
@@ -25,7 +25,7 @@ require (
 	k8s.io/apimachinery v0.20.4
 	kubepack.dev/kubepack v0.3.3
 	sigs.k8s.io/yaml v1.2.0
-	stash.appscode.dev/installer v0.11.11
+	stash.appscode.dev/installer v0.12.2-0.20210410130945-2814743a0ad3
 )
 
 replace bitbucket.org/ww/goautoneg => gomodules.xyz/goautoneg v0.0.0-20120707110453-a547fc61f48d
