@@ -49,8 +49,8 @@ func NewCmdVoyagerCreateRelease() *cobra.Command {
 }
 
 func CreateVoyagerReleaseFile() api.Release {
-	prerelease := "-beta.2"
-	releaseNumber := "v2021.04.20" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2021.04.24" + prerelease
 	return api.Release{
 		ProductLine:       "Voyager",
 		Release:           releaseNumber,
