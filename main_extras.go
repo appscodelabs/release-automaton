@@ -30,12 +30,12 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/alessio/shellescape"
-	"github.com/codeskyblue/go-sh"
-	shell "github.com/codeskyblue/go-sh"
 	"github.com/google/go-github/v35/github"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-getter"
 	"github.com/kballard/go-shellquote"
+	"gomodules.xyz/go-sh"
+	shell "gomodules.xyz/go-sh"
 	"sigs.k8s.io/yaml"
 )
 

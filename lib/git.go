@@ -24,7 +24,7 @@ import (
 	"github.com/appscodelabs/release-automaton/api"
 
 	"github.com/alessio/shellescape"
-	shell "github.com/codeskyblue/go-sh"
+	shell "gomodules.xyz/go-sh"
 )
 
 func IsGitConfigured(sh *shell.Session, key string, global bool) bool {

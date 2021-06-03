@@ -21,14 +21,16 @@ import (
 
 	"github.com/appscodelabs/release-automaton/cmds"
 
-	logs "gomodules.xyz/x/log/golog"
+	"gomodules.xyz/logs"
 )
 
 func main() {
-	logs.InitLogs()
+	rootCmd := cmds.NewRootCmd()
+
+	logs.Init(rootCmd, false)
 	defer logs.FlushLogs()
 
-	if err := cmds.NewRootCmd().Execute(); err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 	os.Exit(0)

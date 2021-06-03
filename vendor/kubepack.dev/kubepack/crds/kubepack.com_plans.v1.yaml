@@ -41,7 +41,7 @@ spec:
                 format: int64
                 type: integer
               amountDecimal:
-                format: float
+                format: double
                 type: number
               billingScheme:
                 type: string
@@ -76,6 +76,29 @@ spec:
                 type: string
               phase:
                 type: string
+              pricingPattern:
+                additionalProperties:
+                  properties:
+                    expression:
+                      type: string
+                    sizedPrices:
+                      items:
+                        properties:
+                          cpu:
+                            type: string
+                          memory:
+                            type: string
+                          price:
+                            format: double
+                            type: number
+                        required:
+                        - cpu
+                        - memory
+                        - price
+                        type: object
+                      type: array
+                  type: object
+                type: object
               productID:
                 type: string
               tiers:
@@ -86,13 +109,13 @@ spec:
                       format: int64
                       type: integer
                     flatAmountDecimal:
-                      format: float
+                      format: double
                       type: number
                     unitAmount:
                       format: int64
                       type: integer
                     unitAmountDecimal:
-                      format: float
+                      format: double
                       type: number
                     upTo:
                       format: int64

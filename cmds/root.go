@@ -17,8 +17,6 @@ limitations under the License.
 package cmds
 
 import (
-	"flag"
-
 	"github.com/spf13/cobra"
 	v "gomodules.xyz/x/version"
 )
@@ -29,9 +27,6 @@ func NewRootCmd() *cobra.Command {
 		Short:             `release-automaton by AppsCode - Release often`,
 		DisableAutoGenTag: true,
 	}
-
-	flags := rootCmd.PersistentFlags()
-	flags.AddGoFlagSet(flag.CommandLine)
 
 	rootCmd.AddCommand(NewCmdRelease())
 	rootCmd.AddCommand(NewCmdStash())

@@ -28,7 +28,7 @@ import (
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
 
-	"github.com/Masterminds/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/spf13/cobra"
 	"gomodules.xyz/semvers"
 )

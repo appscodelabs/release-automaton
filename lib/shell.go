@@ -23,8 +23,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	shell "github.com/codeskyblue/go-sh"
 	"github.com/kballard/go-shellquote"
+	shell "gomodules.xyz/go-sh"
 )
 
 func Execute(sh *shell.Session, cmd string, env map[string]string) error {
