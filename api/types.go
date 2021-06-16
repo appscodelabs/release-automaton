@@ -48,7 +48,7 @@ type Project struct {
 	ReleaseBranch string            `json:"release_branch,omitempty"`
 	ReadyToTag    bool              `json:"ready_to_tag,omitempty"`
 	Changelog     ChangelogStatus   `json:"changelog,omitempty"`
-	SubProjects   []string          `json:"sub_projects"`
+	SubProjects   []string          `json:"sub_projects,omitempty"`
 }
 
 func (p Project) GetCommands() []string {
