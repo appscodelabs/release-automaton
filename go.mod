@@ -7,7 +7,7 @@ require (
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/alessio/shellescape v1.4.1
 	github.com/appscode/static-assets v0.6.7
-	github.com/google/go-github/v35 v35.2.0
+	github.com/google/go-github/v35 v35.3.0
 	github.com/google/uuid v1.1.2
 	github.com/hashicorp/go-getter v1.5.3
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
@@ -17,7 +17,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20201203001011-0b49973bad19
 	gomodules.xyz/envsubst v0.1.0
 	gomodules.xyz/go-sh v0.1.0
-	gomodules.xyz/logs v0.0.1
+	gomodules.xyz/logs v0.0.2
 	gomodules.xyz/oneliners v0.0.0-20200730052119-bccc7758058b
 	gomodules.xyz/semvers v0.0.0-20210603205601-45dfbb5326a4
 	gomodules.xyz/sets v0.0.0-20210218105342-2efe2fb519a2
