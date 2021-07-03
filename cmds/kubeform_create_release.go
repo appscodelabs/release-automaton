@@ -59,53 +59,53 @@ func CreateKubeformReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubeform/provider-aws-api": api.Project{
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 				"github.com/kubeform/provider-azurerm-api": api.Project{
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 				"github.com/kubeform/provider-google-api": api.Project{
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 				"github.com/kubeform/provider-digitalocean-api": api.Project{
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 				"github.com/kubeform/provider-linode-api": api.Project{
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubeform/provider-aws-controller": api.Project{
 					Key: "kubeform-aws",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-aws",
 					},
 				},
 				"github.com/kubeform/provider-azurerm-controller": api.Project{
 					Key: "kubeform-azurerm",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-azurerm",
 					},
 				},
 				"github.com/kubeform/provider-google-controller": api.Project{
 					Key: "kubeform-google",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-google",
 					},
 				},
 				"github.com/kubeform/provider-digitalocean-controller": api.Project{
 					Key: "kubeform-digitalocean",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-digitalocean",
 					},
 				},
 				"github.com/kubeform/provider-linode-controller": api.Project{
 					Key: "kubeform-linode",
-					Tag: github.String("v0.0.1" + prerelease),
+					Tag: github.String("v0.1.0" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-linode",
 					},
