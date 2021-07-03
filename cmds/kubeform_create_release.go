@@ -125,7 +125,6 @@ func CreateKubeformReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/prepare-release.sh",
-						"make gen fmt",
 						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
