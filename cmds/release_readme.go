@@ -19,6 +19,7 @@ package cmds
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 	"path"
 	"path/filepath"
 	"sort"
@@ -48,16 +49,15 @@ func NewCmdReleaseReadme() *cobra.Command {
 }
 
 func GenerateTable() api.ReleaseTable {
+	var table api.ReleaseTable
+
 	legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
 	data, err := ioutil.ReadFile(legacyfilename)
-	if err != nil {
-		panic(err)
-	}
-
-	var table api.ReleaseTable
-	err = json.Unmarshal(data, &table)
-	if err != nil {
-		panic(err)
+	if !os.IsNotExist(err) {
+		err = json.Unmarshal(data, &table)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	entries, err := ioutil.ReadDir(changelogRoot)
