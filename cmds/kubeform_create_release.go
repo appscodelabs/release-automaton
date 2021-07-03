@@ -50,33 +50,83 @@ func NewCmdKubeformCreateRelease() *cobra.Command {
 
 func CreateKubeformReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2020.10.30" + prerelease
+	releaseNumber := "v2021.07.01" + prerelease
 	return api.Release{
 		ProductLine:       "Kubeform",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubeform.com/docs/%s",
-		KubernetesVersion: "1.14+",
+		KubernetesVersion: "1.16+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubeform/kubeform": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+				"github.com/kubeform/provider-aws-api": api.Project{
+					Tag: github.String("v0.0.1" + prerelease),
+				},
+				"github.com/kubeform/provider-azurerm-api": api.Project{
+					Tag: github.String("v0.0.1" + prerelease),
+				},
+				"github.com/kubeform/provider-google-api": api.Project{
+					Tag: github.String("v0.0.1" + prerelease),
+				},
+				"github.com/kubeform/provider-digitalocean-api": api.Project{
+					Tag: github.String("v0.0.1" + prerelease),
+				},
+				"github.com/kubeform/provider-linode-api": api.Project{
+					Tag: github.String("v0.0.1" + prerelease),
 				},
 			},
 			{
-				"github.com/kubeform/kfc": api.Project{
-					Key: "kubeform-community",
-					Tag: github.String("v0.3.0" + prerelease),
+				"github.com/kubeform/provider-aws-controller": api.Project{
+					Key: "kubeform-aws",
+					Tag: github.String("v0.0.1" + prerelease),
 					ChartNames: []string{
-						"kubeform",
+						"kubeform-provider-aws",
+					},
+				},
+				"github.com/kubeform/provider-azurerm-controller": api.Project{
+					Key: "kubeform-azurerm",
+					Tag: github.String("v0.0.1" + prerelease),
+					ChartNames: []string{
+						"kubeform-provider-azurerm",
+					},
+				},
+				"github.com/kubeform/provider-google-controller": api.Project{
+					Key: "kubeform-google",
+					Tag: github.String("v0.0.1" + prerelease),
+					ChartNames: []string{
+						"kubeform-provider-google",
+					},
+				},
+				"github.com/kubeform/provider-digitalocean-controller": api.Project{
+					Key: "kubeform-digitalocean",
+					Tag: github.String("v0.0.1" + prerelease),
+					ChartNames: []string{
+						"kubeform-provider-digitalocean",
+					},
+				},
+				"github.com/kubeform/provider-linode-controller": api.Project{
+					Key: "kubeform-linode",
+					Tag: github.String("v0.0.1" + prerelease),
+					ChartNames: []string{
+						"kubeform-provider-linode",
 					},
 				},
 			},
 			{
 				"github.com/kubeform/installer": api.Project{
-					Key: "kubeform-installer",
-					Tag: github.String("v0.3.0" + prerelease),
+					Key:           "kubeform-installer",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
+					ChartNames: []string{
+						"kubeform-provider-aws",
+						"kubeform-provider-azurerm",
+						"kubeform-provider-google",
+						"kubeform-provider-digitalocean",
+						"kubeform-provider-linode",
+					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"./hack/scripts/prepare-release.sh",
+						"make gen fmt",
+						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
 			},
@@ -98,7 +148,7 @@ func CreateKubeformReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/kubeform/docs": api.Project{
+				"github.com/kubeform/kubeform": api.Project{
 					Key:           "kubeform",
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
