@@ -55,37 +55,44 @@ func CreateKubeVaultReleaseFile() api.Release {
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubevault.com/docs/%s",
-		KubernetesVersion: "1.14+",
+		KubernetesVersion: "1.16+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubevault/operator": api.Project{
-					Key: "kubevault-operator",
+				"github.com/kubevault/apimachinery": api.Project{
 					ChartNames: []string{
-						"vault-operator",
-						"vault-catalog",
+						"kubevault-crds",
 					},
 					Tag: github.String("v0.4.0" + prerelease),
 				},
-			},
-			{
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
 					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
-				"github.com/kubevault/cli": api.Project{
-					Key: "kubevault-cli",
+				"github.com/kubevault/operator": api.Project{
+					Key: "kubevault-operator",
+					ChartNames: []string{
+						"kubevault-operator",
+						"kubevault-catalog",
+					},
 					Tag: github.String("v0.4.0" + prerelease),
 				},
-			},
-			{
 				"github.com/kubevault/csi-driver": api.Project{
 					Key: "kubevault-csi",
 					ChartNames: []string{
 						"csi-vault",
 					},
 					Tag: github.String("v0.4.0" + prerelease),
+				},
+				"github.com/kubevault/cli": api.Project{
+					Key: "kubevault-cli",
+					Tag: github.String("v0.4.0" + prerelease),
+				},
+				{
+					"github.com/kubevault/prometheus-exporter": api.Project{
+						Tag: github.String("v0.4.0" + prerelease),
+					},
 				},
 			},
 			{
@@ -115,7 +122,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/kubevault/docs": api.Project{
+				"github.com/kubevault/kubevault": api.Project{
 					Key:           "kubevault",
 					Tag:           github.String("v2020.07.09" + prerelease),
 					ReleaseBranch: "release-${TAG}",
@@ -157,11 +164,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 					Changelog: api.SkipChangelog,
 				},
 			},
-			//{
-			//	"github.com/kubevault/vault_exporter": api.Project{
-			//		Tag: github.String("v0.4.0" + prerelease),
-			//	},
-			//},
 		},
 		ExternalProjects: map[string]api.ExternalProject{},
 	}
