@@ -130,7 +130,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			{
 				"github.com/kubevault/kubevault": api.Project{
 					Key:           "kubevault",
-					Tag:           github.String("v2020.07.09" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
@@ -139,7 +139,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubevault/website": api.Project{
-					Tag:           github.String("v2020.07.09" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
@@ -155,7 +155,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			// Bundle
 			{
 				"github.com/kubevault/bundles": api.Project{
-					Tag:           github.String("v2020.07.09" + prerelease),
+					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
 						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
