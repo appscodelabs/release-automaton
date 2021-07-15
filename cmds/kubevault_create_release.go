@@ -49,8 +49,8 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
-	prerelease := "-beta.0"
-	releaseNumber := "v2020.07.09" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2021.07.14" + prerelease
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
@@ -59,9 +59,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/apimachinery": api.Project{
-					ChartNames: []string{
-						"kubevault-crds",
-					},
 					Tag: github.String("v0.4.0" + prerelease),
 				},
 				"github.com/kubevault/unsealer": api.Project{
@@ -74,7 +71,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 					Key: "kubevault-operator",
 					ChartNames: []string{
 						"kubevault-operator",
-						"kubevault-catalog",
 					},
 					Tag: github.String("v0.4.0" + prerelease),
 				},
@@ -89,18 +85,28 @@ func CreateKubeVaultReleaseFile() api.Release {
 					Key: "kubevault-cli",
 					Tag: github.String("v0.4.0" + prerelease),
 				},
-				{
-					"github.com/kubevault/prometheus-exporter": api.Project{
-						Tag: github.String("v0.4.0" + prerelease),
-					},
-				},
+				// {
+				// 	"github.com/kubevault/prometheus-exporter": api.Project{
+				// 		Tag: github.String("v0.4.0" + prerelease),
+				// 	},
+				// },
 			},
 			{
 				"github.com/kubevault/installer": api.Project{
-					Key: "kubevault-installer",
-					Tag: github.String("v0.4.0" + prerelease),
+					Key:           "kubevault-installer",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
+					ChartNames: []string{
+						"kubevault-crds",
+						"kubevault-catalog",
+						"kubevault",
+					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"./hack/scripts/import-crds.sh",
+						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubevault-operator CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-csi-vault CHART_VERSION=${KUBEDB_CSI_DRIVER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
 			},
