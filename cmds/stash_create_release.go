@@ -193,7 +193,7 @@ func CreateStashReleaseFile() api.Release {
 						"make chart-stash-enterprise CHART_VERSION=${APPSCODE_STASH_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog/catalog.json",
 						"make gen fmt",
-						"helm dependency update charts/stash",
+						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
 			},

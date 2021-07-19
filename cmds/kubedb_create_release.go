@@ -169,7 +169,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-community CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-autoscaler CHART_VERSION=${APPSCODE_KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"helm dependency update charts/kubedb",
+						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
 			},
