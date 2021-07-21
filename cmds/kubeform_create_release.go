@@ -50,7 +50,7 @@ func NewCmdKubeformCreateRelease() *cobra.Command {
 
 func CreateKubeformReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.07.01" + prerelease
+	releaseNumber := "v2021.07.21" + prerelease
 	return api.Release{
 		ProductLine:       "Kubeform",
 		Release:           releaseNumber,
@@ -59,55 +59,65 @@ func CreateKubeformReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubeform/provider-aws-api": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 				},
 				"github.com/kubeform/provider-azurerm-api": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 				},
 				"github.com/kubeform/provider-google-api": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 				},
 				"github.com/kubeform/provider-digitalocean-api": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 				},
 				"github.com/kubeform/provider-linode-api": api.Project{
+					Tag: github.String("v0.1.1" + prerelease),
+				},
+				"github.com/kubeform/provider-equinixmetal-api": api.Project{
 					Tag: github.String("v0.1.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubeform/provider-aws-controller": api.Project{
 					Key: "kubeform-aws",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-aws",
 					},
 				},
 				"github.com/kubeform/provider-azurerm-controller": api.Project{
 					Key: "kubeform-azurerm",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-azurerm",
 					},
 				},
 				"github.com/kubeform/provider-google-controller": api.Project{
 					Key: "kubeform-google",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-google",
 					},
 				},
 				"github.com/kubeform/provider-digitalocean-controller": api.Project{
 					Key: "kubeform-digitalocean",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-digitalocean",
 					},
 				},
 				"github.com/kubeform/provider-linode-controller": api.Project{
 					Key: "kubeform-linode",
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.1.1" + prerelease),
 					ChartNames: []string{
 						"kubeform-provider-linode",
+					},
+				},
+				"github.com/kubeform/provider-equinixmetal-controller": api.Project{
+					Key: "kubeform-equinixmetal",
+					Tag: github.String("v0.1.0" + prerelease),
+					ChartNames: []string{
+						"kubeform-provider-equinixmetal",
 					},
 				},
 			},
@@ -122,6 +132,7 @@ func CreateKubeformReleaseFile() api.Release {
 						"kubeform-provider-google",
 						"kubeform-provider-digitalocean",
 						"kubeform-provider-linode",
+						"kubeform-provider-equinixmetal",
 					},
 					Commands: []string{
 						"./hack/scripts/prepare-release.sh",
