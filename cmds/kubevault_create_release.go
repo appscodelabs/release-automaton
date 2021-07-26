@@ -74,13 +74,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 					},
 					Tag: github.String("v0.4.0" + prerelease),
 				},
-				"github.com/kubevault/csi-driver": api.Project{
-					Key: "kubevault-csi",
-					ChartNames: []string{
-						"csi-vault",
-					},
-					Tag: github.String("v0.4.0" + prerelease),
-				},
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
 					Tag: github.String("v0.4.0" + prerelease),
@@ -106,7 +99,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --update-spec=spec.unsealer.image=kubevault/vault-unsealer:${KUBEVAULT_UNSEALER_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-operator CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-csi-vault CHART_VERSION=${KUBEVAULT_CSI_DRIVER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
