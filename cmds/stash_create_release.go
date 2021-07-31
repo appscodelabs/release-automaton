@@ -50,7 +50,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.06.23" + prerelease
+	releaseNumber := "v2021.08.02" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -66,11 +66,11 @@ func CreateStashReleaseFile() api.Release {
 		ProductLine:       "Stash",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://stash.run/docs/%s",
-		KubernetesVersion: "1.14+",
+		KubernetesVersion: "1.16+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.14.1" + prerelease),
+					Tag: github.String("v0.15.0" + prerelease),
 					ChartNames: []string{
 						"stash-crds",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.14.1" + prerelease),
+					Tag: github.String("v0.15.0" + prerelease),
 					ChartNames: []string{
 						"stash-community",
 					},
@@ -88,7 +88,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/appscode/stash-enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.14.1" + prerelease),
+					Tag: github.String("v0.15.0" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 						"stash-catalog",
@@ -99,7 +99,7 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.14.1" + prerelease),
+					Tag: github.String("v0.15.0" + prerelease),
 				},
 			},
 			{
@@ -107,11 +107,11 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-postgres",
 					Tags: map[string]string{
-						"9.6.19-v9": "release-9.6.19",
-						"10.14-v9":  "release-10.14",
-						"11.9-v9":   "release-11.9",
-						"12.4-v9":   "release-12.4",
-						"13.1-v6":   "release-13.1",
+						"9.6.19-v10": "release-9.6.19",
+						"10.14-v10":  "release-10.14",
+						"11.9-v10":   "release-11.9",
+						"12.4-v10":   "release-12.4",
+						"13.1-v7":   "release-13.1",
 					},
 				},
 			},
@@ -120,14 +120,14 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-elasticsearch",
 					Tags: map[string]string{
-						"5.6.4-v11": "release-5.6.4",
-						"6.2.4-v11": "release-6.2.4",
-						"6.3.0-v11": "release-6.3.0",
-						"6.4.0-v11": "release-6.4.0",
-						"6.5.3-v11": "release-6.5.3",
-						"6.8.0-v11": "release-6.8.0",
-						"7.2.0-v11": "release-7.2.0",
-						"7.3.2-v11": "release-7.3.2",
+						"5.6.4-v12": "release-5.6.4",
+						"6.2.4-v12": "release-6.2.4",
+						"6.3.0-v12": "release-6.3.0",
+						"6.4.0-v12": "release-6.4.0",
+						"6.5.3-v12": "release-6.5.3",
+						"6.8.0-v12": "release-6.8.0",
+						"7.2.0-v12": "release-7.2.0",
+						"7.3.2-v12": "release-7.3.2",
 					},
 				},
 			},
@@ -136,18 +136,18 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mongodb",
 					Tags: map[string]string{
-						"3.4.17-v10": "release-3.4.17",
-						"3.4.22-v10": "release-3.4.22",
-						"3.6.13-v10": "release-3.6.13",
-						"3.6.8-v10":  "release-3.6.8",
-						"4.0.11-v10": "release-4.0.11",
-						"4.0.3-v10":  "release-4.0.3",
-						"4.0.5-v10":  "release-4.0.5",
-						"4.1.4-v10":  "release-4.1.4",
-						"4.1.7-v10":  "release-4.1.7",
-						"4.1.13-v10": "release-4.1.13",
-						"4.2.3-v10":  "release-4.2.3",
-						"4.4.6-v1":   "release-4.4.6",
+						"3.4.17-v11": "release-3.4.17",
+						"3.4.22-v11": "release-3.4.22",
+						"3.6.13-v11": "release-3.6.13",
+						"3.6.8-v11":  "release-3.6.8",
+						"4.0.11-v11": "release-4.0.11",
+						"4.0.3-v11":  "release-4.0.3",
+						"4.0.5-v11":  "release-4.0.5",
+						"4.1.4-v11":  "release-4.1.4",
+						"4.1.7-v11":  "release-4.1.7",
+						"4.1.13-v11": "release-4.1.13",
+						"4.2.3-v11":  "release-4.2.3",
+						"4.4.6-v2":   "release-4.4.6",
 					},
 				},
 			},
@@ -156,10 +156,10 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mysql",
 					Tags: map[string]string{
-						"5.7.25-v11": "release-5.7.25",
-						"8.0.3-v11":  "release-8.0.3",
-						"8.0.14-v11": "release-8.0.14",
-						"8.0.21-v5":  "release-8.0.21",
+						"5.7.25-v12": "release-5.7.25",
+						"8.0.3-v12":  "release-8.0.3",
+						"8.0.14-v12": "release-8.0.14",
+						"8.0.21-v6":  "release-8.0.21",
 					},
 				},
 			},
@@ -168,7 +168,17 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mariadb",
 					Tags: map[string]string{
-						"10.5.8-v4": "release-10.5.8",
+						"10.5.8-v5": "release-10.5.8",
+					},
+				},
+			},
+			{
+				"github.com/stashed/redis": api.Project{
+					// NOT a sub project anymore
+					Key: "stash-redis",
+					Tags: map[string]string{
+						"5.0.13": "release-5.0.13",
+						"6.2.5":  "release-6.2.5",
 					},
 				},
 			},
@@ -177,7 +187,7 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-percona-xtradb",
 					Tags: map[string]string{
-						"5.7-v6": "release-5.7",
+						"5.7-v7": "release-5.7",
 					},
 				},
 			},
