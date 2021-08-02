@@ -111,7 +111,7 @@ func CreateStashReleaseFile() api.Release {
 						"10.14-v10":  "release-10.14",
 						"11.9-v10":   "release-11.9",
 						"12.4-v10":   "release-12.4",
-						"13.1-v7":   "release-13.1",
+						"13.1-v7":    "release-13.1",
 					},
 				},
 			},
