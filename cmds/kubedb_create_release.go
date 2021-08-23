@@ -50,62 +50,62 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 
 func CreateKubeDBReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.06.23" + prerelease
+	releaseNumber := "v2021.08.23" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubedb.com/docs/%s",
-		KubernetesVersion: "1.14+",
+		KubernetesVersion: "1.16+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubedb/apimachinery": api.Project{
-					Tag: github.String("v0.19.0" + prerelease),
+					Tag: github.String("v0.20.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
-					Tag: github.String("v0.19.0" + prerelease),
+					Tag: github.String("v0.20.0" + prerelease),
 				},
 				"github.com/kubedb/elasticsearch": api.Project{
-					Tag: github.String("v0.19.0" + prerelease),
+					Tag: github.String("v0.20.0" + prerelease),
 				},
 				"github.com/kubedb/mariadb": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 				"github.com/kubedb/memcached": api.Project{
-					Tag: github.String("v0.12.0" + prerelease),
+					Tag: github.String("v0.13.0" + prerelease),
 				},
 				"github.com/kubedb/mongodb": api.Project{
-					Tag: github.String("v0.12.0" + prerelease),
+					Tag: github.String("v0.13.0" + prerelease),
 				},
 				"github.com/kubedb/mysql": api.Project{
-					Tag: github.String("v0.12.0" + prerelease),
+					Tag: github.String("v0.13.0" + prerelease),
 				},
 				"github.com/kubedb/postgres": api.Project{
-					Tag: github.String("v0.19.0" + prerelease),
+					Tag: github.String("v0.20.0" + prerelease),
 				},
 				"github.com/kubedb/redis": api.Project{
-					Tag: github.String("v0.12.0" + prerelease),
+					Tag: github.String("v0.13.0" + prerelease),
 				},
 				"github.com/kubedb/percona-xtradb": api.Project{
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 				},
 				"github.com/kubedb/pg-coordinator": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: github.String("v0.4.0" + prerelease),
 					// update catalog
 				},
 				"github.com/kubedb/replication-mode-detector": api.Project{
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 					// update catalog
 				},
 				"github.com/kubedb/tests": api.Project{
-					Tag: github.String("v0.4.0" + prerelease),
+					Tag: github.String("v0.5.0" + prerelease),
 				},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -114,7 +114,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubedb/proxysql": api.Project{
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -127,7 +127,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/operator": api.Project{
 					Key: "kubedb-community",
-					Tag: github.String("v0.19.0" + prerelease),
+					Tag: github.String("v0.20.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-community",
 					},
@@ -136,7 +136,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/appscode/kubedb-enterprise": api.Project{
 					Key: "kubedb-enterprise",
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-enterprise",
 					},
@@ -145,7 +145,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/appscode/kubedb-autoscaler": api.Project{
 					Key: "kubedb-autoscaler",
-					Tag: github.String("v0.4.0" + prerelease),
+					Tag: github.String("v0.5.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-autoscaler",
 					},
