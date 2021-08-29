@@ -175,8 +175,6 @@ func CreateKubeformReleaseFile() api.Release {
 
 	apiProjects := rel.Projects[0]
 	ctrlProjects := rel.Projects[1]
-	installerCharts := rel.Projects[2]["github.com/kubeform/installer"].ChartNames
-	installerCharts = make([]string, 0, len(providers))
 	for _, p := range providers {
 		apiProjects[fmt.Sprintf("github.com/kubeform/provider-%s-api", p)] = api.Project{
 			Tag: github.String(tag + prerelease),
@@ -188,7 +186,6 @@ func CreateKubeformReleaseFile() api.Release {
 				fmt.Sprintf("kubeform-provider-%s", p),
 			},
 		}
-		installerCharts = append(installerCharts, fmt.Sprintf("kubeform-provider-%s", p))
 	}
 	return rel
 }
