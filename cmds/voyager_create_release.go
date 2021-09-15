@@ -49,16 +49,21 @@ func NewCmdVoyagerCreateRelease() *cobra.Command {
 }
 
 func CreateVoyagerReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2021.04.24" + prerelease
+	prerelease := ""
+	releaseNumber := "v2021.09.15" + prerelease
 	return api.Release{
 		ProductLine:       "Voyager",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://voyagermesh.com/docs/%s",
-		KubernetesVersion: "1.14+",
+		KubernetesVersion: "1.19+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/voyagermesh/voyager": api.Project{
+				"github.com/voyagermesh/apimachinery": api.Project{
+					Tag: github.String("v0.1.0" + prerelease),
+				},
+			},
+			{
+				"github.com/voyagermesh/haproxy-ingress": api.Project{
 					Tag: github.String("v13.0.0" + prerelease),
 				},
 			},
@@ -73,7 +78,7 @@ func CreateVoyagerReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
-						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL} APP_VERSION=${VOYAGERMESH_VOYAGER_TAG}",
+						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL} APP_VERSION=${VOYAGERMESH_HAPROXY_INGRESS_TAG}",
 					},
 				},
 			},
@@ -95,7 +100,7 @@ func CreateVoyagerReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/voyagermesh/docs": api.Project{
+				"github.com/voyagermesh/voyager": api.Project{
 					Key:           "voyager",
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
