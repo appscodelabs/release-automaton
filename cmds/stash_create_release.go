@@ -209,7 +209,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/charts": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/stashed/installer",
 					},
 					Changelog: api.SkipChangelog,
@@ -261,7 +261,7 @@ func CreateStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/bytebuilders/bundle-registry": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/stashed/bundles",
 					},
 					Changelog: api.SkipChangelog,

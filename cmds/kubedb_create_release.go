@@ -186,7 +186,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/charts": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubedb/installer",
 					},
 					Changelog: api.SkipChangelog,
@@ -238,7 +238,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/bytebuilders/bundle-registry": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubedb/bundles",
 					},
 					Changelog: api.SkipChangelog,
