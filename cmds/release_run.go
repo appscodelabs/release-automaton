@@ -272,13 +272,13 @@ func runAutomaton() {
 		notTagged := sets.NewString()
 		openPRs := sets.NewString()
 		for repoURL, project := range projects {
-			if len(project.Charts) == 0 {
+			if len(project.ChartRepos) == 0 {
 				if !tagged.Has(repoURL) {
 					notTagged.Insert(repoURL)
 				}
 			} else {
 				yetToMerge := map[api.MergeData]struct{}{}
-				for _, chartRepo := range project.Charts {
+				for _, chartRepo := range project.ChartRepos {
 					if tags, ok := findRepoTags(chartRepo); ok {
 						for _, tag := range tags {
 							mergeKey := api.MergeData{
@@ -304,8 +304,12 @@ func runAutomaton() {
 
 		var readyToTag sets.String
 		if firstGroup {
-			readyToTag = notTagged
-			notTagged = sets.NewString() // make it empty
+			for repoURL, project := range projects {
+				if notTagged.Has(repoURL) && len(project.Commands) == 0 {
+					readyToTag.Insert(repoURL)
+					notTagged.Delete(repoURL)
+				}
+			}
 		} else {
 			readyToTag = sets.NewString()
 
@@ -1172,8 +1176,8 @@ func MergedCommitSHA(repoURL, branch string, useCherryPick bool) (string, bool) 
 
 func ProjectsDone(projects api.IndependentProjects) bool {
 	for repoURL, project := range projects {
-		done := (len(project.Charts) == 0 && tagged.Has(repoURL)) ||
-			(len(project.Charts) > 0 && chartPublished.Has(repoURL))
+		done := (len(project.ChartRepos) == 0 && tagged.Has(repoURL)) ||
+			(len(project.ChartRepos) > 0 && chartPublished.Has(repoURL))
 		if !done {
 			return false
 		}
@@ -1303,7 +1307,7 @@ func contains(projects map[string]api.Project, repoURL string) bool {
 	for _, project := range projects {
 		// A separate group of charts are published by this project.
 		// So, we need to process this project
-		if len(project.Charts) > 0 && !stringz.Contains(project.Charts, repoURL) {
+		if len(project.ChartRepos) > 0 && !stringz.Contains(project.ChartRepos, repoURL) {
 			return false
 		}
 	}

@@ -105,7 +105,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/charts": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubevault/installer",
 					},
 					Changelog: api.SkipChangelog,
@@ -157,7 +157,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 			},
 			{
 				"github.com/bytebuilders/bundle-registry": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubevault/bundles",
 					},
 					Changelog: api.SkipChangelog,

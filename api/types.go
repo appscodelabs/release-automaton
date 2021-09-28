@@ -43,7 +43,7 @@ type Project struct {
 	Tag           *string           `json:"tag,omitempty"`
 	Tags          map[string]string `json:"tags,omitempty"` // tag-> branch
 	ChartNames    []string          `json:"chartNames,omitempty"`
-	Charts        []string          `json:"charts,omitempty"`
+	ChartRepos    []string          `json:"charts,omitempty"`
 	Commands      []string          `json:"commands,omitempty"`
 	ReleaseBranch string            `json:"release_branch,omitempty"`
 	ReadyToTag    bool              `json:"ready_to_tag,omitempty"`

@@ -112,7 +112,7 @@ func CreateKubeformReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/charts": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubeform/installer",
 					},
 					Changelog: api.SkipChangelog,
@@ -164,7 +164,7 @@ func CreateKubeformReleaseFile() api.Release {
 			},
 			{
 				"github.com/bytebuilders/bundle-registry": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/kubeform/bundles",
 					},
 					Changelog: api.SkipChangelog,

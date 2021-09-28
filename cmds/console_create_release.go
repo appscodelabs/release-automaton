@@ -58,17 +58,19 @@ func CreateConsoleReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/bytebuilders/ui-wizards": api.Project{
-					Tag:           github.String(releaseNumber),
-					ReleaseBranch: "release-${TAG}",
+					Tag: github.String("v0.2.0" + prerelease),
+					ChartNames: []string{
+						"kubedbcom-mongodb-editor-options",
+					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${UI_REGISTRY} CHART_REGISTRY_URL=${UI_REGISTRY_URL}",
+						"make update-charts CHART_VERSION=${BYTEBUILDERS_UI_WIZARDS_TAG} CHART_REGISTRY=${UI_REGISTRY} CHART_REGISTRY_URL=${UI_REGISTRY_URL}",
 						"make gen fmt",
 					},
 				},
 			},
 			{
 				"github.com/bytebuilders/bundle-registry": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/bytebuilders/ui-wizards",
 					},
 					Changelog: api.SkipChangelog,
@@ -78,7 +80,7 @@ func CreateConsoleReleaseFile() api.Release {
 				"github.com/kmodules/resource-metadata": api.Project{
 					Tag: github.String("v0.6.0" + prerelease),
 					Commands: []string{
-						"go run cmd/ui-updater/*.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${RELEASE}",
+						"go run cmd/ui-updater/*.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
 						"go run cmd/resourcedescriptor-fmt/*.go",
 					},
 				},

@@ -84,7 +84,7 @@ func CreateVoyagerReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/charts": api.Project{
-					Charts: []string{
+					ChartRepos: []string{
 						"github.com/voyagermesh/installer",
 					},
 					Changelog: api.SkipChangelog,
