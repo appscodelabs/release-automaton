@@ -128,9 +128,21 @@ func runAutomaton() {
 	if strings.HasPrefix(vRelease.Prerelease(), "alpha.") || strings.HasPrefix(vRelease.Prerelease(), "beta.") {
 		envVars["CHART_REGISTRY"] = api.TestChartRegistry
 		envVars["CHART_REGISTRY_URL"] = api.TestChartRegistryURL
+
+		envVars["UI_REGISTRY"] = api.TestUIRegistry
+		envVars["UI_REGISTRY_URL"] = api.TestUIRegistryURL
+
+		envVars["BUNDLE_REGISTRY"] = api.TestBundleRegistry
+		envVars["BUNDLE_REGISTRY_URL"] = api.TestBundleRegistryURL
 	} else {
 		envVars["CHART_REGISTRY"] = api.StableChartRegistry
 		envVars["CHART_REGISTRY_URL"] = api.StableChartRegistryURL
+
+		envVars["UI_REGISTRY"] = api.StableUIRegistry
+		envVars["UI_REGISTRY_URL"] = api.StableUIRegistryURL
+
+		envVars["BUNDLE_REGISTRY"] = api.StableBundleRegistry
+		envVars["BUNDLE_REGISTRY_URL"] = api.StableBundleRegistryURL
 	}
 
 	releaseOwner, releaseRepo, releasePR := lib.ParsePullRequestURL(releaseTracker)
