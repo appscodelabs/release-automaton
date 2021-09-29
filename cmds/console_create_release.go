@@ -48,8 +48,8 @@ func NewCmdConsoleCreateRelease() *cobra.Command {
 }
 
 func CreateConsoleReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2021.09.27" + prerelease
+	prerelease := ""
+	releaseNumber := "v2021.09.29" + prerelease
 	return api.Release{
 		ProductLine: "Console",
 		Release:     releaseNumber,
