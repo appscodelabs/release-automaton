@@ -107,7 +107,8 @@ func CreateConsoleReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/gitea": api.Project{
-					Tag: github.String(releaseNumber),
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
 				},
 			},
 			// installer
