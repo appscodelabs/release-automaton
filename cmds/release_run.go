@@ -302,7 +302,7 @@ func runAutomaton() {
 			}
 		}
 
-		var readyToTag sets.String
+		readyToTag := sets.NewString()
 		if firstGroup {
 			for repoURL, project := range projects {
 				if notTagged.Has(repoURL) && len(project.Commands) == 0 {
@@ -310,9 +310,9 @@ func runAutomaton() {
 					notTagged.Delete(repoURL)
 				}
 			}
-		} else {
-			readyToTag = sets.NewString()
+		}
 
+		{
 			// check repos that are /ready-to-tag
 			for _, data := range replies[api.ReadyToTag] {
 				repoURL := data.ReadyToTag.Repo
