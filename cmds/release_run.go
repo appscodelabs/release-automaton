@@ -552,10 +552,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	wdCur = filepath.Join(wdCur, repo)
 	sh.SetDir(wdCur)
 
-	var modPath string
-	// needed for accounts-ui go mod
-	// if lib.IsPublicGitRepo(repoURL) {
-	modPath = DetectGoMod(wdCur)
+	modPath := DetectGoMod(wdCur)
 	if modPath != "" {
 		gm := lib.GoImport{
 			RepoRoot: repoURL,
@@ -564,17 +561,11 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		if err != nil {
 			panic(err)
 		}
-		if vcs == "" {
-			// private module
-			modPath = ""
-		} else {
-			if vcs != repoURL {
-				gm.VCSRoot = vcs
-			}
-			modCache[modPath] = gm
+		if vcs != repoURL {
+			gm.VCSRoot = vcs
 		}
+		modCache[modPath] = gm
 	}
-	// }
 
 	tags := project.Tags
 	if project.Tag != nil {
