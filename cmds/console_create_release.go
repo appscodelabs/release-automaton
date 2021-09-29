@@ -80,8 +80,8 @@ func CreateConsoleReleaseFile() api.Release {
 				"github.com/kmodules/resource-metadata": api.Project{
 					Tag: github.String("v0.6.0" + prerelease),
 					Commands: []string{
-						"go run cmd/ui-updater/*.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
-						"go run cmd/resourcedescriptor-fmt/*.go",
+						"go run cmd/ui-updater/main.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
+						"go run cmd/resourcedescriptor-fmt/main.go",
 					},
 				},
 			},
