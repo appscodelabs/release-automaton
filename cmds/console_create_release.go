@@ -87,13 +87,22 @@ func CreateConsoleReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/cluster-ui": api.Project{
-					Tag: github.String(releaseNumber),
+					Tag: github.String("v0.1.0" + prerelease),
+					Commands: []string{
+						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
+					},
 				},
 				"github.com/appscode/kubedb-ui": api.Project{
-					Tag: github.String(releaseNumber),
+					Tag: github.String("v0.1.0" + prerelease),
+					Commands: []string{
+						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
+					},
 				},
 				"github.com/appscode/accounts-ui": api.Project{
-					Tag: github.String(releaseNumber),
+					Tag: github.String("v0.1.0" + prerelease),
+					Commands: []string{
+						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
+					},
 				},
 			},
 			{

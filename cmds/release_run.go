@@ -673,6 +673,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			"SCRIPT_ROOT":               scriptRoot,
 			"WORKSPACE":                 sh.Getwd(),
 			"TAG":                       tag,
+			"TAG_WITHOUT_V_PREFIX":      strings.TrimPrefix(tag, "v"),
 			"PRODUCT_LINE":              release.ProductLine,
 			"RELEASE":                   release.Release,
 			"RELEASE_TRACKER":           releaseTracker,
