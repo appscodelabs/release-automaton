@@ -50,8 +50,8 @@ func NewCmdKubeformCreateRelease() *cobra.Command {
 
 func CreateKubeformReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.08.02" + prerelease
-	tag := "v0.3.0"
+	releaseNumber := "v2021.10.29" + prerelease
+	tag := "v0.4.0"
 	providers := []string{
 		"alicloud",
 		"aws",
@@ -69,6 +69,7 @@ func CreateKubeformReleaseFile() api.Release {
 		"linode",
 		"mongodbatlas",
 		"newrelic",
+		"oci",
 		"ovh",
 		"pagerduty",
 		"rediscloud",
@@ -98,6 +99,12 @@ func CreateKubeformReleaseFile() api.Release {
 				//		"kubeform-provider-aws",
 				//	},
 				//},
+			},
+			{
+				"github.com/kubeform/cli": api.Project{
+					Key: "kubeform-cli",
+					Tag: github.String("v0.1.0" + prerelease),
+				},
 			},
 			{
 				"github.com/kubeform/installer": api.Project{
