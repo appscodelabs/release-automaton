@@ -183,7 +183,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --update-spec=spec.replicationModeDetector.image=kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=MariaDBVersion --update-spec=spec.coordinator.image=kubedb/mariadb-coordinator:${KUBEDB_MARIADB_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=MySQLVersion --update-spec=spec.coordinator.image=kubedb/mysql-coordinator:${KUBEDB_MYSQL_COORDINATOR_TAG}",
-						"go run ./hack/fmt/main.go --kind=MySQLVersion --update-spec=spec.routerInitContainer.image=kubedb/kubedb/mysql-router-init:${KUBEDB_MYSQL_ROUTER_INIT_TAG}",
+						"go run ./hack/fmt/main.go --kind=MySQLVersion --update-spec=spec.routerInitContainer.image=kubedb/mysql-router-init:${KUBEDB_MYSQL_ROUTER_INIT_TAG}",
 						"go run ./hack/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
