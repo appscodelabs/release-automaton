@@ -150,7 +150,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/appscode/kubedb-enterprise": api.Project{
+				"github.com/kubedb/enterprise": api.Project{
 					Key: "kubedb-enterprise",
 					Tag: github.String("v0.10.0" + prerelease),
 					ChartNames: []string{
@@ -159,7 +159,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/appscode/kubedb-autoscaler": api.Project{
+				"github.com/kubedb/autoscaler": api.Project{
 					Key: "kubedb-autoscaler",
 					Tag: github.String("v0.8.0" + prerelease),
 					ChartNames: []string{
@@ -188,8 +188,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-community CHART_VERSION=${KUBEDB_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb-enterprise CHART_VERSION=${APPSCODE_KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-kubedb-autoscaler CHART_VERSION=${APPSCODE_KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-enterprise CHART_VERSION=${KUBEDB_ENTERPRISE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-autoscaler CHART_VERSION=${KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
