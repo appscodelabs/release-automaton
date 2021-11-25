@@ -49,7 +49,7 @@ func NewCmdConsoleCreateRelease() *cobra.Command {
 
 func CreateConsoleReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.09.29" + prerelease
+	releaseNumber := "v2021.11.24" + prerelease
 	return api.Release{
 		ProductLine: "Console",
 		Release:     releaseNumber,
@@ -58,7 +58,7 @@ func CreateConsoleReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/bytebuilders/ui-wizards": api.Project{
-					Tag: github.String("v0.2.0" + prerelease),
+					Tag: github.String("v0.3.0" + prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -78,7 +78,7 @@ func CreateConsoleReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: github.String("v0.6.0" + prerelease),
+					Tag: github.String("v0.7.0" + prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
 						"go run cmd/resourcedescriptor-fmt/main.go",
@@ -87,19 +87,19 @@ func CreateConsoleReleaseFile() api.Release {
 			},
 			{
 				"github.com/appscode/cluster-ui": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.2.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
 				"github.com/appscode/kubedb-ui": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.2.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
 				"github.com/appscode/accounts-ui": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
+					Tag: github.String("v0.2.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
