@@ -990,7 +990,11 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 
 			vs := make([]*semver.Version, 0, tagSet.Len())
 			for _, x := range tagSet.UnsortedList() {
-				v := semver.MustParse(x)
+				v, err := semver.NewVersion(x)
+				if err != nil {
+					fmt.Printf("skipping bad version %s, error: %v", x, err)
+					continue
+				}
 				// filter out lower importance tags
 				if semvers.AtLeastAsImp(vTag, v) {
 					vs = append(vs, v)
