@@ -50,7 +50,7 @@ func NewCmdVoyagerCreateRelease() *cobra.Command {
 
 func CreateVoyagerReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.01.01" + prerelease
+	releaseNumber := "v2022.01.07" + prerelease
 	return api.Release{
 		ProductLine:       "Voyager",
 		Release:           releaseNumber,
@@ -64,7 +64,7 @@ func CreateVoyagerReleaseFile() api.Release {
 			},
 			{
 				"github.com/voyagermesh/haproxy-ingress": api.Project{
-					Tag: github.String("v14.0.0" + prerelease),
+					Tag: github.String("v14.0.1" + prerelease),
 				},
 				"github.com/voyagermesh/cli": api.Project{
 					Key: "voyager-cli",
