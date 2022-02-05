@@ -29,7 +29,7 @@ import (
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/templates"
 
-	"github.com/Masterminds/sprig"
+	"github.com/Masterminds/sprig/v3"
 )
 
 func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commits []api.Commit) {

@@ -25,9 +25,9 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/spf13/cobra"
+	yu "gomodules.xyz/encoding/yaml"
 	"gomodules.xyz/semvers"
 	"gomodules.xyz/sets"
-	yu "gomodules.xyz/x/encoding/yaml"
 	ylib "gopkg.in/yaml.v2"
 	kpapi "kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 	"sigs.k8s.io/yaml"
