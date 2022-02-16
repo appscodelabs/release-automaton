@@ -36,6 +36,7 @@ import (
 
 var (
 	repoWorkspace string
+	hideDoc       bool
 )
 
 /*
@@ -55,6 +56,7 @@ func NewCmdUpdateAssets() *cobra.Command {
 
 	cmd.Flags().StringVar(&releaseFile, "release-file", "", "Path of release file (local file or url is accepted)")
 	cmd.Flags().StringVar(&repoWorkspace, "workspace", "", "Path to directory containing git repository")
+	cmd.Flags().BoolVar(&hideDoc, "hide", false, "If true, hide docs from website")
 	return cmd
 }
 
@@ -107,7 +109,7 @@ func updateAsset(release api.Release, project api.Project) error {
 			nuV := saapi.ProductVersion{
 				Version:  tag,
 				HostDocs: true,
-				Show:     showDocs(tag),
+				Show:     showDocs(tag, hideDoc),
 			}
 			nuV.Info = generateInfo(prod, release)
 			prod.Versions = append(prod.Versions, nuV)
@@ -160,7 +162,7 @@ func updateAsset(release api.Release, project api.Project) error {
 				prod.Versions = append(prod.Versions, saapi.ProductVersion{
 					Version:  tag,
 					HostDocs: true,
-					Show:     showDocs(tag),
+					Show:     showDocs(tag, hideDoc),
 				})
 			}
 		}
@@ -207,7 +209,10 @@ func findProductVersion(x string, versions []saapi.ProductVersion) bool {
 	return false
 }
 
-func showDocs(version string) bool {
+func showDocs(version string, hide bool) bool {
+	if hide {
+		return false
+	}
 	if version == api.BranchMaster {
 		return false
 	}
@@ -236,7 +241,9 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	latestVersion := data[0].Version
 	for i := range data {
 		v := semver.MustParse(data[i].Version)
-		if strings.HasPrefix(v.Prerelease(), "alpha.") || strings.HasPrefix(v.Prerelease(), "beta.") {
+		if !data[i].Show ||
+			strings.HasPrefix(v.Prerelease(), "alpha.") ||
+			strings.HasPrefix(v.Prerelease(), "beta.") {
 			continue
 		}
 		// Use the latest non alpha/beta release
