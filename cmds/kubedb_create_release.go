@@ -291,9 +291,6 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 		},
 		ExternalProjects: map[string]api.ExternalProject{
-			"github.com/ak8sdb/operator":   {},
-			"github.com/ak8sdb/enterprise": {},
-			"github.com/ak8sdb/autoscaler": {},
 		},
 	}
 }
