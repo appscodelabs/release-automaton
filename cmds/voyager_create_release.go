@@ -50,7 +50,7 @@ func NewCmdVoyagerCreateRelease() *cobra.Command {
 
 func CreateVoyagerReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.01.10" + prerelease
+	releaseNumber := "v2022.02.22" + prerelease
 	return api.Release{
 		ProductLine:       "Voyager",
 		Release:           releaseNumber,
@@ -59,16 +59,16 @@ func CreateVoyagerReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/voyagermesh/apimachinery": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: github.String("v0.4.0" + prerelease),
 				},
 			},
 			{
 				"github.com/voyagermesh/haproxy-ingress": api.Project{
-					Tag: github.String("v14.1.0" + prerelease),
+					Tag: github.String("v14.2.0" + prerelease),
 				},
 				"github.com/voyagermesh/cli": api.Project{
 					Key: "voyager-cli",
-					Tag: github.String("v0.0.5" + prerelease),
+					Tag: github.String("v0.0.6" + prerelease),
 				},
 			},
 			{
@@ -98,7 +98,7 @@ func CreateVoyagerReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						"release-automaton update-assets --hide --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
