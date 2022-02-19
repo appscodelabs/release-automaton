@@ -290,7 +290,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 			},
 		},
-		ExternalProjects: map[string]api.ExternalProject{
-		},
+		ExternalProjects: map[string]api.ExternalProject{},
 	}
 }
