@@ -71,7 +71,7 @@ func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 	s := sh.Command(fields[0], args...)
 	if createOut {
 		if !Exists(filename) {
-			err := ioutil.WriteFile(filename, []byte(""), 0644)
+			err := ioutil.WriteFile(filename, []byte(""), 0o644)
 			if err != nil {
 				return err
 			}
@@ -84,7 +84,7 @@ func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 		return s.WriteStdout(filename)
 	} else if appendOut {
 		if !Exists(filename) {
-			err := ioutil.WriteFile(filename, []byte{}, 0644)
+			err := ioutil.WriteFile(filename, []byte{}, 0o644)
 			if err != nil {
 				return err
 			}

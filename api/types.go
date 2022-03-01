@@ -127,7 +127,7 @@ const (
 type Replies map[ReplyType][]Reply
 
 func MergeReplies(replies Replies, elems ...Reply) Replies {
-	var out = replies
+	out := replies
 	for idx := range elems {
 		out = MergeReply(out, elems[idx])
 	}

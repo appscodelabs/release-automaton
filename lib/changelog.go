@@ -46,7 +46,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 		}
 	}
 
-	err := os.MkdirAll(dir, 0755)
+	err := os.MkdirAll(dir, 0o755)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +93,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filenameChlog, data, 0644)
+	err = ioutil.WriteFile(filenameChlog, data, 0o644)
 	if err != nil {
 		panic(err)
 	}
@@ -125,7 +125,7 @@ func LoadChangelog(dir string, release api.Release) api.Changelog {
 func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
 	var err error
 
-	err = os.MkdirAll(filepath.Dir(filename), 0755)
+	err = os.MkdirAll(filepath.Dir(filename), 0o755)
 	if err != nil {
 		panic(err)
 	}
@@ -143,7 +143,7 @@ func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filename, buf.Bytes(), 0644)
+	err = ioutil.WriteFile(filename, buf.Bytes(), 0o644)
 	if err != nil {
 		panic(err)
 	}

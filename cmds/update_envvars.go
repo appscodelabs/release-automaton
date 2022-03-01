@@ -24,9 +24,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	envFile string
-)
+var envFile string
 
 /*
 release-automaton update-vars \
@@ -63,5 +61,5 @@ func updateEnvVars() error {
 		}
 	}
 
-	return ioutil.WriteFile(envFile, []byte(strings.Join(lines, "\n")), 0644)
+	return ioutil.WriteFile(envFile, []byte(strings.Join(lines, "\n")), 0o644)
 }

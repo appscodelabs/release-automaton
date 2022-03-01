@@ -24,7 +24,7 @@ import (
 // ref: https://gist.github.com/inotnako/c4a82f6723f6ccea5d83c5d3689373dd
 // ref: https://github.com/keighl/metabolize
 // ref: https://github.com/rsc/go-import-redirector/blob/master/main.go#L134
-//ref: https://github.com/appscodelabs/gh-release-automation-testing/issues/22
+// ref: https://github.com/appscodelabs/gh-release-automation-testing/issues/22
 func TestDetectVCSRoot(t *testing.T) {
 	// res, _ := http.Get("https://stash.appscode.dev/cli?go-get=1")
 	// res, _ := http.Get("https://k8s.io/api?go-get=1")
