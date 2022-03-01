@@ -468,7 +468,7 @@ func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) erro
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(api.Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -529,7 +529,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(api.Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -775,7 +775,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(api.Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -1002,7 +1002,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			}
 			sort.Sort(semvers.SemverCollection(vs))
 
-			var tagIdx = -1
+			tagIdx := -1
 			for idx, vs := range vs {
 				if vs.Equal(vTag) {
 					tagIdx = idx
@@ -1050,7 +1050,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(api.Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -1273,7 +1273,7 @@ func UpdateGoMod(dir string) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filename, data, 0644)
+	err = ioutil.WriteFile(filename, data, 0o644)
 	if err != nil {
 		panic(err)
 	}

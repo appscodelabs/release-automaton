@@ -33,9 +33,7 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var (
-	chartsDir = "charts"
-)
+var chartsDir = "charts"
 
 /*
 release-automaton update-bundles \
@@ -125,7 +123,7 @@ func updateBundles() error {
 			return err
 		}
 
-		err = ioutil.WriteFile(chartFilename, data, 0644)
+		err = ioutil.WriteFile(chartFilename, data, 0o644)
 		if err != nil {
 			return err
 		}
@@ -196,7 +194,7 @@ func updateBundles() error {
 		if err != nil {
 			return err
 		}
-		err = ioutil.WriteFile(bundleFilename, data, 0644)
+		err = ioutil.WriteFile(bundleFilename, data, 0o644)
 		if err != nil {
 			return err
 		}

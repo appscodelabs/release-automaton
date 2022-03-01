@@ -173,7 +173,7 @@ func updateAsset(release api.Release, project api.Project) error {
 	if err != nil {
 		panic(err)
 	}
-	return ioutil.WriteFile(filename, data, 0644)
+	return ioutil.WriteFile(filename, data, 0o644)
 }
 
 //nolint:unparam

@@ -30,9 +30,7 @@ import (
 	"stash.appscode.dev/installer/catalog"
 )
 
-var (
-	catalogFile string
-)
+var catalogFile string
 
 /*
 release-automaton stash gen-catalog \
@@ -93,7 +91,7 @@ func generateCatalog() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(catalogFile, b, 0644)
+	err = ioutil.WriteFile(catalogFile, b, 0o644)
 	return err
 }
 
@@ -109,5 +107,4 @@ func findAddonVersions(addon string) ([]string, bool) {
 		}
 	}
 	return nil, false
-
 }

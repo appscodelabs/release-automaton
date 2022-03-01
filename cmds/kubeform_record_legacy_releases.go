@@ -43,13 +43,13 @@ func NewCmdKubeformRecordLegacyReleases() *cobra.Command {
 			}
 			fmt.Println(string(data))
 
-			err = os.MkdirAll(changelogRoot, 0755)
+			err = os.MkdirAll(changelogRoot, 0o755)
 			if err != nil {
 				panic(err)
 			}
 
 			legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
-			err = ioutil.WriteFile(legacyfilename, data, 0644)
+			err = ioutil.WriteFile(legacyfilename, data, 0o644)
 			if err != nil {
 				panic(err)
 			}

@@ -91,7 +91,7 @@ func DetectVCSRoot(repoURL string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to parse VCS root %s: %v", parts[2], err)
 	}
-	//uVCS.Scheme = ""
+	// uVCS.Scheme = ""
 	vcsURL := path.Join(uVCS.Hostname(), uVCS.Path)
 	return strings.TrimSuffix(vcsURL, path.Ext(vcsURL)), nil
 }
