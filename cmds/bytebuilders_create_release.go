@@ -49,7 +49,7 @@ func NewCmdByteBuildersCreateRelease() *cobra.Command {
 
 func CreateByteBuildersReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2021.11.24" + prerelease
+	releaseNumber := "v2022.03.09" + prerelease
 	return api.Release{
 		ProductLine: "ByteBuilders",
 		Release:     releaseNumber,
@@ -81,7 +81,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 					Tag: github.String("v0.10.0" + prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
-						"go run cmd/resourcedescriptor-fmt/main.go",
+						"make fmt",
 					},
 				},
 			},
