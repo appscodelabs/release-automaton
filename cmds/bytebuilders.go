@@ -20,15 +20,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCmdConsole() *cobra.Command {
+func NewCmdByteBuilders() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "console",
-		Short:             "Console catalog commands",
+		Use:               "bytebuilders",
+		Short:             "ByteBuilders catalog commands",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 		},
 	}
 
-	cmd.AddCommand(NewCmdConsoleCreateRelease())
+	cmd.AddCommand(NewCmdByteBuildersCreateRelease())
 	return cmd
 }
