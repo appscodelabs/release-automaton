@@ -167,7 +167,7 @@ func CreateStashReleaseFile() api.Release {
 						"5.7.25-v16": "release-5.7.25",
 						"8.0.3-v16":  "release-8.0.3",
 						"8.0.14-v16": "release-8.0.14",
-						"8.0.21-v10":  "release-8.0.21",
+						"8.0.21-v10": "release-8.0.21",
 					},
 				},
 			},
