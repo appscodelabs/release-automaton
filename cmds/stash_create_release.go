@@ -50,7 +50,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.05.12" + prerelease
+	releaseNumber := "v2022.05.18" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -70,7 +70,7 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.20.0" + prerelease),
+					Tag: github.String("v0.20.1" + prerelease),
 					ChartNames: []string{
 						"stash-crds",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.20.0" + prerelease),
+					Tag: github.String("v0.20.1" + prerelease),
 					ChartNames: []string{
 						"stash-community",
 					},
@@ -88,7 +88,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.20.0" + prerelease),
+					Tag: github.String("v0.20.1" + prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 						"stash-catalog",
@@ -135,6 +135,7 @@ func CreateStashReleaseFile() api.Release {
 						"7.2.0-v17": "release-7.2.0",
 						"7.3.2-v17": "release-7.3.2",
 						"7.14.0-v3": "release-7.14.0",
+						"8.2.0": "release-8.2.0",
 					},
 				},
 			},
@@ -205,6 +206,7 @@ func CreateStashReleaseFile() api.Release {
 					Key: "stash-nats",
 					Tags: map[string]string{
 						"2.6.1-v4": "release-2.6.1",
+						"2.8.2": "release-2.8.2",
 					},
 				},
 			},
