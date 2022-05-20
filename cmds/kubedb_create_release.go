@@ -241,7 +241,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						"release-automaton update-assets --hide --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
