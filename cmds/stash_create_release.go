@@ -135,7 +135,7 @@ func CreateStashReleaseFile() api.Release {
 						"7.2.0-v17": "release-7.2.0",
 						"7.3.2-v17": "release-7.3.2",
 						"7.14.0-v3": "release-7.14.0",
-						"8.2.0": "release-8.2.0",
+						"8.2.0":     "release-8.2.0",
 					},
 				},
 			},
@@ -206,7 +206,7 @@ func CreateStashReleaseFile() api.Release {
 					Key: "stash-nats",
 					Tags: map[string]string{
 						"2.6.1-v4": "release-2.6.1",
-						"2.8.2": "release-2.8.2",
+						"2.8.2":    "release-2.8.2",
 					},
 				},
 			},
