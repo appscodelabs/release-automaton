@@ -50,7 +50,7 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 
 func CreateKubeVaultReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.02.22" + prerelease
+	releaseNumber := "v2022.06.15" + prerelease
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
@@ -59,11 +59,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/apimachinery": api.Project{
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.8.0" + prerelease),
 				},
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.8.0" + prerelease),
 				},
 			},
 			{
@@ -72,11 +72,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 					ChartNames: []string{
 						"kubevault-operator",
 					},
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.8.0" + prerelease),
 				},
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
-					Tag: github.String("v0.7.0" + prerelease),
+					Tag: github.String("v0.8.0" + prerelease),
 				},
 				// {
 				// 	"github.com/kubevault/prometheus-exporter": api.Project{
@@ -99,6 +99,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --update-spec=spec.unsealer.image=kubevault/vault-unsealer:${KUBEVAULT_UNSEALER_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-operator CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubevault-webhook-server CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
