@@ -29,7 +29,7 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/mod/modfile"
 	"gomodules.xyz/envsubst"

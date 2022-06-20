@@ -142,9 +142,9 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/go-github/v35 v35.3.0
-## explicit; go 1.16
-github.com/google/go-github/v35/github
+# github.com/google/go-github/v45 v45.1.0
+## explicit; go 1.17
+github.com/google/go-github/v45/github
 # github.com/google/go-querystring v1.1.0
 ## explicit; go 1.10
 github.com/google/go-querystring/query

@@ -30,7 +30,7 @@ import (
 	"github.com/appscodelabs/release-automaton/lib"
 
 	"github.com/alessio/shellescape"
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v45/github"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-getter"
 	"github.com/kballard/go-shellquote"

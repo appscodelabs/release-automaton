@@ -22,7 +22,7 @@ import (
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
 
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
 	"gomodules.xyz/semvers"
 )

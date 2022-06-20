@@ -27,7 +27,7 @@ import (
 
 	"github.com/appscodelabs/release-automaton/api"
 
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v45/github"
 	"golang.org/x/oauth2"
 	"k8s.io/apimachinery/pkg/util/sets"
 )

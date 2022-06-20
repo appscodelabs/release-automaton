@@ -7,7 +7,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/alessio/shellescape v1.4.1
 	github.com/appscode/static-assets v0.8.1
-	github.com/google/go-github/v35 v35.3.0
+	github.com/google/go-github/v45 v45.1.0
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-getter v1.6.2
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
