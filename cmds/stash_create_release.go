@@ -50,7 +50,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.06.21" + prerelease
+	releaseNumber := "v2022.06.27" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -112,12 +112,12 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-postgres",
 					Tags: map[string]string{
-						"9.6.19-v16": "release-9.6.19",
-						"10.14-v16":  "release-10.14",
-						"11.9-v16":   "release-11.9",
-						"12.4-v16":   "release-12.4",
-						"13.1-v13":   "release-13.1",
-						"14.0-v5":    "release-14.0",
+						"9.6.19-v17": "release-9.6.19",
+						"10.14-v17":  "release-10.14",
+						"11.9-v17":   "release-11.9",
+						"12.4-v17":   "release-12.4",
+						"13.1-v14":   "release-13.1",
+						"14.0-v6":    "release-14.0",
 					},
 				},
 			},
@@ -144,19 +144,19 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mongodb",
 					Tags: map[string]string{
-						"3.4.17-v17": "release-3.4.17",
-						"3.4.22-v17": "release-3.4.22",
-						"3.6.13-v17": "release-3.6.13",
-						"3.6.8-v17":  "release-3.6.8",
-						"4.0.11-v17": "release-4.0.11",
-						"4.0.3-v17":  "release-4.0.3",
-						"4.0.5-v17":  "release-4.0.5",
-						"4.1.4-v17":  "release-4.1.4",
-						"4.1.7-v17":  "release-4.1.7",
-						"4.1.13-v17": "release-4.1.13",
-						"4.2.3-v17":  "release-4.2.3",
-						"4.4.6-v8":   "release-4.4.6",
-						"5.0.3-v5":   "release-5.0.3",
+						"3.4.17-v18": "release-3.4.17",
+						"3.4.22-v18": "release-3.4.22",
+						"3.6.13-v18": "release-3.6.13",
+						"3.6.8-v18":  "release-3.6.8",
+						"4.0.11-v18": "release-4.0.11",
+						"4.0.3-v18":  "release-4.0.3",
+						"4.0.5-v18":  "release-4.0.5",
+						"4.1.4-v18":  "release-4.1.4",
+						"4.1.7-v18":  "release-4.1.7",
+						"4.1.13-v18": "release-4.1.13",
+						"4.2.3-v18":  "release-4.2.3",
+						"4.4.6-v9":   "release-4.4.6",
+						"5.0.3-v6":   "release-5.0.3",
 					},
 				},
 			},
