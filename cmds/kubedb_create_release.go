@@ -107,6 +107,10 @@ func CreateKubeDBReleaseFile() api.Release {
 					Tag: github.String("v0.6.0" + prerelease),
 					// update catalog
 				},
+				"github.com/kubedb/percona-xtradb-coordinator": api.Project{
+					Tag: github.String("v0.1.0" + prerelease),
+					// update catalog
+				},
 				"github.com/kubedb/redis-coordinator": api.Project{
 					Tag: github.String("v0.7.0" + prerelease),
 					// update catalog
@@ -215,6 +219,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --kind=MariaDBVersion --update-spec=spec.coordinator.image=kubedb/mariadb-coordinator:${KUBEDB_MARIADB_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=MySQLVersion --update-spec=spec.coordinator.image=kubedb/mysql-coordinator:${KUBEDB_MYSQL_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=MySQLVersion --update-spec=spec.routerInitContainer.image=kubedb/mysql-router-init:${KUBEDB_MYSQL_ROUTER_INIT_TAG}",
+						"go run ./hack/fmt/main.go --kind=PerconaXtraDBVersion --update-spec=spec.coordinator.image=kubedb/percona-xtradb-coordinator:${KUBEDB_PERCONA_XTRADB_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./hack/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
