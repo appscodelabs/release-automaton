@@ -205,7 +205,7 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-nats",
 					Tags: map[string]string{
-						"2.6.1-v6": "release-2.6.1",
+						"2.6.1-v7": "release-2.6.1",
 						"2.8.2-v2": "release-2.8.2",
 					},
 				},
