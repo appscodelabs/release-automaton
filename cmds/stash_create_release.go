@@ -118,7 +118,7 @@ func CreateStashReleaseFile() api.Release {
 						"12.4-v19":   "release-12.4",
 						"13.1-v16":   "release-13.1",
 						"14.0-v8":    "release-14.0",
-						"15.1":    "release-15.1",
+						"15.1":       "release-15.1",
 					},
 				},
 			},
@@ -189,7 +189,7 @@ func CreateStashReleaseFile() api.Release {
 					Tags: map[string]string{
 						"5.0.13-v8": "release-5.0.13",
 						"6.2.5-v8":  "release-6.2.5",
-						"7.0.5-v1":     "release-7.0.5",
+						"7.0.5-v1":  "release-7.0.5",
 					},
 				},
 			},
