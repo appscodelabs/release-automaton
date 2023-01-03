@@ -36,10 +36,10 @@ import (
 var chartsDir = "charts"
 
 /*
-release-automaton update-bundles \
-  --release-file=/home/tamal/go/src/github.com/tamalsaha/gh-release-automation-testing/v2020.6.16/release.json \
-  --workspace=/home/tamal/go/src/stash.appscode.dev/bundles \
-  --charts-dir=charts
+	release-automaton update-bundles \
+	  --release-file=/home/tamal/go/src/github.com/tamalsaha/gh-release-automation-testing/v2020.6.16/release.json \
+	  --workspace=/home/tamal/go/src/stash.appscode.dev/bundles \
+	  --charts-dir=charts
 */
 func NewCmdUpdateBundles() *cobra.Command {
 	cmd := &cobra.Command{

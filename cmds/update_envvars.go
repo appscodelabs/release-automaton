@@ -27,9 +27,9 @@ import (
 var envFile string
 
 /*
-release-automaton update-vars \
-  --env-file=/home/tamal/go/src/kubedb.dev/postgres/Makefile.env \
-  --vars=charts
+	release-automaton update-vars \
+	  --env-file=/home/tamal/go/src/kubedb.dev/postgres/Makefile.env \
+	  --vars=charts
 */
 func NewCmdUpdateEnvVars() *cobra.Command {
 	cmd := &cobra.Command{

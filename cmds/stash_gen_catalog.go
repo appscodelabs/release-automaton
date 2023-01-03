@@ -33,9 +33,9 @@ import (
 var catalogFile string
 
 /*
-release-automaton stash gen-catalog \
-  --release-file=/home/tamal/go/src/github.com/tamalsaha/gh-release-automation-testing/v2020.6.16/release.json \
-  --catalog-file=/home/tamal/go/src/stash.appscode.dev/installer/catalog/catalog.json
+	release-automaton stash gen-catalog \
+	  --release-file=/home/tamal/go/src/github.com/tamalsaha/gh-release-automation-testing/v2020.6.16/release.json \
+	  --catalog-file=/home/tamal/go/src/stash.appscode.dev/installer/catalog/catalog.json
 */
 func NewCmdStashGenCatalog() *cobra.Command {
 	cmd := &cobra.Command{

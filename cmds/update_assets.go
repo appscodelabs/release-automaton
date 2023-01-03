@@ -40,9 +40,9 @@ var (
 )
 
 /*
-release-automaton update-assets \
-  --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json \
-  --workspace=${WORKSPACE}
+	release-automaton update-assets \
+	  --release-file=${SCRIPT_ROOT}/v2020.6.16/release.json \
+	  --workspace=${WORKSPACE}
 */
 func NewCmdUpdateAssets() *cobra.Command {
 	cmd := &cobra.Command{
