@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	iofs "io/fs"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -130,11 +131,25 @@ func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
 	}
 
 	tpl := template.New("").Funcs(sprig.TxtFuncMap())
-	for _, name := range templates.AssetNames() {
-		tpl, err = tpl.New(name).Parse(string(templates.MustAsset(name)))
+	err = iofs.WalkDir(templates.FS(), "", func(path string, d iofs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		data, err := iofs.ReadFile(templates.FS(), path)
+		if err != nil {
+			return err
+		}
+		tpl, err = tpl.New(d.Name()).Parse(string(data))
 		if err != nil {
 			panic(err)
 		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
 	}
 
 	var buf bytes.Buffer
