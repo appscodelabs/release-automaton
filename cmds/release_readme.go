@@ -52,7 +52,7 @@ func GenerateTable() api.ReleaseTable {
 	var table api.ReleaseTable
 
 	legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
-	data, err := ioutil.ReadFile(legacyfilename)
+	data, err := os.ReadFile(legacyfilename)
 	if !os.IsNotExist(err) {
 		err = json.Unmarshal(data, &table)
 		if err != nil {
@@ -71,7 +71,7 @@ func GenerateTable() api.ReleaseTable {
 		filename := filepath.Join(changelogRoot, fi.Name(), "CHANGELOG.json")
 		if lib.Exists(filename) {
 			var chlog api.Changelog
-			data, err = ioutil.ReadFile(filename)
+			data, err = os.ReadFile(filename)
 			if err != nil {
 				panic(err)
 			}

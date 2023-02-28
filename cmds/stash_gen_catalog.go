@@ -18,7 +18,7 @@ package cmds
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/appscodelabs/release-automaton/api"
@@ -53,7 +53,7 @@ func NewCmdStashGenCatalog() *cobra.Command {
 }
 
 func generateCatalog() error {
-	data, err := ioutil.ReadFile(releaseFile)
+	data, err := os.ReadFile(releaseFile)
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func generateCatalog() error {
 	}
 
 	var catalog catalog.StashCatalog
-	data, err = ioutil.ReadFile(catalogFile)
+	data, err = os.ReadFile(catalogFile)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func generateCatalog() error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(catalogFile, b, 0o644)
+	err = os.WriteFile(catalogFile, b, 0o644)
 	return err
 }
 

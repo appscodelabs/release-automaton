@@ -18,7 +18,6 @@ package lib
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -71,7 +70,7 @@ func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 	s := sh.Command(fields[0], args...)
 	if createOut {
 		if !Exists(filename) {
-			err := ioutil.WriteFile(filename, []byte(""), 0o644)
+			err := os.WriteFile(filename, []byte(""), 0o644)
 			if err != nil {
 				return err
 			}
@@ -84,7 +83,7 @@ func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 		return s.WriteStdout(filename)
 	} else if appendOut {
 		if !Exists(filename) {
-			err := ioutil.WriteFile(filename, []byte{}, 0o644)
+			err := os.WriteFile(filename, []byte{}, 0o644)
 			if err != nil {
 				return err
 			}

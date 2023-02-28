@@ -18,7 +18,6 @@ package cmds
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
@@ -49,7 +48,7 @@ func NewCmdStashRecordLegacyReleases() *cobra.Command {
 			}
 
 			legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
-			err = ioutil.WriteFile(legacyfilename, data, 0o644)
+			err = os.WriteFile(legacyfilename, data, 0o644)
 			if err != nil {
 				panic(err)
 			}

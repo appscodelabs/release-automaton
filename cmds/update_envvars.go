@@ -18,7 +18,7 @@ package cmds
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -47,7 +47,7 @@ func NewCmdUpdateEnvVars() *cobra.Command {
 }
 
 func updateEnvVars() error {
-	data, err := ioutil.ReadFile(envFile)
+	data, err := os.ReadFile(envFile)
 	if err != nil {
 		return err
 	}
@@ -61,5 +61,5 @@ func updateEnvVars() error {
 		}
 	}
 
-	return ioutil.WriteFile(envFile, []byte(strings.Join(lines, "\n")), 0o644)
+	return os.WriteFile(envFile, []byte(strings.Join(lines, "\n")), 0o644)
 }

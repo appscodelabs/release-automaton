@@ -19,7 +19,6 @@ package cmds
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -88,7 +87,7 @@ func runAutomaton() {
 		panic(err)
 	}
 
-	data, err := ioutil.ReadFile(releaseFile)
+	data, err := os.ReadFile(releaseFile)
 	if err != nil {
 		panic(err)
 	}
@@ -1202,7 +1201,7 @@ func DetectGoMod(dir string) string {
 	if !lib.Exists(filename) {
 		return ""
 	}
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
@@ -1222,7 +1221,7 @@ func UpdateGoMod(dir string) {
 	if !lib.Exists(filename) {
 		return
 	}
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
@@ -1273,7 +1272,7 @@ func UpdateGoMod(dir string) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filename, data, 0o644)
+	err = os.WriteFile(filename, data, 0o644)
 	if err != nil {
 		panic(err)
 	}

@@ -18,6 +18,7 @@ package cmds
 
 import (
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"sort"
 
@@ -58,7 +59,7 @@ func NewCmdUpdateBundles() *cobra.Command {
 }
 
 func updateBundles() error {
-	data, err := ioutil.ReadFile(releaseFile)
+	data, err := os.ReadFile(releaseFile)
 	if err != nil {
 		return err
 	}
@@ -90,7 +91,7 @@ func updateBundles() error {
 		}
 
 		// Update chart
-		data, err := ioutil.ReadFile(chartFilename)
+		data, err := os.ReadFile(chartFilename)
 		if err != nil {
 			return err
 		}
@@ -123,7 +124,7 @@ func updateBundles() error {
 			return err
 		}
 
-		err = ioutil.WriteFile(chartFilename, data, 0o644)
+		err = os.WriteFile(chartFilename, data, 0o644)
 		if err != nil {
 			return err
 		}
@@ -143,7 +144,7 @@ func updateBundles() error {
 		}
 
 		// Update bundle.yaml
-		data, err = ioutil.ReadFile(bundleFilename)
+		data, err = os.ReadFile(bundleFilename)
 		if err != nil {
 			return err
 		}
@@ -194,7 +195,7 @@ func updateBundles() error {
 		if err != nil {
 			return err
 		}
-		err = ioutil.WriteFile(bundleFilename, data, 0o644)
+		err = os.WriteFile(bundleFilename, data, 0o644)
 		if err != nil {
 			return err
 		}

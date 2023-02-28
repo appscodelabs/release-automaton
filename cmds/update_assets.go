@@ -17,7 +17,7 @@ limitations under the License.
 package cmds
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -61,7 +61,7 @@ func NewCmdUpdateAssets() *cobra.Command {
 }
 
 func updateAssets() error {
-	data, err := ioutil.ReadFile(releaseFile)
+	data, err := os.ReadFile(releaseFile)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func updateAsset(release api.Release, project api.Project) error {
 		return nil
 	}
 
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
@@ -173,7 +173,7 @@ func updateAsset(release api.Release, project api.Project) error {
 	if err != nil {
 		panic(err)
 	}
-	return ioutil.WriteFile(filename, data, 0o644)
+	return os.WriteFile(filename, data, 0o644)
 }
 
 //nolint:unparam

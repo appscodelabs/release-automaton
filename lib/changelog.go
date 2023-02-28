@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -93,7 +92,7 @@ func UpdateChangelog(dir string, release api.Release, repoURL, tag string, commi
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filenameChlog, data, 0o644)
+	err = os.WriteFile(filenameChlog, data, 0o644)
 	if err != nil {
 		panic(err)
 	}
@@ -105,7 +104,7 @@ func LoadChangelog(dir string, release api.Release) api.Changelog {
 	var chlog api.Changelog
 
 	filename := filepath.Join(dir, "CHANGELOG.json")
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err == nil {
 		err = json.Unmarshal(data, &chlog)
 		if err != nil {
@@ -143,7 +142,7 @@ func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(filename, buf.Bytes(), 0o644)
+	err = os.WriteFile(filename, buf.Bytes(), 0o644)
 	if err != nil {
 		panic(err)
 	}

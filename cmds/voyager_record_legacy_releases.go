@@ -19,7 +19,6 @@ package cmds
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -56,7 +55,7 @@ func NewCmdVoyagerRecordLegacyReleases() *cobra.Command {
 			}
 
 			legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
-			err = ioutil.WriteFile(legacyfilename, data, 0o644)
+			err = os.WriteFile(legacyfilename, data, 0o644)
 			if err != nil {
 				panic(err)
 			}

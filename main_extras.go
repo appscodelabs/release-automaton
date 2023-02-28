@@ -21,7 +21,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -141,7 +140,7 @@ func main_UpdateChangelog() {
 	dir := "/home/tamal/go/src/github.com/tamalsaha/release-automaton-demo/CHANGELOG/v2020.6.23"
 
 	releaseFile := filepath.Join(dir, "release.json")
-	data, err := ioutil.ReadFile(releaseFile)
+	data, err := os.ReadFile(releaseFile)
 	if err != nil {
 		panic(err)
 	}
@@ -187,7 +186,7 @@ func mm() {
 		panic(err)
 	}
 
-	data, err := ioutil.ReadFile(localfile)
+	data, err := os.ReadFile(localfile)
 	if err != nil {
 		panic(err)
 	}
