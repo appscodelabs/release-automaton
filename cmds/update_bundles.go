@@ -17,7 +17,6 @@ limitations under the License.
 package cmds
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -70,7 +69,7 @@ func updateBundles() error {
 
 	dir := filepath.Join(repoWorkspace, chartsDir)
 
-	entries, err := ioutil.ReadDir(dir)
+	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return err
 	}

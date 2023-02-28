@@ -18,7 +18,6 @@ package cmds
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -60,7 +59,7 @@ func GenerateTable() api.ReleaseTable {
 		}
 	}
 
-	entries, err := ioutil.ReadDir(changelogRoot)
+	entries, err := os.ReadDir(changelogRoot)
 	if err != nil {
 		panic(err)
 	}
