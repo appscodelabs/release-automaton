@@ -315,7 +315,7 @@ func runAutomaton() {
 			// check repos that are /ready-to-tag
 			for _, data := range replies[api.ReadyToTag] {
 				repoURL := data.ReadyToTag.Repo
-				if notTagged.Has(repoURL) {
+				if notTagged.Has(repoURL) && projects[repoURL].Tag != nil {
 					readyToTag.Insert(repoURL)
 					notTagged.Delete(repoURL)
 				}
@@ -330,11 +330,13 @@ func runAutomaton() {
 			}
 
 			// skip repos where prs have been opened
-			for _, data := range replies[api.PR] {
-				repoURL := data.PR.Repo
-				if notTagged.Has(repoURL) {
-					notTagged.Delete(repoURL)
-					openPRs.Insert(repoURL)
+			if notTagged.Len() > 0 {
+				for _, data := range replies[api.PR] {
+					repoURL := data.PR.Repo
+					if notTagged.Has(repoURL) {
+						notTagged.Delete(repoURL)
+						openPRs.Insert(repoURL)
+					}
 				}
 			}
 		}
@@ -919,14 +921,15 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 			// This usually happens as a mistake because release engineer forgot to cherry pick commits to release branch for a patch release
 			if existingTag, ok := lib.IsTagged(sh); ok && existingTag != tag {
 				return fmt.Errorf("%s branch %s is already tagged as %s, did you forget to cherry pick?", repoURL, branch, existingTag)
-			}
-			err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
-			if err != nil {
-				return err
-			}
-			err = lib.PushRepo(sh, true)
-			if err != nil {
-				return err
+			} else if !ok { // if untagged
+				err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
+				if err != nil {
+					return err
+				}
+				err = lib.PushRepo(sh, true)
+				if err != nil {
+					return err
+				}
 			}
 		} else if vTag.Patch() == 0 || project.ReleaseBranch != "" {
 			if lib.RemoteBranchExists(sh, branch) {
