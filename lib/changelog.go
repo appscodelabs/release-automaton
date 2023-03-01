@@ -131,7 +131,7 @@ func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
 	}
 
 	tpl := template.New("").Funcs(sprig.TxtFuncMap())
-	err = iofs.WalkDir(templates.FS(), "", func(path string, d iofs.DirEntry, err error) error {
+	err = iofs.WalkDir(templates.FS(), ".", func(path string, d iofs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
