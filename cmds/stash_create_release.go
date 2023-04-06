@@ -66,7 +66,7 @@ func CreateStashReleaseFile() api.Release {
 		ProductLine:       "Stash",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://stash.run/docs/%s",
-		KubernetesVersion: "1.18+",
+		KubernetesVersion: "1.19+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{

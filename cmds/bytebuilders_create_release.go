@@ -54,7 +54,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 		ProductLine: "ByteBuilders",
 		Release:     releaseNumber,
 		// DocsURLTemplate:   "https://appscode.com/docs/%s",
-		KubernetesVersion: "1.16+",
+		KubernetesVersion: "1.19+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/bytebuilders/ui-wizards": api.Project{

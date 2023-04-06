@@ -82,7 +82,7 @@ func CreateKubeformReleaseFile() api.Release {
 		ProductLine:       "Kubeform",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubeform.com/docs/%s",
-		KubernetesVersion: "1.16+",
+		KubernetesVersion: "1.19+",
 		Projects: []api.IndependentProjects{
 			{
 				// api projects

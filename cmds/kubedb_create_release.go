@@ -55,7 +55,7 @@ func CreateKubeDBReleaseFile() api.Release {
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubedb.com/docs/%s",
-		KubernetesVersion: "1.18+",
+		KubernetesVersion: "1.19+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubedb/apimachinery": api.Project{
