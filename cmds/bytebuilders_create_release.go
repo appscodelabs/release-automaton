@@ -86,19 +86,19 @@ func CreateByteBuildersReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/appscode/cluster-ui": api.Project{
+				"github.com/bytebuilders/cluster-ui": api.Project{
 					Tag: github.String("v0.3.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
-				"github.com/appscode/kubedb-ui": api.Project{
+				"github.com/bytebuilders/kubedb-ui": api.Project{
 					Tag: github.String("v0.3.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
-				"github.com/appscode/accounts-ui": api.Project{
+				"github.com/bytebuilders/accounts-ui": api.Project{
 					Tag: github.String("v0.3.0" + prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
@@ -106,7 +106,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 				},
 			},
 			{
-				"github.com/appscode/gitea": api.Project{
+				"github.com/bytebuilders/b3": api.Project{
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 				},
@@ -120,7 +120,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 			"github.com/kmodules/metrics-configuration-checker": {},
 			"github.com/kubepack/kubepack":                      {},
 			"github.com/kubepack/lib-app":                       {},
-			"github.com/appscode/products":                      {},
+			"github.com/bytebuilders/products":                  {},
 		},
 	}
 }
