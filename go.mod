@@ -14,7 +14,7 @@ require (
 	github.com/keighl/metabolize v0.0.0-20150915210303-97ab655d4034
 	github.com/spf13/cobra v1.6.0
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4
-	golang.org/x/oauth2 v0.1.0
+	golang.org/x/oauth2 v0.4.0
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/envsubst v0.1.0
 	gomodules.xyz/go-sh v0.1.0
@@ -33,9 +33,10 @@ require (
 require github.com/emicklei/go-restful/v3 v3.8.0 // indirect
 
 require (
-	cloud.google.com/go v0.104.0 // indirect
-	cloud.google.com/go/compute v1.10.0 // indirect
-	cloud.google.com/go/iam v0.5.0 // indirect
+	cloud.google.com/go v0.107.0 // indirect
+	cloud.google.com/go/compute v1.15.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/iam v0.8.0 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/aws/aws-sdk-go v1.44.122 // indirect
@@ -57,7 +58,7 @@ require (
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/martian/v3 v3.3.2 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
-	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-safetemp v1.0.0 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
@@ -85,7 +86,7 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
-	go.opencensus.io v0.23.0 // indirect
+	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
@@ -97,10 +98,10 @@ require (
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
-	google.golang.org/api v0.100.0 // indirect
+	google.golang.org/api v0.103.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20221025140454-527a21cfbd71 // indirect
-	google.golang.org/grpc v1.50.1 // indirect
+	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
+	google.golang.org/grpc v1.53.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
