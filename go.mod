@@ -18,7 +18,7 @@ require (
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/envsubst v0.1.0
 	gomodules.xyz/go-sh v0.1.0
-	gomodules.xyz/logs v0.0.6
+	gomodules.xyz/logs v0.0.7
 	gomodules.xyz/oneliners v0.0.0-20200730052119-bccc7758058b
 	gomodules.xyz/semvers v0.0.0-20220316103017-cfbe8c37b63d
 	gomodules.xyz/sets v0.2.1
