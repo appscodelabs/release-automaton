@@ -316,7 +316,6 @@ golang.org/x/mod/semver
 # golang.org/x/net v0.7.0
 ## explicit; go 1.17
 golang.org/x/net/context
-golang.org/x/net/context/ctxhttp
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/http/httpguts
@@ -325,7 +324,7 @@ golang.org/x/net/http2/hpack
 golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
-# golang.org/x/oauth2 v0.1.0
+# golang.org/x/oauth2 v0.5.0
 ## explicit; go 1.17
 golang.org/x/oauth2
 golang.org/x/oauth2/authhandler
@@ -374,8 +373,8 @@ gomodules.xyz/flags
 # gomodules.xyz/go-sh v0.1.0
 ## explicit; go 1.15
 gomodules.xyz/go-sh
-# gomodules.xyz/jsonpatch/v2 v2.2.0
-## explicit; go 1.12
+# gomodules.xyz/jsonpatch/v2 v2.3.0
+## explicit; go 1.20
 gomodules.xyz/jsonpatch/v2
 # gomodules.xyz/logs v0.0.6
 ## explicit; go 1.16
@@ -788,7 +787,7 @@ k8s.io/utils/internal/third_party/forked/golang/net
 k8s.io/utils/net
 k8s.io/utils/pointer
 k8s.io/utils/strings/slices
-# kmodules.xyz/client-go v0.25.14
+# kmodules.xyz/client-go v0.25.28
 ## explicit; go 1.18
 kmodules.xyz/client-go
 kmodules.xyz/client-go/apiextensions
@@ -803,7 +802,7 @@ kubepack.dev/kubepack/crds
 # sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4 => github.com/kmodules/application v0.8.4-0.20220603221517-a62565381f64
 ## explicit; go 1.18
 sigs.k8s.io/application/api/app/v1beta1
-# sigs.k8s.io/controller-runtime v0.13.0
+# sigs.k8s.io/controller-runtime v0.13.1
 ## explicit; go 1.17
 sigs.k8s.io/controller-runtime/pkg/scheme
 # sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2
