@@ -20,9 +20,11 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/pkg/errors"
 	"gomodules.xyz/semvers"
 )
 
@@ -80,14 +82,14 @@ func (r Release) Validate() error {
 	if r.Release == "" {
 		return fmt.Errorf("missing release number")
 	}
-	v, err := semver.NewVersion(r.Release)
+	v, err := StrictParseVersion(r.Release)
 	if err != nil {
 		return err
 	}
 	for _, projects := range r.Projects {
 		for repoURL, project := range projects {
 			if project.Tag != nil {
-				projectVersion, err := semver.NewVersion(*project.Tag)
+				projectVersion, err := StrictParseVersion(*project.Tag)
 				if err != nil {
 					return fmt.Errorf("invalid tag for repo %s: %s", repoURL, err)
 				}
@@ -98,6 +100,18 @@ func (r Release) Validate() error {
 		}
 	}
 	return nil
+}
+
+// StrictParseVersion behaves as semver.StrictNewVersion, with as sole exception
+// that it allows versions with a preceding "v" (i.e. v1.2.3).
+// Ensure new releases are FluxCD compatible.
+// xref: https://github.com/fluxcd/pkg/blob/main/version/version.go#L25-L33
+func StrictParseVersion(v string) (*semver.Version, error) {
+	vLessV := strings.TrimPrefix(v, "v")
+	if _, err := semver.StrictNewVersion(vLessV); err != nil {
+		return nil, errors.Wrapf(err, "invalid version %s", v)
+	}
+	return semver.NewVersion(v)
 }
 
 /*
