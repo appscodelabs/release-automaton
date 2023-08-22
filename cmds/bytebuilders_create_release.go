@@ -49,7 +49,7 @@ func NewCmdByteBuildersCreateRelease() *cobra.Command {
 
 func CreateByteBuildersReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.03.09" + prerelease
+	releaseNumber := "v2022.3.9" + prerelease
 	return api.Release{
 		ProductLine: "ByteBuilders",
 		Release:     releaseNumber,

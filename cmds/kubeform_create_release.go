@@ -50,7 +50,7 @@ func NewCmdKubeformCreateRelease() *cobra.Command {
 
 func CreateKubeformReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2022.05.11" + prerelease
+	releaseNumber := "v2022.5.11" + prerelease
 	tag := "v0.5.0"
 	providers := []string{
 		"alicloud",
