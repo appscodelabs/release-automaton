@@ -29,7 +29,7 @@ import (
 	"gomodules.xyz/semvers"
 	"gomodules.xyz/sets"
 	ylib "gopkg.in/yaml.v2"
-	kpapi "kubepack.dev/kubepack/apis/kubepack/v1alpha1"
+	kpapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 	"sigs.k8s.io/yaml"
 )
 
