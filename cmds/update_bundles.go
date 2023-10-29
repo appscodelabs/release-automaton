@@ -29,8 +29,8 @@ import (
 	"gomodules.xyz/semvers"
 	"gomodules.xyz/sets"
 	ylib "gopkg.in/yaml.v2"
-	kpapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 	"sigs.k8s.io/yaml"
+	kpapi "x-helm.dev/apimachinery/apis/releases/v1alpha1"
 )
 
 var chartsDir = "charts"

@@ -48,30 +48,34 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 }
 
 func CreateKubeStashReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2023.4.14" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2023.10.30" + prerelease
 	return api.Release{
 		ProductLine:       "KubeStash",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubestash.com/docs/%s",
-		KubernetesVersion: "1.19+",
+		KubernetesVersion: "1.20+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
-				},
+				"github.com/kubestash/apimachinery": api.Project{Tag: github.String("v0.2.0" + prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
-				},
-				"github.com/kubestash/kubedb-manifest": api.Project{
-					Tag: github.String("v0.1.0" + prerelease),
-				},
+				"github.com/kubestash/kubestash":          api.Project{Tag: github.String("v0.2.0" + prerelease)},
+				"github.com/kubestash/kubedb-manifest":    api.Project{Tag: github.String("v0.2.0" + prerelease)},
+				"github.com/kubestash/mongodb":            api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/cli":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/mysql":              api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/postgres":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/elasticsearch":      api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubestash/redis":              api.Project{Tag: github.String("v0.1.0" + prerelease)},
 			},
 			{
 				"github.com/kubestash/installer": api.Project{
-					Key:           "voyager-installer",
+					Key:           "kubestash-installer",
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					ChartNames: []string{
