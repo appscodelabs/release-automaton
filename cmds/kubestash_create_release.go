@@ -61,17 +61,11 @@ func CreateKubeStashReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubestash/kubestash":          api.Project{Tag: github.String("v0.2.0" + prerelease)},
-				"github.com/kubestash/kubedb-manifest":    api.Project{Tag: github.String("v0.2.0" + prerelease)},
-				"github.com/kubestash/mongodb":            api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubestash/pvc":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubestash/workload":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubestash/cli":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
-				"github.com/kubestash/mysql":              api.Project{Tag: github.String("v0.1.0" + prerelease)},
-				"github.com/kubestash/postgres":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubestash/kubedump":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubestash/volume-snapshotter": api.Project{Tag: github.String("v0.1.0" + prerelease)},
-				"github.com/kubestash/elasticsearch":      api.Project{Tag: github.String("v0.1.0" + prerelease)},
-				"github.com/kubestash/redis":              api.Project{Tag: github.String("v0.1.0" + prerelease)},
 			},
 			{
 				"github.com/kubestash/installer": api.Project{

@@ -58,73 +58,42 @@ func CreateKubeDBReleaseFile() api.Release {
 		KubernetesVersion: "1.20+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubedb/apimachinery": api.Project{
-					Tag: github.String("v0.37.0" + prerelease),
-				},
+				"github.com/kubedb/apimachinery": api.Project{Tag: github.String("v0.37.0" + prerelease)},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
 					Tag: github.String("v0.37.0" + prerelease),
 				},
-				"github.com/kubedb/elasticsearch": api.Project{
-					Tag: github.String("v0.37.0" + prerelease),
-				},
-				"github.com/kubedb/kafka": api.Project{
-					Tag: github.String("v0.8.0" + prerelease),
-				},
-				"github.com/kubedb/mariadb": api.Project{
-					Tag: github.String("v0.21.0" + prerelease),
-				},
-				"github.com/kubedb/memcached": api.Project{
-					Tag: github.String("v0.30.0" + prerelease),
-				},
-				"github.com/kubedb/mongodb": api.Project{
-					Tag: github.String("v0.30.0" + prerelease),
-				},
-				"github.com/kubedb/mysql": api.Project{
-					Tag: github.String("v0.30.0" + prerelease),
-				},
-				"github.com/kubedb/postgres": api.Project{
-					Tag: github.String("v0.37.0" + prerelease),
-				},
-				"github.com/kubedb/redis": api.Project{
-					Tag: github.String("v0.30.0" + prerelease),
-				},
-				"github.com/kubedb/percona-xtradb": api.Project{
-					Tag: github.String("v0.24.0" + prerelease),
-				},
-				"github.com/kubedb/pg-coordinator": api.Project{
-					Tag: github.String("v0.21.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/mariadb-coordinator": api.Project{
-					Tag: github.String("v0.17.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/mysql-coordinator": api.Project{
-					Tag: github.String("v0.15.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/mysql-router-init": api.Project{
-					Tag: github.String("v0.15.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/percona-xtradb-coordinator": api.Project{
-					Tag: github.String("v0.10.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/redis-coordinator": api.Project{
-					Tag: github.String("v0.16.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/replication-mode-detector": api.Project{
-					Tag: github.String("v0.24.0" + prerelease),
-					// update catalog
-				},
-				"github.com/kubedb/tests": api.Project{
-					Tag: github.String("v0.22.0" + prerelease),
-				},
+				"github.com/kubedb/elasticsearch":              api.Project{Tag: github.String("v0.37.0" + prerelease)},
+				"github.com/kubedb/kafka":                      api.Project{Tag: github.String("v0.8.0" + prerelease)},
+				"github.com/kubedb/mariadb":                    api.Project{Tag: github.String("v0.21.0" + prerelease)},
+				"github.com/kubedb/memcached":                  api.Project{Tag: github.String("v0.30.0" + prerelease)},
+				"github.com/kubedb/mongodb":                    api.Project{Tag: github.String("v0.30.0" + prerelease)},
+				"github.com/kubedb/mysql":                      api.Project{Tag: github.String("v0.30.0" + prerelease)},
+				"github.com/kubedb/postgres":                   api.Project{Tag: github.String("v0.37.0" + prerelease)},
+				"github.com/kubedb/redis":                      api.Project{Tag: github.String("v0.30.0" + prerelease)},
+				"github.com/kubedb/percona-xtradb":             api.Project{Tag: github.String("v0.24.0" + prerelease)},
+				"github.com/kubedb/pg-coordinator":             api.Project{Tag: github.String("v0.21.0" + prerelease)},
+				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: github.String("v0.17.0" + prerelease)},
+				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: github.String("v0.15.0" + prerelease)},
+				"github.com/kubedb/mysql-router-init":          api.Project{Tag: github.String("v0.15.0" + prerelease)},
+				"github.com/kubedb/percona-xtradb-coordinator": api.Project{Tag: github.String("v0.10.0" + prerelease)},
+				"github.com/kubedb/redis-coordinator":          api.Project{Tag: github.String("v0.16.0" + prerelease)},
+				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: github.String("v0.24.0" + prerelease)},
+				"github.com/kubedb/tests":                      api.Project{Tag: github.String("v0.22.0" + prerelease)},
+				// kubestash plugins
+				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: github.String("v0.2.0" + prerelease)},
+				"github.com/kubedb/mongodb-restic-plugin":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/mysql-restic-plugin":             api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/postgres-restic-plugin":          api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/mongodb-csi-snapshotter-plugin":  api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/postgres-csi-snapshotter-plugin": api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/postgres-archiver":               api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				"github.com/kubedb/mariadb-archiver":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				// "github.com/kubedb/mysql-archiver":                  api.Project{Tag: github.String("v0.1.0" + prerelease)},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
