@@ -34,7 +34,6 @@ func NewRootCmd() *cobra.Command {
 	rootCmd.AddCommand(NewCmdKubeStash())
 	rootCmd.AddCommand(NewCmdKubeDB())
 	rootCmd.AddCommand(NewCmdKubeVault())
-	rootCmd.AddCommand(NewCmdKubeform())
 	rootCmd.AddCommand(NewCmdVoyager())
 	rootCmd.AddCommand(NewCmdUpdateBundles())
 	rootCmd.AddCommand(NewCmdUpdateAssets())
