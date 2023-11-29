@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2023.11.2" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2023.11.29" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -58,33 +58,33 @@ func CreateKubeDBReleaseFile() api.Release {
 		KubernetesVersion: "1.20+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubedb/apimachinery": api.Project{Tag: github.String("v0.37.0" + prerelease)},
+				"github.com/kubedb/apimachinery": api.Project{Tag: github.String("v0.38.0" + prerelease)},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
-					Tag: github.String("v0.37.0" + prerelease),
+					Tag: github.String("v0.38.0" + prerelease),
 				},
-				"github.com/kubedb/elasticsearch":              api.Project{Tag: github.String("v0.37.0" + prerelease)},
-				"github.com/kubedb/kafka":                      api.Project{Tag: github.String("v0.8.0" + prerelease)},
-				"github.com/kubedb/mariadb":                    api.Project{Tag: github.String("v0.21.0" + prerelease)},
-				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: github.String("v0.17.0" + prerelease)},
-				"github.com/kubedb/memcached":                  api.Project{Tag: github.String("v0.30.0" + prerelease)},
-				"github.com/kubedb/mongodb":                    api.Project{Tag: github.String("v0.30.0" + prerelease)},
-				"github.com/kubedb/mysql":                      api.Project{Tag: github.String("v0.30.0" + prerelease)},
-				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: github.String("v0.15.0" + prerelease)},
-				"github.com/kubedb/mysql-router-init":          api.Project{Tag: github.String("v0.15.0" + prerelease)},
-				"github.com/kubedb/percona-xtradb":             api.Project{Tag: github.String("v0.24.0" + prerelease)},
-				"github.com/kubedb/percona-xtradb-coordinator": api.Project{Tag: github.String("v0.10.0" + prerelease)},
-				"github.com/kubedb/pg-coordinator":             api.Project{Tag: github.String("v0.21.0" + prerelease)},
-				"github.com/kubedb/postgres":                   api.Project{Tag: github.String("v0.37.0" + prerelease)},
-				"github.com/kubedb/redis":                      api.Project{Tag: github.String("v0.30.0" + prerelease)},
-				"github.com/kubedb/redis-coordinator":          api.Project{Tag: github.String("v0.16.0" + prerelease)},
-				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: github.String("v0.24.0" + prerelease)},
-				"github.com/kubedb/tests":                      api.Project{Tag: github.String("v0.22.0" + prerelease)},
+				"github.com/kubedb/elasticsearch":              api.Project{Tag: github.String("v0.38.0" + prerelease)},
+				"github.com/kubedb/kafka":                      api.Project{Tag: github.String("v0.9.0" + prerelease)},
+				"github.com/kubedb/mariadb":                    api.Project{Tag: github.String("v0.22.0" + prerelease)},
+				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: github.String("v0.18.0" + prerelease)},
+				"github.com/kubedb/memcached":                  api.Project{Tag: github.String("v0.31.0" + prerelease)},
+				"github.com/kubedb/mongodb":                    api.Project{Tag: github.String("v0.31.0" + prerelease)},
+				"github.com/kubedb/mysql":                      api.Project{Tag: github.String("v0.31.0" + prerelease)},
+				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: github.String("v0.16.0" + prerelease)},
+				"github.com/kubedb/mysql-router-init":          api.Project{Tag: github.String("v0.16.0" + prerelease)},
+				"github.com/kubedb/percona-xtradb":             api.Project{Tag: github.String("v0.25.0" + prerelease)},
+				"github.com/kubedb/percona-xtradb-coordinator": api.Project{Tag: github.String("v0.11.0" + prerelease)},
+				"github.com/kubedb/pg-coordinator":             api.Project{Tag: github.String("v0.22.0" + prerelease)},
+				"github.com/kubedb/postgres":                   api.Project{Tag: github.String("v0.38.0" + prerelease)},
+				"github.com/kubedb/redis":                      api.Project{Tag: github.String("v0.31.0" + prerelease)},
+				"github.com/kubedb/redis-coordinator":          api.Project{Tag: github.String("v0.17.0" + prerelease)},
+				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: github.String("v0.25.0" + prerelease)},
+				"github.com/kubedb/tests":                      api.Project{Tag: github.String("v0.23.0" + prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: github.String("v0.1.0" + prerelease)},
-				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: github.String("v0.2.0" + prerelease)},
+				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubedb/mariadb-archiver":                api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubedb/mongodb-csi-snapshotter-plugin":  api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubedb/mongodb-restic-plugin":           api.Project{Tag: github.String("v0.1.0" + prerelease)},
@@ -97,7 +97,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
-					Tag: github.String("v0.24.0" + prerelease),
+					Tag: github.String("v0.25.0" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -106,7 +106,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubedb/proxysql": api.Project{
-					Tag: github.String("v0.24.0" + prerelease),
+					Tag: github.String("v0.25.0" + prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -119,21 +119,21 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/provisioner": api.Project{
 					Key: "kubedb-provisioner",
-					Tag: github.String("v0.37.0" + prerelease),
+					Tag: github.String("v0.38.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-provisioner",
 					},
 				},
 				"github.com/kubedb/dashboard": api.Project{
 					Key: "kubedb-dashboard",
-					Tag: github.String("v0.13.0" + prerelease),
+					Tag: github.String("v0.14.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-dashboard",
 					},
 				},
 				"github.com/kubedb/schema-manager": api.Project{
 					Key: "kubedb-schema-manager",
-					Tag: github.String("v0.13.0" + prerelease),
+					Tag: github.String("v0.14.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-schema-manager",
 					},
@@ -141,7 +141,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/ui-server": api.Project{
 					// NOT a sub project anymore
 					Key: "kubedb-ui-server",
-					Tag: github.String("v0.13.0" + prerelease),
+					Tag: github.String("v0.14.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-ui-server",
 					},
@@ -150,7 +150,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/ops-manager": api.Project{
 					Key: "kubedb-ops-manager",
-					Tag: github.String("v0.24.0" + prerelease),
+					Tag: github.String("v0.25.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-ops-manager",
 					},
@@ -159,7 +159,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/autoscaler": api.Project{
 					Key: "kubedb-autoscaler",
-					Tag: github.String("v0.22.0" + prerelease),
+					Tag: github.String("v0.23.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-autoscaler",
 					},
@@ -168,7 +168,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/webhook-server": api.Project{
 					Key: "kubedb-webhook-server",
-					Tag: github.String("v0.13.0" + prerelease),
+					Tag: github.String("v0.14.0" + prerelease),
 					ChartNames: []string{
 						"kubedb-webhook-server",
 					},
