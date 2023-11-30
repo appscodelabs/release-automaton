@@ -78,6 +78,16 @@ func CreateKubeStashReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
+
+						"./hack/fmt/main.go --kind=Function --name=elasticsearch-restore --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=kubedump-backup --update-spec=spec.image=ghcr.io/kubestash/kubedump:${KUBESTASH_KUBEDUMP_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=pvc-backup --update-spec=spec.image=ghcr.io/kubestash/pvc:${KUBESTASH_PVC_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=pvc-restore --update-spec=spec.image=ghcr.io/kubestash/pvc:${KUBESTASH_PVC_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=volumesnapshot-backup --update-spec=spec.image=ghcr.io/kubestash/volume-snapshotter:${KUBESTASH_VOLUME_SNAPSHOTTER_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=volumesnapshot-restore --update-spec=spec.image=ghcr.io/kubestash/volume-snapshotter:${KUBESTASH_VOLUME_SNAPSHOTTER_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=workload-backup --update-spec=spec.image=ghcr.io/kubestash/workload:${KUBESTASH_WORKLOAD_TAG}",
+						"./hack/fmt/main.go --kind=Function --name=workload-restore --update-spec=spec.image=ghcr.io/kubestash/workload:${KUBESTASH_WORKLOAD_TAG}",
+
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubestash-operator CHART_VERSION=${KUBESTASH_KUBESTASH_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
