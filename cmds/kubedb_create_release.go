@@ -94,6 +94,10 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/postgres-csi-snapshotter-plugin": api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubedb/postgres-restic-plugin":          api.Project{Tag: github.String("v0.1.0" + prerelease)},
 				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: github.String("v0.1.0" + prerelease)},
+				// crossplane
+				"github.com/kubedb/provider-aws":   api.Project{Tag: github.String("v0.0.2" + prerelease)},
+				"github.com/kubedb/provider-azure": api.Project{Tag: github.String("v0.0.2" + prerelease)},
+				"github.com/kubedb/provider-gcp":   api.Project{Tag: github.String("v0.0.2" + prerelease)},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
@@ -221,6 +225,11 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-schema-manager CHART_VERSION=${KUBEDB_SCHEMA_MANAGER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-ui-server CHART_VERSION=${KUBEDB_UI_SERVER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-webhook-server CHART_VERSION=${KUBEDB_WEBHOOK_SERVER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						// crossplane
+						"make chart-kubedb-provider-aws CHART_VERSION=${KUBEDB_PROVIDER_AWS_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-provider-azure CHART_VERSION=${KUBEDB_PROVIDER_AZURE_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-provider-gcp CHART_VERSION=${KUBEDB_PROVIDER_GCP_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+
 						"./hack/scripts/update-chart-dependencies.sh",
 					},
 				},
