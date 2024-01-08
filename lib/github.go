@@ -51,12 +51,12 @@ func NewGitHubClient() *github.Client {
 	return github.NewClient(tc)
 }
 
-func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo string, number int) (sets.String, error) {
+func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo string, number int) (sets.Set[string], error) {
 	opt := &github.ListOptions{
 		PerPage: 100,
 	}
 
-	result := sets.NewString()
+	result := sets.New[string]()
 	for {
 		labels, resp, err := gh.Issues.ListLabelsByIssue(ctx, owner, repo, number, opt)
 		switch e := err.(type) {

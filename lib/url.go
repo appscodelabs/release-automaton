@@ -67,8 +67,8 @@ func ParseRepoURL(repoURL string) (string, string) {
 	return owner, repo
 }
 
-func GetQueryParameter(v url.Values, key string) sets.String {
-	out := sets.NewString()
+func GetQueryParameter(v url.Values, key string) sets.Set[string] {
+	out := sets.New[string]()
 
 	if v == nil {
 		return out
