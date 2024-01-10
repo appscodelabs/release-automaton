@@ -65,6 +65,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key: "kubedb-cli",
 					Tag: github.String("v0.41.0" + prerelease),
 				},
+				"github.com/kubedb/crd-manager":                api.Project{Tag: github.String("v0.0.1" + prerelease)},
 				"github.com/kubedb/elasticsearch":              api.Project{Tag: github.String("v0.41.0" + prerelease)},
 				"github.com/kubedb/kafka":                      api.Project{Tag: github.String("v0.12.0" + prerelease)},
 				"github.com/kubedb/mariadb":                    api.Project{Tag: github.String("v0.25.0" + prerelease)},
@@ -227,6 +228,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=redis-restore --update-spec=spec.image=ghcr.io/kubedb/redis-restic-plugin:${KUBEDB_REDIS_RESTIC_PLUGIN_TAG}",
 
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubedb-crd-manager CHART_VERSION=${KUBEDB_CRD_MANAGER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-provisioner CHART_VERSION=${KUBEDB_PROVISIONER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-ops-manager CHART_VERSION=${KUBEDB_OPS_MANAGER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-autoscaler CHART_VERSION=${KUBEDB_AUTOSCALER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
