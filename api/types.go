@@ -88,13 +88,21 @@ func (r Release) Validate() error {
 	}
 	for _, projects := range r.Projects {
 		for repoURL, project := range projects {
-			if project.Tag != nil {
+			// only check projects that uses semver tags (ie, does not match release number)
+			if project.Tag != nil && r.Release != *project.Tag {
 				projectVersion, err := StrictParseVersion(*project.Tag)
 				if err != nil {
 					return fmt.Errorf("invalid tag for repo %s: %s", repoURL, err)
 				}
-				if v.Prerelease() != projectVersion.Prerelease() {
-					return fmt.Errorf("repo %s uses different prerelease version %s compared to product release number %s", repoURL, *project.Tag, r.Release)
+
+				if projectVersion.Patch() > 0 && projectVersion.Prerelease() != "" {
+					return fmt.Errorf("%s tag %s is invalid because it is a patch release but includes a pre-release component", repoURL, *project.Tag)
+				}
+
+				if projectVersion.Major() != 0 || projectVersion.Minor() != 0 {
+					if v.Prerelease() != projectVersion.Prerelease() {
+						return fmt.Errorf("repo %s uses different prerelease version %s compared to product release number %s", repoURL, *project.Tag, r.Release)
+					}
 				}
 			}
 		}
