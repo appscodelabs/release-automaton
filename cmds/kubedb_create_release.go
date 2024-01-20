@@ -61,6 +61,9 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/apimachinery": api.Project{Tag: TagP("v0.41.0", prerelease)},
 			},
 			{
+				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.0.8", prerelease)},
+			},
+			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
 					Tag: TagP("v0.41.0", prerelease),
