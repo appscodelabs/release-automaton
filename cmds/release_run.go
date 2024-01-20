@@ -892,8 +892,13 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 						branch = minorBranch
 					}
 				}
+
 				if branch == "" {
-					return fmt.Errorf("repo %s is missing branch for tag %s", repoURL, tag)
+					if vTag.Major() == 0 && vTag.Minor() == 0 {
+						branch = "release-0.0"
+					} else {
+						return fmt.Errorf("repo %s is missing branch for tag %s", repoURL, tag)
+					}
 				}
 				tags[tag] = branch
 			} else {
@@ -904,7 +909,35 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 
 		// -----------------------
 
-		if usesCherryPick || (vTag.Patch() > 0 && project.ReleaseBranch == "") {
+		// v0.0.x
+		if !usesCherryPick && vTag.Major() == 0 && vTag.Minor() == 0 && vTag.Patch() > 0 {
+			// in case of v0.0.x tag, merge master into the release branch, tag and publish
+			err = sh.Command("git", "checkout", api.BranchMaster).Run()
+			if err != nil {
+				return err
+			}
+			if sha, found := MergedCommitSHA(repoURL, branch, usesCherryPick); found {
+				// git reset --hard $sha
+				err = sh.Command("git", "reset", "--hard", sha).Run()
+				if err != nil {
+					return err
+				}
+			}
+			err = sh.Command("git", "checkout", "-b", branch).Run()
+			if err != nil {
+				return err
+			}
+			if existingTag, ok := lib.IsTagged(sh); !ok || existingTag != tag {
+				err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
+				if err != nil {
+					return err
+				}
+				err = lib.PushRepo(sh, true)
+				if err != nil {
+					return err
+				}
+			}
+		} else if usesCherryPick || (vTag.Patch() > 0 && project.ReleaseBranch == "") {
 			err = sh.Command("git", "checkout", branch).Run()
 			if err != nil {
 				return err
