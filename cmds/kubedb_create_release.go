@@ -133,6 +133,13 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make add-license fmt",
 					},
 				},
+				"github.com/kubedb/dashboard": api.Project{
+					Key: "kubedb-dashboard",
+					Tag: TagP("v0.17.0", prerelease),
+					ChartNames: []string{
+						"kubedb-dashboard",
+					},
+				},
 			},
 			{
 				"github.com/kubedb/provisioner": api.Project{
@@ -140,13 +147,6 @@ func CreateKubeDBReleaseFile() api.Release {
 					Tag: TagP("v0.41.0", prerelease),
 					ChartNames: []string{
 						"kubedb-provisioner",
-					},
-				},
-				"github.com/kubedb/dashboard": api.Project{
-					Key: "kubedb-dashboard",
-					Tag: TagP("v0.17.0", prerelease),
-					ChartNames: []string{
-						"kubedb-dashboard",
 					},
 				},
 				"github.com/kubedb/schema-manager": api.Project{
