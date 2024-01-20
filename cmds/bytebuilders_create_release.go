@@ -58,7 +58,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/bytebuilders/ui-wizards": api.Project{
-					Tag: github.String("v0.4.0" + prerelease),
+					Tag: TagP("v0.4.0", prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -78,7 +78,7 @@ func CreateByteBuildersReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: github.String("v0.10.0" + prerelease),
+					Tag: TagP("v0.10.0", prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --chart.registry-url=${UI_REGISTRY_URL} --chart.version=${BYTEBUILDERS_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -87,19 +87,19 @@ func CreateByteBuildersReleaseFile() api.Release {
 			},
 			{
 				"github.com/bytebuilders/cluster-ui": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: TagP("v0.3.0", prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
 				"github.com/bytebuilders/kubedb-ui": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: TagP("v0.3.0", prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
 				},
 				"github.com/bytebuilders/accounts-ui": api.Project{
-					Tag: github.String("v0.3.0" + prerelease),
+					Tag: TagP("v0.3.0", prerelease),
 					Commands: []string{
 						"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 					},
