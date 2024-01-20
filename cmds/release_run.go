@@ -917,10 +917,33 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 					return err
 				}
 			}
-			// if the commit is already tagged with something else, then throw error.
-			// This usually happens as a mistake because release engineer forgot to cherry pick commits to release branch for a patch release
+
 			if existingTag, ok := lib.IsTagged(sh); ok && existingTag != tag {
-				return fmt.Errorf("%s branch %s is already tagged as %s, did you forget to cherry pick?", repoURL, branch, existingTag)
+				if vTag.Major() == 0 && vTag.Minor() == 0 {
+					// in case of v0.0.x tag, merge master into the release branch, tag and publish
+					if branch != api.BranchMaster {
+						ref := api.BranchMaster
+						if sha, found := MergedCommitSHA(repoURL, branch, usesCherryPick); found {
+							ref = sha
+						}
+						err = sh.Command("git", "merge", ref).Run()
+						if err != nil {
+							return err
+						}
+					}
+					err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
+					if err != nil {
+						return err
+					}
+					err = lib.PushRepo(sh, true)
+					if err != nil {
+						return err
+					}
+				} else {
+					// if the commit is already tagged with something else, then throw error.
+					// This usually happens as a mistake because release engineer forgot to cherry pick commits to release branch for a patch release
+					return fmt.Errorf("%s branch %s is already tagged as %s, did you forget to cherry pick?", repoURL, branch, existingTag)
+				}
 			} else if !ok { // if untagged
 				err = lib.TagRepo(sh, tag, "ProductLine: "+release.ProductLine, "Release: "+release.Release, "Release-tracker: "+releaseTracker)
 				if err != nil {
