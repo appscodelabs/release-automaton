@@ -66,11 +66,11 @@ func CreateStashReleaseFile() api.Release {
 		ProductLine:       "Stash",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://stash.run/docs/%s",
-		KubernetesVersion: "1.19+",
+		KubernetesVersion: "1.20+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: github.String("v0.32.0" + prerelease),
+					Tag: TagP("v0.32.0", prerelease),
 					ChartNames: []string{
 						"stash-crds",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: github.String("v0.32.0" + prerelease),
+					Tag: TagP("v0.32.0", prerelease),
 					ChartNames: []string{
 						"stash-community",
 					},
@@ -88,7 +88,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: github.String("v0.32.0" + prerelease),
+					Tag: TagP("v0.32.0", prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 						"stash-catalog",
@@ -99,12 +99,12 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: github.String("v0.32.0" + prerelease),
+					Tag: TagP("v0.32.0", prerelease),
 				},
 				"github.com/stashed/ui-server": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-ui-server",
-					Tag: github.String("v0.13.0" + prerelease),
+					Tag: TagP("v0.13.0", prerelease),
 				},
 			},
 			{

@@ -59,16 +59,16 @@ func CreateVoyagerReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/voyagermesh/apimachinery": api.Project{
-					Tag: github.String("v0.7.3" + prerelease),
+					Tag: TagP("v0.7.3", prerelease),
 				},
 			},
 			{
 				"github.com/voyagermesh/haproxy-ingress": api.Project{
-					Tag: github.String("v17.0.3" + prerelease),
+					Tag: TagP("v17.0.3", prerelease),
 				},
 				"github.com/voyagermesh/cli": api.Project{
 					Key: "voyager-cli",
-					Tag: github.String("v0.0.14" + prerelease),
+					Tag: TagP("v0.0.14", prerelease),
 				},
 			},
 			{

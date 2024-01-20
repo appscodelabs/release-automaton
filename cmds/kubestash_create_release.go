@@ -57,15 +57,15 @@ func CreateKubeStashReleaseFile() api.Release {
 		KubernetesVersion: "1.20+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{Tag: github.String("v0.4.0" + prerelease)},
+				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.4.0", prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash":          api.Project{Tag: github.String("v0.4.0" + prerelease)},
-				"github.com/kubestash/pvc":                api.Project{Tag: github.String("v0.3.0" + prerelease)},
-				"github.com/kubestash/workload":           api.Project{Tag: github.String("v0.3.0" + prerelease)},
-				"github.com/kubestash/cli":                api.Project{Tag: github.String("v0.3.0" + prerelease)},
-				"github.com/kubestash/kubedump":           api.Project{Tag: github.String("v0.3.0" + prerelease)},
-				"github.com/kubestash/volume-snapshotter": api.Project{Tag: github.String("v0.3.0" + prerelease)},
+				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.4.0", prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/cli":                api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.3.0", prerelease)},
 			},
 			{
 				"github.com/kubestash/installer": api.Project{

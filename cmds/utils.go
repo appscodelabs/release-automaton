@@ -16,11 +16,39 @@ limitations under the License.
 
 package cmds
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/Masterminds/semver/v3"
+)
 
 func MustTime(t time.Time, e error) time.Time {
 	if e != nil {
 		panic(e)
 	}
 	return t
+}
+
+func computeTag(v, prerelease string) string {
+	prerelease = strings.TrimPrefix(prerelease, "-")
+	if prerelease == "" {
+		return v
+	}
+
+	sm, err := semver.NewVersion(v)
+	if err != nil {
+		panic(err)
+	}
+	// patch versions can't have prerelease component
+	if sm.Patch() > 0 {
+		return v
+	}
+	return fmt.Sprintf("%s-%s", v, prerelease)
+}
+
+func TagP(v, prerelease string) *string {
+	tag := computeTag(v, prerelease)
+	return &tag
 }
