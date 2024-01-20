@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-beta.0"
-	releaseNumber := "v2024.1.7" + prerelease
+	prerelease := "-beta.1"
+	releaseNumber := "v2024.1.19" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -66,6 +66,14 @@ func CreateKubeDBReleaseFile() api.Release {
 					Tag: github.String("v0.41.0" + prerelease),
 				},
 				"github.com/kubedb/crd-manager":                api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/druid":                      api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/ferretdb":                   api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/pgpool":                     api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/rabbitmq":                   api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/singlestore":                api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/singlestore-coordinator":    api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/solr":                       api.Project{Tag: github.String("v0.0.1" + prerelease)},
+				"github.com/kubedb/zookeeper":                  api.Project{Tag: github.String("v0.0.1" + prerelease)},
 				"github.com/kubedb/elasticsearch":              api.Project{Tag: github.String("v0.41.0" + prerelease)},
 				"github.com/kubedb/kafka":                      api.Project{Tag: github.String("v0.12.0" + prerelease)},
 				"github.com/kubedb/mariadb":                    api.Project{Tag: github.String("v0.25.0" + prerelease)},
@@ -205,6 +213,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.archiver.walg.image=${KUBEDB_POSTGRES_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=SinglestoreVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/singlestore-coordinator:${KUBEDB_SINGLESTORE_COORDINATOR_TAG}",
 
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-backup --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-restore --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
