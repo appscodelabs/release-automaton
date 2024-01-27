@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-beta.1"
-	releaseNumber := "v2024.1.19" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2024.1.26" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -61,22 +61,22 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/apimachinery": api.Project{Tag: TagP("v0.41.0", prerelease)},
 			},
 			{
-				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.0.8", prerelease)},
+				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.0.9", prerelease)},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
 					Tag: TagP("v0.41.0", prerelease),
 				},
-				"github.com/kubedb/crd-manager":                api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/singlestore-coordinator":    api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/solr":                       api.Project{Tag: TagP("v0.0.1", prerelease)},
-				"github.com/kubedb/zookeeper":                  api.Project{Tag: TagP("v0.0.1", prerelease)},
+				"github.com/kubedb/crd-manager":                api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/singlestore-coordinator":    api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/solr":                       api.Project{Tag: TagP("v0.0.2", prerelease)},
+				"github.com/kubedb/zookeeper":                  api.Project{Tag: TagP("v0.0.2", prerelease)},
 				"github.com/kubedb/elasticsearch":              api.Project{Tag: TagP("v0.41.0", prerelease)},
 				"github.com/kubedb/kafka":                      api.Project{Tag: TagP("v0.12.0", prerelease)},
 				"github.com/kubedb/mariadb":                    api.Project{Tag: TagP("v0.25.0", prerelease)},
