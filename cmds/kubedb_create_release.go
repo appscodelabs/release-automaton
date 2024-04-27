@@ -83,6 +83,8 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: TagP("v0.25.0", prerelease)},
 				"github.com/kubedb/memcached":                  api.Project{Tag: TagP("v0.38.0", prerelease)},
 				"github.com/kubedb/mongodb":                    api.Project{Tag: TagP("v0.38.0", prerelease)},
+				"github.com/kubedb/mssql":                      api.Project{Tag: TagP("v0.0.1", prerelease)},
+				"github.com/kubedb/mssql-coordinator":          api.Project{Tag: TagP("v0.0.1", prerelease)},
 				"github.com/kubedb/mysql":                      api.Project{Tag: TagP("v0.38.0", prerelease)},
 				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: TagP("v0.23.0", prerelease)},
 				"github.com/kubedb/mysql-router-init":          api.Project{Tag: TagP("v0.23.0", prerelease)},
@@ -111,6 +113,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/postgres-restic-plugin":          api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/singlestore-restic-plugin":       api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubedb/zookeeper-restic-plugin":         api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// crossplane
 				"github.com/kubedb/provider-aws":   api.Project{Tag: TagP("v0.7.0", prerelease)},
 				"github.com/kubedb/provider-azure": api.Project{Tag: TagP("v0.7.0", prerelease)},
@@ -220,6 +223,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=SinglestoreVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/singlestore-coordinator:${KUBEDB_SINGLESTORE_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/msssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
 
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-restore --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
@@ -245,6 +249,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=redis-restore --update-spec=spec.image=ghcr.io/kubedb/redis-restic-plugin:${KUBEDB_REDIS_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=singlestore-backup --update-spec=spec.image=ghcr.io/kubedb/singlestore-restic-plugin:${KUBEDB_SINGLESTORE_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=singlestore-restore --update-spec=spec.image=ghcr.io/kubedb/singlestore-restic-plugin:${KUBEDB_SINGLESTORE_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=zookeeper-backup --update-spec=spec.image=ghcr.io/kubedb/zookeeper-restic-plugin:${KUBEDB_ZOOKEEPER_RESTIC_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=zookeeper-restore --update-spec=spec.image=ghcr.io/kubedb/zookeeper-restic-plugin:${KUBEDB_ZOOKEEPER_RESTIC_PLUGIN_TAG}",
 
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-crd-manager CHART_VERSION=${KUBEDB_CRD_MANAGER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
