@@ -24,6 +24,7 @@ import (
 
 	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
 )
 
 func NewCmdKubeStashCreateRelease() *cobra.Command {
@@ -101,42 +102,43 @@ func CreateKubeStashReleaseFile() api.Release {
 					Changelog: api.SkipChangelog,
 				},
 			},
-			/*
-				{
-					// Must come before docs repo, so we can generate the docs_changelog.md
-					"github.com/appscode/static-assets": api.Project{
-						Commands: []string{
-							"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+			{
+				// Must come before docs repo, so we can generate the docs_changelog.md
+				"github.com/appscode/static-assets": api.Project{
+					Commands: []string{
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+					},
+					Changelog: api.StandaloneWebsiteChangelog,
+				},
+			},
+			{
+				"github.com/kubestash/docs": api.Project{
+					Key:           "kubestash",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
+					Commands: []string{
+						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+					},
+				},
+			},
+			{
+				"github.com/kubestash/website": api.Project{
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "master",
+					Commands: lib.AppendIf(
+						[]string{
+							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
+							"make docs",
 						},
-						Changelog: api.StandaloneWebsiteChangelog,
-					},
+						semvers.IsPublicRelease(releaseNumber),
+						"make set-version VERSION=${TAG}",
+					),
+					Changelog: api.SkipChangelog,
 				},
-				{
-					"github.com/kubestash/docs": api.Project{
-						Key:           "voyager",
-						Tag:           github.String(releaseNumber),
-						ReleaseBranch: "release-${TAG}",
-						Commands: []string{
-							"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
-						},
-					},
-				},
-				{
-					"github.com/kubestash/website": api.Project{
-						Tag:           github.String(releaseNumber),
-						ReleaseBranch: "master",
-						Commands: lib.AppendIf(
-							[]string{
-								"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
-								"make docs",
-							},
-							semvers.IsPublicRelease(releaseNumber),
-							"make set-version VERSION=${TAG}",
-						),
-						Changelog: api.SkipChangelog,
-					},
-				},
-			*/
+			},
+		},
+		ExternalProjects: map[string]api.ExternalProject{
+			"github.com/kubedb/apimachinery": {},
 		},
 	}
 }
