@@ -313,23 +313,23 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 			},
 			// Bundle
-			{
-				"github.com/kubedb/bundles": api.Project{
-					Tag:           github.String(releaseNumber),
-					ReleaseBranch: "release-${TAG}",
-					Commands: []string{
-						"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
-					},
-				},
-			},
-			{
-				"github.com/bytebuilders/bundle-registry": api.Project{
-					ChartRepos: []string{
-						"github.com/kubedb/bundles",
-					},
-					Changelog: api.SkipChangelog,
-				},
-			},
+			// {
+			// 	"github.com/kubedb/bundles": api.Project{
+			// 		Tag:           github.String(releaseNumber),
+			// 		ReleaseBranch: "release-${TAG}",
+			// 		Commands: []string{
+			// 			"release-automaton update-bundles --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE} --charts-dir=charts",
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	"github.com/bytebuilders/bundle-registry": api.Project{
+			// 		ChartRepos: []string{
+			// 			"github.com/kubedb/bundles",
+			// 		},
+			// 		Changelog: api.SkipChangelog,
+			// 	},
+			// },
 		},
 		ExternalProjects: map[string]api.ExternalProject{},
 	}
