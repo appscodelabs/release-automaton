@@ -199,7 +199,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/percona-xtradb": api.Project{
 					// NOT a sub project anymore
-					Key: "stash-percona-xtradb",
+					Key: "stash-perconaxtradb",
 					Tags: map[string]string{
 						"5.7-v26": "release-5.7",
 					},
