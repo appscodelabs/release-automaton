@@ -64,10 +64,13 @@ func CreateKubeStashReleaseFile() api.Release {
 				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.9.0", prerelease)},
 				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.8.0", prerelease)},
-				"github.com/kubestash/cli":                api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubestash/cli": api.Project{
+					Key: "kubestash-cli",
+					Tag: TagP("v0.8.0", prerelease),
+				},
 			},
 			{
 				"github.com/kubestash/installer": api.Project{
