@@ -84,7 +84,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubedb/memcached":                  api.Project{Tag: TagP("v0.39.0", prerelease)},
 				"github.com/kubedb/mongodb":                    api.Project{Tag: TagP("v0.39.0", prerelease)},
-				"github.com/kubedb/mssql":                      api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/mssqlserver":                api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/mssql-coordinator":          api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/mysql":                      api.Project{Tag: TagP("v0.39.0", prerelease)},
 				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: TagP("v0.24.0", prerelease)},
