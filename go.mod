@@ -9,7 +9,7 @@ require (
 	github.com/appscode/static-assets v0.8.3
 	github.com/google/go-github/v45 v45.2.0
 	github.com/google/uuid v1.5.0
-	github.com/hashicorp/go-getter v1.7.3
+	github.com/hashicorp/go-getter v1.7.5
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/keighl/metabolize v0.0.0-20150915210303-97ab655d4034
 	github.com/pkg/errors v0.9.1
