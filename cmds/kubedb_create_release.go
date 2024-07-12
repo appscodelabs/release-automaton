@@ -224,7 +224,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=SinglestoreVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/singlestore-coordinator:${KUBEDB_SINGLESTORE_COORDINATOR_TAG}",
-						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/msssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
 
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-restore --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
