@@ -480,7 +480,7 @@ func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) erro
 		err = sh.Command("git",
 			"clone",
 			// "--no-tags", //TODO: ok?
-			"--recursive",
+			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
 			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
@@ -541,7 +541,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		err = sh.Command("git",
 			"clone",
 			// "--no-tags", //TODO: ok?
-			"--recursive",
+			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
 			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
@@ -787,7 +787,7 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		err = sh.Command("git",
 			"clone",
 			// "--no-tags", //TODO: ok?
-			"--recursive",
+			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
 			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
@@ -1096,7 +1096,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 		err = sh.Command("git",
 			"clone",
 			"--no-tags",
-			"--recursive",
+			"--recurse-submodules",
 			"--depth=1",
 			"--no-single-branch",
 			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
