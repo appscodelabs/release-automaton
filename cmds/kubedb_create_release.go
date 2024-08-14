@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-rc.2"
-	releaseNumber := "v2024.8.2" + prerelease
+	prerelease := "-rc.3"
+	releaseNumber := "v2024.8.14" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -115,6 +115,8 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: TagP("v0.10.0", prerelease)},
 				"github.com/kubedb/singlestore-restic-plugin":       api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/zookeeper-restic-plugin":         api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubedb/mssqlserver-walg-plugin":         api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/mssqlserver-archiver":            api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// crossplane
 				"github.com/kubedb/provider-aws":   api.Project{Tag: TagP("v0.9.0", prerelease)},
 				"github.com/kubedb/provider-azure": api.Project{Tag: TagP("v0.9.0", prerelease)},
