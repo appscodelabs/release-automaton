@@ -142,7 +142,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make add-license fmt",
 					},
 				},
-				"github.com/kubedb/dashboard": api.Project{
+				"github.com/kubedb/kibana": api.Project{
 					Key: "kubedb-dashboard",
 					Tag: TagP("v0.23.0", prerelease),
 					ChartNames: []string{
