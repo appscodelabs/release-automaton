@@ -97,6 +97,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/redis-coordinator":          api.Project{Tag: TagP("v0.27.0", prerelease)},
 				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.35.0", prerelease)},
 				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.33.0", prerelease)},
+				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.6.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.11.0", prerelease)},
