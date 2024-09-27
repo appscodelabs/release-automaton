@@ -50,7 +50,7 @@ func NewCmdStashCreateRelease() *cobra.Command {
 
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2024.8.27" + prerelease
+	releaseNumber := "v2024.9.30" + prerelease
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -70,7 +70,7 @@ func CreateStashReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/stashed/apimachinery": api.Project{
-					Tag: TagP("v0.35.0", prerelease),
+					Tag: TagP("v0.36.0", prerelease),
 					ChartNames: []string{
 						"stash-crds",
 					},
@@ -79,7 +79,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/stash": api.Project{
 					Key: "stash-community",
-					Tag: TagP("v0.35.0", prerelease),
+					Tag: TagP("v0.36.0", prerelease),
 					ChartNames: []string{
 						"stash-community",
 					},
@@ -88,7 +88,7 @@ func CreateStashReleaseFile() api.Release {
 			{
 				"github.com/stashed/enterprise": api.Project{
 					Key: "stash-enterprise",
-					Tag: TagP("v0.35.0", prerelease),
+					Tag: TagP("v0.36.0", prerelease),
 					ChartNames: []string{
 						"stash-enterprise",
 						"stash-catalog",
@@ -99,12 +99,12 @@ func CreateStashReleaseFile() api.Release {
 				"github.com/stashed/cli": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-cli",
-					Tag: TagP("v0.35.0", prerelease),
+					Tag: TagP("v0.36.0", prerelease),
 				},
 				"github.com/stashed/ui-server": api.Project{
 					// NOT a sub project anymore
 					Key: "stash-ui-server",
-					Tag: TagP("v0.16.0", prerelease),
+					Tag: TagP("v0.17.0", prerelease),
 				},
 			},
 			{
@@ -146,21 +146,21 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mongodb",
 					Tags: map[string]string{
-						"3.4.17-v32": "release-3.4.17",
-						"3.4.22-v32": "release-3.4.22",
-						"3.6.13-v32": "release-3.6.13",
-						"3.6.8-v32":  "release-3.6.8",
-						"4.0.11-v32": "release-4.0.11",
-						"4.0.3-v32":  "release-4.0.3",
-						"4.0.5-v32":  "release-4.0.5",
-						"4.1.4-v32":  "release-4.1.4",
-						"4.1.7-v32":  "release-4.1.7",
-						"4.1.13-v32": "release-4.1.13",
-						"4.2.3-v32":  "release-4.2.3",
-						"4.4.6-v23":  "release-4.4.6",
-						"5.0.3-v20":  "release-5.0.3",
-						"5.0.15-v5":  "release-5.0.15",
-						"6.0.5-v8":   "release-6.0.5",
+						"3.4.17-v33": "release-3.4.17",
+						"3.4.22-v33": "release-3.4.22",
+						"3.6.13-v33": "release-3.6.13",
+						"3.6.8-v33":  "release-3.6.8",
+						"4.0.11-v33": "release-4.0.11",
+						"4.0.3-v33":  "release-4.0.3",
+						"4.0.5-v33":  "release-4.0.5",
+						"4.1.4-v33":  "release-4.1.4",
+						"4.1.7-v33":  "release-4.1.7",
+						"4.1.13-v33": "release-4.1.13",
+						"4.2.3-v33":  "release-4.2.3",
+						"4.4.6-v24":  "release-4.4.6",
+						"5.0.3-v21":  "release-5.0.3",
+						"5.0.15-v6":  "release-5.0.15",
+						"6.0.5-v9":   "release-6.0.5",
 					},
 				},
 			},
