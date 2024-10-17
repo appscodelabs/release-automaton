@@ -217,7 +217,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"./hack/scripts/import-crds.sh",
 
 						"go run ./catalog/kubedb/fmt/main.go --update-spec=spec.replicationModeDetector.image=ghcr.io/kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}",
-						// "go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MARIADB_ARCHIVER_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MARIADB_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mariadb-coordinator:${KUBEDB_MARIADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MYSQL_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mysql-coordinator:${KUBEDB_MYSQL_COORDINATOR_TAG}",
@@ -227,6 +227,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=SinglestoreVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/singlestore-coordinator:${KUBEDB_SINGLESTORE_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MSSQLSERVER_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
 
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
