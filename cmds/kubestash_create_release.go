@@ -50,7 +50,7 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 
 func CreateKubeStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2024.9.30" + prerelease
+	releaseNumber := "v2024.12.9" + prerelease
 	return api.Release{
 		ProductLine:       "KubeStash",
 		Release:           releaseNumber,
@@ -58,18 +58,18 @@ func CreateKubeStashReleaseFile() api.Release {
 		KubernetesVersion: "1.25+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.14.0", prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.5.0", prerelease)},
+				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.6.0", prerelease)},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
-					Tag: TagP("v0.12.0", prerelease),
+					Tag: TagP("v0.13.0", prerelease),
 				},
 			},
 			{
@@ -97,6 +97,7 @@ func CreateKubeStashReleaseFile() api.Release {
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubestash-operator CHART_VERSION=${KUBESTASH_KUBESTASH_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
+						"./hack/scripts/update-catalog.sh",
 					},
 				},
 			},
