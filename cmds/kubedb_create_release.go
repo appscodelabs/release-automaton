@@ -274,8 +274,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-provider-gcp CHART_VERSION=${RELEASE} APP_VERSION=${KUBEDB_PROVIDER_GCP_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 
 						"./hack/scripts/update-chart-dependencies.sh",
-						// image-packer
-						"image-packer list --root-dir=charts --output-dir=catalog",
+						"./hack/scripts/update-catalog.sh",
 					},
 				},
 			},

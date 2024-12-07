@@ -256,6 +256,7 @@ func CreateStashReleaseFile() api.Release {
 						"release-automaton stash gen-catalog --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --catalog-file=${WORKSPACE}/catalog/catalog.json",
 						"make gen fmt",
 						"./hack/scripts/update-chart-dependencies.sh",
+						"./hack/scripts/update-catalog.sh",
 					},
 				},
 			},

@@ -83,6 +83,7 @@ func CreateVoyagerReleaseFile() api.Release {
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL} APP_VERSION=${VOYAGERMESH_HAPROXY_INGRESS_TAG}",
+						"./hack/scripts/update-catalog.sh",
 					},
 				},
 			},
