@@ -169,7 +169,7 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mysql",
 					Tags: map[string]string{
-						"5.7.25-v33": "release-5.7.25",
+						"5.7.25-v34": "release-5.7.25",
 						"8.0.3-v33":  "release-8.0.3",
 						"8.0.14-v33": "release-8.0.14",
 						"8.0.21-v27": "release-8.0.21",
