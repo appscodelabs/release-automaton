@@ -268,7 +268,9 @@ func generateInfo(p saapi.Product, release api.Release) map[string]interface{} {
 			}
 
 			key := project.Key
-			if strings.HasPrefix(key, p.Key+"-") {
+			if key == "stash-perconaxtradb" {
+				key = "percona-xtradb"
+			} else if strings.HasPrefix(key, p.Key+"-") {
 				key = strings.TrimPrefix(key, p.Key+"-")
 			}
 
