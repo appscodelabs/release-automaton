@@ -119,9 +119,10 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/mssqlserver-walg-plugin":         api.Project{Tag: TagP("v0.4.0", prerelease)},
 				"github.com/kubedb/mssqlserver-archiver":            api.Project{Tag: TagP("v0.4.0", prerelease)},
 				// crossplane
-				"github.com/kubedb/provider-aws":   api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubedb/provider-azure": api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubedb/provider-gcp":   api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/provider-aws":    api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/provider-azure":  api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/provider-gcp":    api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/kubedb-verifier": api.Project{Tag: TagP("v0.1.0", prerelease)},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
