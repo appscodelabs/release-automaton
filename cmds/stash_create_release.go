@@ -229,7 +229,7 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-kubedump",
 					Tags: map[string]string{
-						"0.1.0-v16": "release-0.1.0",
+						"0.2.0-v1": "release-0.2.0",
 					},
 				},
 			},
