@@ -50,7 +50,7 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 
 func CreateKubeDBReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2024.12.18" + prerelease
+	releaseNumber := "v2025.1.9" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -58,75 +58,75 @@ func CreateKubeDBReleaseFile() api.Release {
 		KubernetesVersion: "1.26+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubedb/apimachinery": api.Project{Tag: TagP("v0.50.0", prerelease)},
+				"github.com/kubedb/apimachinery": api.Project{Tag: TagP("v0.51.0", prerelease)},
 			},
 			{
-				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.5.0", prerelease)},
+				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.6.0", prerelease)},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
-					Tag: TagP("v0.50.0", prerelease),
+					Tag: TagP("v0.51.0", prerelease),
 				},
-				"github.com/kubedb/crd-manager":                api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/singlestore-coordinator":    api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/solr":                       api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/zookeeper":                  api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/elasticsearch":              api.Project{Tag: TagP("v0.50.0", prerelease)},
-				"github.com/kubedb/kafka":                      api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubedb/mariadb":                    api.Project{Tag: TagP("v0.34.0", prerelease)},
-				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: TagP("v0.30.0", prerelease)},
-				"github.com/kubedb/memcached":                  api.Project{Tag: TagP("v0.43.0", prerelease)},
-				"github.com/kubedb/mongodb":                    api.Project{Tag: TagP("v0.43.0", prerelease)},
-				"github.com/kubedb/mssqlserver":                api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/mssql-coordinator":          api.Project{Tag: TagP("v0.5.0", prerelease)},
-				"github.com/kubedb/mysql":                      api.Project{Tag: TagP("v0.43.0", prerelease)},
-				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubedb/mysql-router-init":          api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubedb/percona-xtradb":             api.Project{Tag: TagP("v0.37.0", prerelease)},
-				"github.com/kubedb/percona-xtradb-coordinator": api.Project{Tag: TagP("v0.23.0", prerelease)},
-				"github.com/kubedb/pg-coordinator":             api.Project{Tag: TagP("v0.34.0", prerelease)},
-				"github.com/kubedb/postgres":                   api.Project{Tag: TagP("v0.50.0", prerelease)},
-				"github.com/kubedb/redis":                      api.Project{Tag: TagP("v0.43.0", prerelease)},
-				"github.com/kubedb/redis-coordinator":          api.Project{Tag: TagP("v0.29.0", prerelease)},
-				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.37.0", prerelease)},
-				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.35.0", prerelease)},
-				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubedb/crd-manager":                api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/singlestore-coordinator":    api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/solr":                       api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/zookeeper":                  api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/elasticsearch":              api.Project{Tag: TagP("v0.51.0", prerelease)},
+				"github.com/kubedb/kafka":                      api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubedb/mariadb":                    api.Project{Tag: TagP("v0.35.0", prerelease)},
+				"github.com/kubedb/mariadb-coordinator":        api.Project{Tag: TagP("v0.31.0", prerelease)},
+				"github.com/kubedb/memcached":                  api.Project{Tag: TagP("v0.44.0", prerelease)},
+				"github.com/kubedb/mongodb":                    api.Project{Tag: TagP("v0.44.0", prerelease)},
+				"github.com/kubedb/mssqlserver":                api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/mssql-coordinator":          api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/mysql":                      api.Project{Tag: TagP("v0.44.0", prerelease)},
+				"github.com/kubedb/mysql-coordinator":          api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubedb/mysql-router-init":          api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubedb/percona-xtradb":             api.Project{Tag: TagP("v0.38.0", prerelease)},
+				"github.com/kubedb/percona-xtradb-coordinator": api.Project{Tag: TagP("v0.24.0", prerelease)},
+				"github.com/kubedb/pg-coordinator":             api.Project{Tag: TagP("v0.35.0", prerelease)},
+				"github.com/kubedb/postgres":                   api.Project{Tag: TagP("v0.51.0", prerelease)},
+				"github.com/kubedb/redis":                      api.Project{Tag: TagP("v0.44.0", prerelease)},
+				"github.com/kubedb/redis-coordinator":          api.Project{Tag: TagP("v0.30.0", prerelease)},
+				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.38.0", prerelease)},
+				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.36.0", prerelease)},
+				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.4.0", prerelease)},
 				// kubestash plugins
-				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.8.0", prerelease)},
-				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/mariadb-archiver":                api.Project{Tag: TagP("v0.10.0", prerelease)},
-				"github.com/kubedb/mariadb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.10.0", prerelease)},
-				"github.com/kubedb/mongodb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.11.0", prerelease)},
-				"github.com/kubedb/mariadb-restic-plugin":           api.Project{Tag: TagP("v0.8.0", prerelease)},
-				"github.com/kubedb/mongodb-restic-plugin":           api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/mysql-archiver":                  api.Project{Tag: TagP("v0.11.0", prerelease)},
-				"github.com/kubedb/mysql-csi-snapshotter-plugin":    api.Project{Tag: TagP("v0.11.0", prerelease)},
-				"github.com/kubedb/mysql-restic-plugin":             api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/postgres-archiver":               api.Project{Tag: TagP("v0.11.0", prerelease)},
-				"github.com/kubedb/postgres-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.11.0", prerelease)},
-				"github.com/kubedb/postgres-restic-plugin":          api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: TagP("v0.13.0", prerelease)},
-				"github.com/kubedb/singlestore-restic-plugin":       api.Project{Tag: TagP("v0.8.0", prerelease)},
-				"github.com/kubedb/zookeeper-restic-plugin":         api.Project{Tag: TagP("v0.6.0", prerelease)},
-				"github.com/kubedb/mssqlserver-walg-plugin":         api.Project{Tag: TagP("v0.4.0", prerelease)},
-				"github.com/kubedb/mssqlserver-archiver":            api.Project{Tag: TagP("v0.4.0", prerelease)},
+				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.9.0", prerelease)},
+				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/mariadb-archiver":                api.Project{Tag: TagP("v0.11.0", prerelease)},
+				"github.com/kubedb/mariadb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.11.0", prerelease)},
+				"github.com/kubedb/mongodb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/mariadb-restic-plugin":           api.Project{Tag: TagP("v0.9.0", prerelease)},
+				"github.com/kubedb/mongodb-restic-plugin":           api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/mysql-archiver":                  api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/mysql-csi-snapshotter-plugin":    api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/mysql-restic-plugin":             api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/postgres-archiver":               api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/postgres-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.12.0", prerelease)},
+				"github.com/kubedb/postgres-restic-plugin":          api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/redis-restic-plugin":             api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubedb/singlestore-restic-plugin":       api.Project{Tag: TagP("v0.9.0", prerelease)},
+				"github.com/kubedb/zookeeper-restic-plugin":         api.Project{Tag: TagP("v0.7.0", prerelease)},
+				"github.com/kubedb/mssqlserver-walg-plugin":         api.Project{Tag: TagP("v0.5.0", prerelease)},
+				"github.com/kubedb/mssqlserver-archiver":            api.Project{Tag: TagP("v0.5.0", prerelease)},
 				// crossplane
-				"github.com/kubedb/provider-aws":    api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubedb/provider-azure":  api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubedb/provider-gcp":    api.Project{Tag: TagP("v0.12.0", prerelease)},
-				"github.com/kubedb/kubedb-verifier": api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/provider-aws":    api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubedb/provider-azure":  api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubedb/provider-gcp":    api.Project{Tag: TagP("v0.13.0", prerelease)},
+				"github.com/kubedb/kubedb-verifier": api.Project{Tag: TagP("v0.2.0", prerelease)},
 			},
 			{
 				"github.com/kubedb/pgbouncer": api.Project{
-					Tag: TagP("v0.37.0", prerelease),
+					Tag: TagP("v0.38.0", prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -135,7 +135,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubedb/proxysql": api.Project{
-					Tag: TagP("v0.37.0", prerelease),
+					Tag: TagP("v0.38.0", prerelease),
 					Commands: []string{
 						"release-automaton update-vars " +
 							"--env-file=${WORKSPACE}/Makefile.env " +
@@ -146,7 +146,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 				"github.com/kubedb/kibana": api.Project{
 					Key: "kubedb-dashboard",
-					Tag: TagP("v0.26.0", prerelease),
+					Tag: TagP("v0.27.0", prerelease),
 					ChartNames: []string{
 						"kubedb-dashboard",
 					},
@@ -155,14 +155,14 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/provisioner": api.Project{
 					Key: "kubedb-provisioner",
-					Tag: TagP("v0.50.0", prerelease),
+					Tag: TagP("v0.51.0", prerelease),
 					ChartNames: []string{
 						"kubedb-provisioner",
 					},
 				},
 				"github.com/kubedb/schema-manager": api.Project{
 					Key: "kubedb-schema-manager",
-					Tag: TagP("v0.26.0", prerelease),
+					Tag: TagP("v0.27.0", prerelease),
 					ChartNames: []string{
 						"kubedb-schema-manager",
 					},
@@ -170,7 +170,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/ui-server": api.Project{
 					// NOT a sub project anymore
 					Key: "kubedb-ui-server",
-					Tag: TagP("v0.26.0", prerelease),
+					Tag: TagP("v0.27.0", prerelease),
 					ChartNames: []string{
 						"kubedb-ui-server",
 					},
@@ -179,7 +179,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/ops-manager": api.Project{
 					Key: "kubedb-ops-manager",
-					Tag: TagP("v0.37.0", prerelease),
+					Tag: TagP("v0.38.0", prerelease),
 					ChartNames: []string{
 						"kubedb-ops-manager",
 					},
@@ -188,7 +188,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/autoscaler": api.Project{
 					Key: "kubedb-autoscaler",
-					Tag: TagP("v0.35.0", prerelease),
+					Tag: TagP("v0.36.0", prerelease),
 					ChartNames: []string{
 						"kubedb-autoscaler",
 					},
@@ -197,7 +197,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/webhook-server": api.Project{
 					Key: "kubedb-webhook-server",
-					Tag: TagP("v0.26.0", prerelease),
+					Tag: TagP("v0.27.0", prerelease),
 					ChartNames: []string{
 						"kubedb-webhook-server",
 					},
