@@ -49,8 +49,8 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2024.9.30" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2025.2.6" + prerelease
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
@@ -59,11 +59,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/apimachinery": api.Project{
-					Tag: TagP("v0.19.0", prerelease),
+					Tag: TagP("v0.20.0", prerelease),
 				},
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
-					Tag: TagP("v0.19.0", prerelease),
+					Tag: TagP("v0.20.0", prerelease),
 				},
 			},
 			{
@@ -72,11 +72,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 					ChartNames: []string{
 						"kubevault-operator",
 					},
-					Tag: TagP("v0.19.0", prerelease),
+					Tag: TagP("v0.20.0", prerelease),
 				},
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
-					Tag: TagP("v0.19.0", prerelease),
+					Tag: TagP("v0.20.0", prerelease),
 				},
 				// {
 				// 	"github.com/kubevault/prometheus-exporter": api.Project{
