@@ -29,7 +29,7 @@ func NewRootCmd() *cobra.Command {
 	}
 
 	rootCmd.AddCommand(NewCmdRelease())
-	rootCmd.AddCommand(NewCmdByteBuilders())
+	rootCmd.AddCommand(NewCmdAce())
 	rootCmd.AddCommand(NewCmdStash())
 	rootCmd.AddCommand(NewCmdKubeStash())
 	rootCmd.AddCommand(NewCmdKubeDB())
