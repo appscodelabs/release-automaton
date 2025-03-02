@@ -85,6 +85,9 @@ func CreateAceReleaseFile() api.Release {
 				"github.com/appscode/website": api.Project{
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
+					Commands: []string{
+						"make assets",
+					},
 				},
 				"github.com/kubeops/ui-server": api.Project{
 					Tag: TagP("v0.0.54", prerelease),
