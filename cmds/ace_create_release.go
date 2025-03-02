@@ -125,7 +125,7 @@ func CreateAceReleaseFile() api.Release {
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					ChartNames: []string{
-						"kubedb-ui-server",
+						"kube-ui-server",
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
