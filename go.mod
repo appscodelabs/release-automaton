@@ -1,8 +1,8 @@
 module github.com/appscodelabs/release-automaton
 
-go 1.22.1
+go 1.23.0
 
-toolchain go1.22.5
+toolchain go1.24.1
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -17,7 +17,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.8.1
 	golang.org/x/mod v0.19.0
-	golang.org/x/oauth2 v0.21.0
+	golang.org/x/oauth2 v0.27.0
 	gomodules.xyz/encoding v0.0.8
 	gomodules.xyz/envsubst v0.2.0
 	gomodules.xyz/go-sh v0.1.0
@@ -88,12 +88,12 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/term v0.27.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/term v0.29.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
