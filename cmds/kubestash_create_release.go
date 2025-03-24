@@ -49,8 +49,8 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 }
 
 func CreateKubeStashReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2025.3.19" + prerelease
+	prerelease := ""
+	releaseNumber := "v2025.3.24" + prerelease
 	return api.Release{
 		ProductLine:       "KubeStash",
 		Release:           releaseNumber,
