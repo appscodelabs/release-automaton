@@ -1310,7 +1310,7 @@ func UpdateGoMod(sh *shell.Session, dir string) {
 					// this path should be taken in actual releases, since we tag the vcs repo
 					newVer := v
 					if sv, err := semver.NewVersion(v); err == nil && sv.Major() == uint64(time.Now().Year()) {
-						if hash := lib.GetRemoteCommitHash(sh, x.Mod.Path, v); hash != "" {
+						if hash := lib.GetRemoteCommitHash(sh, gm.RepoRoot, v); hash != "" {
 							newVer = hash
 						}
 					}

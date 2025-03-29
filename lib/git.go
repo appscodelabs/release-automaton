@@ -84,7 +84,13 @@ func GetRemoteTag(sh *shell.Session, tag string) string {
 }
 
 func GetRemoteCommitHash(sh *shell.Session, url, tag string) string {
-	// git ls-remote --exit-code --tags origin <tag>
+	// git ls-remote --exit-code <url> refs/tags/<tag>
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+		url = "https://" + url
+	}
+	if !strings.HasSuffix(url, ".git") {
+		url += ".git"
+	}
 	data, err := sh.Command("git", "ls-remote", "--exit-code", url, fmt.Sprintf("refs/tags/%s", tag)).Output()
 	if err != nil {
 		return ""
