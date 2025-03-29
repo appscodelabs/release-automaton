@@ -95,7 +95,7 @@ func CreateAceReleaseFile() api.Release {
 				"github.com/kubepack/lib-app": api.Project{
 					Tag: TagP("v0.4.0", prerelease),
 					Commands: []string{
-						`sed -i 's/CHART_VERSION=\${CHART_VERSION:-v[0-9]*\.[0-9]*\.[0-9]*}/CHART_VERSION=\${CHART_VERSION:-v0.14.0}/g' *.sh`,
+						"make set-version VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
 					},
 				},
