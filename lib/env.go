@@ -20,9 +20,26 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
+
+	"github.com/Masterminds/semver/v3"
+	shell "gomodules.xyz/go-sh"
 )
 
-func RepoURL2EnvKey(repoURL string) string {
+func SetTagEnv(sh *shell.Session, envVars map[string]string, repoURL, tag string) {
+	envVars[RepoURL2TagEnvKey(repoURL)] = tag
+	if sv, err := semver.NewVersion(tag); err == nil && sv.Major() == uint64(time.Now().Year()) {
+		if hash := GetRemoteCommitHash(sh, repoURL, tag); hash != "" {
+			envVars[repoURL2EnvKey(repoURL, "hash")] = hash
+		}
+	}
+}
+
+func RepoURL2TagEnvKey(repoURL string) string {
+	return repoURL2EnvKey(repoURL, "tag")
+}
+
+func repoURL2EnvKey(repoURL, suffix string) string {
 	if !strings.Contains(repoURL, "://") {
 		repoURL = "https://" + repoURL
 	}
@@ -31,7 +48,7 @@ func RepoURL2EnvKey(repoURL string) string {
 	if err != nil {
 		panic(err)
 	}
-	return toEnvKey(path.Join(u.Path, "tag"))
+	return toEnvKey(path.Join(u.Path, suffix))
 }
 
 func Key2EnvKey(key string) string {
