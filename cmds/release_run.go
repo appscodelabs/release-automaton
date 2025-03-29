@@ -23,6 +23,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/appscodelabs/release-automaton/api"
 	"github.com/appscodelabs/release-automaton/lib"
@@ -106,7 +107,7 @@ func runAutomaton() {
 		for repoURL, project := range projects {
 			if project.Tag != nil {
 				repoVersion[repoURL] = *project.Tag
-				envVars[lib.RepoURL2EnvKey(repoURL)] = *project.Tag
+				lib.SetTagEnv(sh, envVars, repoURL, *project.Tag)
 				if project.Key != "" {
 					envVars[lib.Key2EnvKey(project.Key)] = *project.Tag
 				}
@@ -662,14 +663,14 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 		// -----------------------
 
 		vars := lib.MergeMaps(map[string]string{
-			lib.RepoURL2EnvKey(repoURL): tag,
-			"SCRIPT_ROOT":               scriptRoot,
-			"WORKSPACE":                 sh.Getwd(),
-			"TAG":                       tag,
-			"TAG_WITHOUT_V_PREFIX":      strings.TrimPrefix(tag, "v"),
-			"PRODUCT_LINE":              release.ProductLine,
-			"RELEASE":                   release.Release,
-			"RELEASE_TRACKER":           releaseTracker,
+			lib.RepoURL2TagEnvKey(repoURL): tag,
+			"SCRIPT_ROOT":                  scriptRoot,
+			"WORKSPACE":                    sh.Getwd(),
+			"TAG":                          tag,
+			"TAG_WITHOUT_V_PREFIX":         strings.TrimPrefix(tag, "v"),
+			"PRODUCT_LINE":                 release.ProductLine,
+			"RELEASE":                      release.Release,
+			"RELEASE_TRACKER":              releaseTracker,
 		}, envVars)
 
 		headBranch := fmt.Sprintf("%s-%s", release.Release, branch)
@@ -686,7 +687,7 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 
 		if lib.Exists(filepath.Join(wdCur, "go.mod")) {
 			// Update Go mod
-			UpdateGoMod(wdCur)
+			UpdateGoMod(sh, wdCur)
 			if lib.RepoModified(sh) {
 				err = sh.Command("go", "mod", "tidy").Run()
 				if err != nil {
@@ -865,13 +866,13 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 		} else {
 			if project.ReleaseBranch != "" {
 				vars := lib.MergeMaps(map[string]string{
-					lib.RepoURL2EnvKey(repoURL): tag,
-					"SCRIPT_ROOT":               scriptRoot,
-					"WORKSPACE":                 sh.Getwd(),
-					"TAG":                       tag,
-					"PRODUCT_LINE":              release.ProductLine,
-					"RELEASE":                   release.Release,
-					"RELEASE_TRACKER":           releaseTracker,
+					lib.RepoURL2TagEnvKey(repoURL): tag,
+					"SCRIPT_ROOT":                  scriptRoot,
+					"WORKSPACE":                    sh.Getwd(),
+					"TAG":                          tag,
+					"PRODUCT_LINE":                 release.ProductLine,
+					"RELEASE":                      release.Release,
+					"RELEASE_TRACKER":              releaseTracker,
 				}, envVars)
 				branch, err = envsubst.EvalMap(project.ReleaseBranch, vars)
 				if err != nil {
@@ -1132,7 +1133,7 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 
 	if lib.Exists(filepath.Join(wdCur, "go.mod")) {
 		// Update Go mod
-		UpdateGoMod(wdCur)
+		UpdateGoMod(sh, wdCur)
 		if lib.RepoModified(sh) {
 			err = sh.Command("go", "mod", "tidy").Run()
 			if err != nil {
@@ -1252,7 +1253,7 @@ func DetectGoMod(dir string) string {
 	return ""
 }
 
-func UpdateGoMod(dir string) {
+func UpdateGoMod(sh *shell.Session, dir string) {
 	filename := filepath.Join(dir, "go.mod")
 	if !lib.Exists(filename) {
 		return
@@ -1274,7 +1275,13 @@ func UpdateGoMod(dir string) {
 				panic(err)
 			}
 			if v, ok := repoVersion[gm.RepoRoot]; ok {
-				err = f.AddReplace(x.Old.Path, x.Old.Version, gm.RepoRoot, v)
+				newVer := v
+				if sv, err := semver.NewVersion(v); err == nil && sv.Major() == uint64(time.Now().Year()) {
+					if hash := lib.GetRemoteCommitHash(sh, gm.RepoRoot, v); hash != "" {
+						newVer = hash
+					}
+				}
+				err = f.AddReplace(x.Old.Path, x.Old.Version, gm.RepoRoot, newVer)
 				if err != nil {
 					panic(err)
 				}
@@ -1288,14 +1295,26 @@ func UpdateGoMod(dir string) {
 				if gm.VCSRoot != "" {
 					// using forked repo, so we need to use replace statement to get the newly tagged code
 					// This path should only be taken during testing
-					err = f.AddReplace(x.Mod.Path, "", gm.RepoRoot, v)
+					newVer := v
+					if sv, err := semver.NewVersion(v); err == nil && sv.Major() == uint64(time.Now().Year()) {
+						if hash := lib.GetRemoteCommitHash(sh, gm.RepoRoot, v); hash != "" {
+							newVer = hash
+						}
+					}
+					err = f.AddReplace(x.Mod.Path, "", gm.RepoRoot, newVer)
 					if err != nil {
 						panic(err)
 					}
 				} else {
 					// we tagged the vcs repo, so we can just use require statement
 					// this path should be taken in actual releases, since we tag the vcs repo
-					err = f.AddRequire(x.Mod.Path, v)
+					newVer := v
+					if sv, err := semver.NewVersion(v); err == nil && sv.Major() == uint64(time.Now().Year()) {
+						if hash := lib.GetRemoteCommitHash(sh, x.Mod.Path, v); hash != "" {
+							newVer = hash
+						}
+					}
+					err = f.AddRequire(x.Mod.Path, newVer)
 					if err != nil {
 						panic(err)
 					}

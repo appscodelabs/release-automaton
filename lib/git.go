@@ -83,6 +83,15 @@ func GetRemoteTag(sh *shell.Session, tag string) string {
 	return strings.Fields(string(data))[0]
 }
 
+func GetRemoteCommitHash(sh *shell.Session, url, tag string) string {
+	// git ls-remote --exit-code --tags origin <tag>
+	data, err := sh.Command("git", "ls-remote", "--exit-code", url, fmt.Sprintf("refs/tags/%s", tag)).Output()
+	if err != nil {
+		return ""
+	}
+	return strings.Fields(string(data))[0]
+}
+
 // IsTagged checks if the current commit is tagged.
 func IsTagged(sh *shell.Session) (string, bool) {
 	// git describe --exact-match --abbrev=0 2>/dev/null || echo ""
