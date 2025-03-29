@@ -92,10 +92,9 @@ func GenerateTable() api.ReleaseTable {
 	// Now keep the full releases and last rc
 	var releases []api.ReleaseSummary
 	for _, r := range table.Releases {
-		v := semver.MustParse(r.Release)
-		if v.Prerelease() == "" ||
+		if v, err := semver.NewVersion(r.Release); err == nil && (v.Prerelease() == "" ||
 			strings.HasPrefix(v.Prerelease(), "v") ||
-			strings.HasPrefix(v.Prerelease(), "rc.") {
+			strings.HasPrefix(v.Prerelease(), "rc.")) {
 			releases = append(releases, r)
 		}
 	}
