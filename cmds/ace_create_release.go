@@ -63,7 +63,7 @@ func CreateAceReleaseFile() api.Release {
 						"kubedbcom-mongodb-editor-options",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
+						"make update-charts CHART_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG} --use-digest=false",
 						"make gen fmt",
 					},
 				},
