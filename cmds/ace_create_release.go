@@ -63,7 +63,7 @@ func CreateAceReleaseFile() api.Release {
 						"kubedbcom-mongodb-editor-options",
 					},
 					Commands: []string{
-						"make update-charts CHART_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG} --use-digest=false",
+						"make update-charts CHART_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make gen fmt",
 					},
 				},
@@ -72,7 +72,7 @@ func CreateAceReleaseFile() api.Release {
 				"github.com/kmodules/resource-metadata": api.Project{
 					Tag: TagP("v0.28.0", prerelease),
 					Commands: []string{
-						"go run cmd/ui-updater/main.go --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
+						"go run cmd/ui-updater/main.go --use-digest=false --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
 					},
 				},
