@@ -98,6 +98,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.40.0", prerelease)},
 				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.38.0", prerelease)},
 				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.6.0", prerelease)},
+				"github.com/kubedb/ignite":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.11.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.16.0", prerelease)},
@@ -121,6 +122,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/mssqlserver-archiver":            api.Project{Tag: TagP("v0.7.0", prerelease)},
 				"github.com/kubedb/gitops":                          api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/kubedb-verifier":                 api.Project{Tag: TagP("v0.4.0", prerelease)},
+				"github.com/kubedb/cassandra-medusa-plugin":         api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// crossplane
 				"github.com/kubedb/provider-aws":   api.Project{Tag: TagP("v0.14.0", prerelease)},
 				"github.com/kubedb/provider-azure": api.Project{Tag: TagP("v0.14.0", prerelease)},
