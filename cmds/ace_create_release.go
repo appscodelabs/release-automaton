@@ -169,7 +169,7 @@ func CreateAceReleaseFile() api.Release {
 						"make chart-website CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						// opscenter-features
 						"make chart-opscenter-features CHART_VERSION=${RELEASE} APP_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"go run ./cmd/update-version/main.go --chart.version=${RELEASE}",
+						"go run ./cmd/update-version/main.go",
 						"./hack/scripts/update-chart-dependencies.sh",
 						"./hack/scripts/update-catalog.sh",
 					},
