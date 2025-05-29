@@ -98,6 +98,9 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.41.0", prerelease)},
 				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.39.0", prerelease)},
 				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.7.0", prerelease)},
+				"github.com/kubedb/hazelcast":                  api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/oracle":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/oracle-coordinator":         api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.12.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.17.0", prerelease)},
@@ -227,6 +230,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MYSQL_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mysql-coordinator:${KUBEDB_MYSQL_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.routerInitContainer.image=ghcr.io/kubedb/mysql-router-init:${KUBEDB_MYSQL_ROUTER_INIT_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=OracleVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/oracle-coordinator:${KUBEDB_ORACLE_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PerconaXtraDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/percona-xtradb-coordinator:${KUBEDB_PERCONA_XTRADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.archiver.walg.image=${KUBEDB_POSTGRES_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
@@ -235,6 +239,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/mssqlserver-archiver:${KUBEDB_MSSQLSERVER_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
 
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=cassandra-backup --update-spec=spec.image=ghcr.io/kubedb/cassandra-medusa-plugin:${KUBEDB_CASSANDRA_MEDUSA_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=cassandra-restore --update-spec=spec.image=ghcr.io/kubedb/cassandra-medusa-plugin:${KUBEDB_CASSANDRA_MEDUSA_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-restore --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-backup --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
