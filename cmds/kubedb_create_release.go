@@ -253,6 +253,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mongodb-backup --update-spec=spec.image=ghcr.io/kubedb/mongodb-restic-plugin:${KUBEDB_MONGODB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mongodb-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/mongodb-csi-snapshotter-plugin:${KUBEDB_MONGODB_CSI_SNAPSHOTTER_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mongodb-restore --update-spec=spec.image=ghcr.io/kubedb/mongodb-restic-plugin:${KUBEDB_MONGODB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mssqlserver-backup --update-spec=spec.image=ghcr.io/kubedb/mssqlserver-walg-plugin:${KUBEDB_MSSQLSERVER_WALG_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mssqlserver-restore --update-spec=spec.image=ghcr.io/kubedb/mssqlserver-walg-plugin:${KUBEDB_MSSQLSERVER_WALG_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-backup --update-spec=spec.image=ghcr.io/kubedb/mysql-restic-plugin:${KUBEDB_MYSQL_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/mysql-csi-snapshotter-plugin:${KUBEDB_MYSQL_CSI_SNAPSHOTTER_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-restore --update-spec=spec.image=ghcr.io/kubedb/mysql-restic-plugin:${KUBEDB_MYSQL_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
