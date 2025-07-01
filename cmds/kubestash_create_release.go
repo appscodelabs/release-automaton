@@ -85,6 +85,7 @@ func CreateKubeStashReleaseFile() api.Release {
 						"./hack/scripts/import-crds.sh",
 
 						"go run ./hack/fmt/main.go --kind=Function --name=kubedump-backup --update-spec=spec.image=ghcr.io/kubestash/kubedump:${KUBESTASH_KUBEDUMP_TAG}",
+						"go run ./hack/fmt/main.go --kind=Function --name=kubedump-restore --update-spec=spec.image=ghcr.io/kubestash/kubedump:${KUBESTASH_KUBEDUMP_TAG}",
 						"go run ./hack/fmt/main.go --kind=Function --name=manifest-backup --update-spec=spec.image=ghcr.io/kubestash/manifest:${KUBESTASH_MANIFEST_TAG}",
 						"go run ./hack/fmt/main.go --kind=Function --name=manifest-restore --update-spec=spec.image=ghcr.io/kubestash/manifest:${KUBESTASH_MANIFEST_TAG}",
 						"go run ./hack/fmt/main.go --kind=Function --name=pvc-backup --update-spec=spec.image=ghcr.io/kubestash/pvc:${KUBESTASH_PVC_TAG}",
