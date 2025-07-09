@@ -172,6 +172,7 @@ func CreateAceReleaseFile() api.Release {
 						"go run ./cmd/update-version/main.go",
 						"./hack/scripts/update-chart-dependencies.sh",
 						"./hack/scripts/update-catalog.sh",
+						"make gen fmt",
 					},
 				},
 			},
