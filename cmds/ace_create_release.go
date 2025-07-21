@@ -49,7 +49,7 @@ func NewCmdAceCreateRelease() *cobra.Command {
 
 func CreateAceReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2025.7.16" + prerelease
+	releaseNumber := "v2025.7.31" + prerelease
 	return api.Release{
 		ProductLine: "ACE",
 		Release:     releaseNumber,
@@ -58,7 +58,7 @@ func CreateAceReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/ui-wizards": api.Project{
-					Tag: TagP("v0.20.0", prerelease),
+					Tag: TagP("v0.21.0", prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -70,7 +70,7 @@ func CreateAceReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: TagP("v0.32.0", prerelease),
+					Tag: TagP("v0.33.0", prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --use-digest=false --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -90,10 +90,10 @@ func CreateAceReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubeops/ui-server": api.Project{
-					Tag: TagP("v0.0.60", prerelease),
+					Tag: TagP("v0.0.61", prerelease),
 				},
 				"github.com/kubepack/lib-app": api.Project{
-					Tag: TagP("v0.8.0", prerelease),
+					Tag: TagP("v0.9.0", prerelease),
 					Commands: []string{
 						"make set-version VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
