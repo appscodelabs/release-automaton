@@ -689,6 +689,10 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 			// Update Go mod
 			UpdateGoMod(sh, wdCur)
 			if lib.RepoModified(sh) {
+				err = os.Remove(filepath.Join(wdCur, "go.sum"))
+				if err != nil {
+					return err
+				}
 				err = sh.Command("go", "mod", "tidy").Run()
 				if err != nil {
 					return err
@@ -1135,6 +1139,10 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 		// Update Go mod
 		UpdateGoMod(sh, wdCur)
 		if lib.RepoModified(sh) {
+			err = os.Remove(filepath.Join(wdCur, "go.sum"))
+			if err != nil {
+				return err
+			}
 			err = sh.Command("go", "mod", "tidy").Run()
 			if err != nil {
 				return err
