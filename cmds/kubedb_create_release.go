@@ -106,7 +106,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.22.0", prerelease)},
 				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: TagP("v0.22.0", prerelease)},
 				"github.com/kubedb/mariadb-archiver":                api.Project{Tag: TagP("v0.19.0", prerelease)},
-				"github.com/kubedb/mariadb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.19.0", prerelease)},
 				"github.com/kubedb/mongodb-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/mariadb-restic-plugin":           api.Project{Tag: TagP("v0.17.0", prerelease)},
 				"github.com/kubedb/mongodb-restic-plugin":           api.Project{Tag: TagP("v0.22.0", prerelease)},
@@ -132,6 +131,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/provider-gcp":   api.Project{Tag: TagP("v0.20.0", prerelease)},
 			},
 			{
+				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.19.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
 					Tag: TagP("v0.46.0", prerelease),
 					Commands: []string{
