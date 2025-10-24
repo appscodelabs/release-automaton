@@ -182,7 +182,7 @@ func CreateStashReleaseFile() api.Release {
 					// NOT a sub project anymore
 					Key: "stash-mariadb",
 					Tags: map[string]string{
-						"10.6.24": "release-10.6.23",
+						"10.6.23-v1": "release-10.6.23",
 					},
 				},
 			},
