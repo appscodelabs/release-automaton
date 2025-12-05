@@ -101,6 +101,12 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/hazelcast":                  api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/oracle":                     api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/oracle-coordinator":         api.Project{Tag: TagP("v0.5.0", prerelease)},
+				"github.com/kubedb/db2":                        api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/hanadb":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/milvus":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/neo4j":                      api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/qdrant":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/weaviate":                   api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.17.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.22.0", prerelease)},
