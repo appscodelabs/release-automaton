@@ -57,7 +57,7 @@ func Execute(sh *shell.Session, cmd string, env map[string]string) error {
 		return fmt.Errorf("missing command: %s", cmd)
 	}
 
-	args := make([]interface{}, len(fields))
+	args := make([]any, len(fields))
 	for i := range fields[1:] {
 		args[i] = fields[i+1]
 	}

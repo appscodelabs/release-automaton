@@ -258,8 +258,8 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	return data, latestVersion
 }
 
-func generateInfo(p saapi.Product, release api.Release) map[string]interface{} {
-	info := make(map[string]interface{})
+func generateInfo(p saapi.Product, release api.Release) map[string]any {
+	info := make(map[string]any)
 
 	for _, projects := range release.Projects {
 		for _, project := range projects {

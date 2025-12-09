@@ -21,7 +21,7 @@ import (
 	"encoding/json"
 )
 
-func MarshalJson(v interface{}) ([]byte, error) {
+func MarshalJson(v any) ([]byte, error) {
 	var buf bytes.Buffer
 	encoder := json.NewEncoder(&buf)
 	encoder.SetEscapeHTML(false)

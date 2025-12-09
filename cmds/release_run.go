@@ -349,9 +349,10 @@ func runAutomaton() {
 			if project.Tag == nil && len(project.Tags) == 0 {
 				err = PrepareExternalProject(gh, sh, releaseTracker, repoURL, project)
 				chlog := lib.LoadChangelog(filepath.Join(changelogRoot, release.Release), release)
-				if project.Changelog == api.StandaloneWebsiteChangelog {
+				switch project.Changelog {
+				case api.StandaloneWebsiteChangelog:
 					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "standalone-changelog.tpl", chlog)
-				} else if project.Changelog == api.SharedWebsiteChangelog {
+				case api.SharedWebsiteChangelog:
 					lib.WriteChangelogMarkdown(filepath.Join(changelogRoot, release.Release, "docs_changelog.md"), "shared-changelog.tpl", chlog)
 				}
 				if lib.AnyRepoModified(scriptRoot, sh) {

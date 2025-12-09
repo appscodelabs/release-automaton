@@ -122,7 +122,7 @@ func LoadChangelog(dir string, release api.Release) api.Changelog {
 	return chlog
 }
 
-func WriteChangelogMarkdown(filename string, tplname string, data interface{}) {
+func WriteChangelogMarkdown(filename string, tplname string, data any) {
 	var err error
 
 	err = os.MkdirAll(filepath.Dir(filename), 0o755)

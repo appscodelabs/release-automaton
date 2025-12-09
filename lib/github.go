@@ -61,7 +61,7 @@ func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo strin
 		labels, resp, err := gh.Issues.ListLabelsByIssue(ctx, owner, repo, number, opt)
 		switch e := err.(type) {
 		case *github.RateLimitError:
-			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			time.Sleep(time.Until(e.Rate.Reset.Add(skew)))
 			continue
 		case *github.AbuseRateLimitError:
 			time.Sleep(e.GetRetryAfter())
@@ -100,7 +100,7 @@ func ListReleases(ctx context.Context, gh *github.Client, owner, repo string) ([
 		releases, resp, err := gh.Repositories.ListReleases(ctx, owner, repo, opt)
 		switch e := err.(type) {
 		case *github.RateLimitError:
-			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			time.Sleep(time.Until(e.Rate.Reset.Add(skew)))
 			continue
 		case *github.AbuseRateLimitError:
 			time.Sleep(e.GetRetryAfter())
@@ -137,7 +137,7 @@ func ListReviews(ctx context.Context, gh *github.Client, owner, repo string, num
 		reviews, resp, err := gh.PullRequests.ListReviews(ctx, owner, repo, number, opt)
 		switch e := err.(type) {
 		case *github.RateLimitError:
-			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			time.Sleep(time.Until(e.Rate.Reset.Add(skew)))
 			continue
 		case *github.AbuseRateLimitError:
 			time.Sleep(e.GetRetryAfter())
@@ -178,7 +178,7 @@ func ListPullRequestComment(ctx context.Context, gh *github.Client, owner, repo 
 		comments, resp, err := gh.PullRequests.ListComments(ctx, owner, repo, number, opt)
 		switch e := err.(type) {
 		case *github.RateLimitError:
-			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			time.Sleep(time.Until(e.Rate.Reset.Add(skew)))
 			continue
 		case *github.AbuseRateLimitError:
 			time.Sleep(e.GetRetryAfter())
@@ -219,7 +219,7 @@ func ListComments(ctx context.Context, gh *github.Client, owner, repo string, nu
 		comments, resp, err := gh.Issues.ListComments(ctx, owner, repo, number, opt)
 		switch e := err.(type) {
 		case *github.RateLimitError:
-			time.Sleep(time.Until(e.Rate.Reset.Time.Add(skew)))
+			time.Sleep(time.Until(e.Rate.Reset.Add(skew)))
 			continue
 		case *github.AbuseRateLimitError:
 			time.Sleep(e.GetRetryAfter())

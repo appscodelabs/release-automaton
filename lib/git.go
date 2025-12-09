@@ -29,7 +29,7 @@ import (
 
 func IsGitConfigured(sh *shell.Session, key string, global bool) bool {
 	// git config --global user.email
-	args := []interface{}{"config"}
+	args := []any{"config"}
 	if global {
 		args = append(args, "--global")
 	}
@@ -43,7 +43,7 @@ func ConfigureGit(sh *shell.Session, key, value string, global bool) error {
 	}
 
 	// git config --global user.email "value"
-	args := []interface{}{"config"}
+	args := []any{"config"}
 	if global {
 		args = append(args, "--global")
 	}
@@ -203,7 +203,7 @@ func CommitRepo(sh *shell.Session, tag string, messages ...string) error {
 		return err
 	}
 	//  git commit -a -s -m "Prepare for release %tag"
-	args := []interface{}{
+	args := []any{
 		"commit", "-a", "-s",
 	}
 	if tag != "" {
@@ -224,7 +224,7 @@ func PushAnyRepo(wd string, sh *shell.Session, pushTag bool) error {
 }
 
 func PushRepo(sh *shell.Session, pushTag bool) error {
-	args := []interface{}{"push", "-u", "origin", "HEAD"}
+	args := []any{"push", "-u", "origin", "HEAD"}
 	if pushTag {
 		args = append(args, "--tags")
 	}
@@ -232,7 +232,7 @@ func PushRepo(sh *shell.Session, pushTag bool) error {
 }
 
 func TagRepo(sh *shell.Session, tag string, messages ...string) error {
-	args := []interface{}{
+	args := []any{
 		"tag", "-a", tag, "-m", tag,
 	}
 	for _, msg := range messages {
