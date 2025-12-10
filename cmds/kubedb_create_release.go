@@ -255,6 +255,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-restore --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=kubedbmanifest-backup --update-spec=spec.image=ghcr.io/kubedb/kubedb-manifest-plugin:${KUBEDB_KUBEDB_MANIFEST_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=kubedbmanifest-restore --update-spec=spec.image=ghcr.io/kubedb/kubedb-manifest-plugin:${KUBEDB_KUBEDB_MANIFEST_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=kubedbverifier --update-spec=spec.image=ghcr.io/kubedb/kubedb-verifier:${KUBEDB_KUBEDB_VERIFIER_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-backup --update-spec=spec.image=ghcr.io/kubedb/mariadb-restic-plugin:${KUBEDB_MARIADB_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/mariadb-csi-snapshotter-plugin:${KUBEDB_MARIADB_CSI_SNAPSHOTTER_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-restore --update-spec=spec.image=ghcr.io/kubedb/mariadb-restic-plugin:${KUBEDB_MARIADB_RESTIC_PLUGIN_TAG}",
