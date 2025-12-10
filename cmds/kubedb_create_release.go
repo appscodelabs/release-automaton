@@ -268,6 +268,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-backup --update-spec=spec.image=ghcr.io/kubedb/mysql-restic-plugin:${KUBEDB_MYSQL_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/mysql-csi-snapshotter-plugin:${KUBEDB_MYSQL_CSI_SNAPSHOTTER_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mysql-restore --update-spec=spec.image=ghcr.io/kubedb/mysql-restic-plugin:${KUBEDB_MYSQL_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=opensearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=opensearch-dashboard-restore --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=opensearch-backup --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=opensearch-restore --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=postgres-backup --update-spec=spec.image=ghcr.io/kubedb/postgres-restic-plugin:${KUBEDB_POSTGRES_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
