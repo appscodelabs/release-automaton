@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2025.12.15" + prerelease
+	prerelease := "-rc.1"
+	releaseNumber := "v2025.12.31" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -303,6 +303,10 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-provider-gcp CHART_VERSION=${RELEASE} APP_VERSION=${KUBEDB_PROVIDER_GCP_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 
 						"./hack/scripts/update-chart-dependencies.sh",
+
+						"chart-packer crd-less --input charts/kubedb --output charts",
+						"chart-packer crd-only --input charts/kubedb --output charts",
+						"make gen-chart-doc",
 						"./hack/scripts/update-catalog.sh",
 					},
 				},

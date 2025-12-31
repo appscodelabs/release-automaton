@@ -2,8 +2,6 @@ module github.com/appscodelabs/release-automaton
 
 go 1.24.0
 
-toolchain go1.24.1
-
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/Masterminds/sprig/v3 v3.3.0
