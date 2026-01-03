@@ -98,6 +98,11 @@ func CreateKubeStashReleaseFile() api.Release {
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubestash-operator CHART_VERSION=${KUBESTASH_KUBESTASH_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
+
+						"rm -rf charts/kubestash-certified charts/kubestash-certified-crds",
+						"chart-packer crd-less --input charts/kubestash --output charts",
+						"chart-packer crd-only --input charts/kubestash --output charts",
+						"make gen-chart-doc",
 						"./hack/scripts/update-catalog.sh",
 					},
 				},

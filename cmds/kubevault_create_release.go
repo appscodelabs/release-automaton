@@ -101,6 +101,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 						"make chart-kubevault-operator CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-webhook-server CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"./hack/scripts/update-chart-dependencies.sh",
+
+						"rm -rf charts/kubevault-certified charts/kubevault-certified-crds",
+						"chart-packer crd-less --input charts/kubevault --output charts",
+						"chart-packer crd-only --input charts/kubevault --output charts",
+						"make gen-chart-doc",
 						"./hack/scripts/update-catalog.sh",
 					},
 				},

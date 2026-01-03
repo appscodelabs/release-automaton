@@ -171,6 +171,11 @@ func CreateAceReleaseFile() api.Release {
 						"make chart-opscenter-features CHART_VERSION=${RELEASE} APP_VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"go run ./cmd/update-version/main.go",
 						"./hack/scripts/update-chart-dependencies.sh",
+
+						"rm -rf charts/ace-installer-certified charts/ace-installer-certified-crds",
+						"chart-packer crd-less --input charts/ace-installer --output charts",
+						"chart-packer crd-only --input charts/ace-installer --output charts",
+						"make gen-chart-doc",
 						"./hack/scripts/update-catalog.sh",
 						"make gen fmt",
 					},
