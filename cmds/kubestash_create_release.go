@@ -49,8 +49,8 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 }
 
 func CreateKubeStashReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2025.12.15" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2026.1.8" + prerelease
 	return api.Release{
 		ProductLine:       "KubeStash",
 		Release:           releaseNumber,
@@ -58,18 +58,18 @@ func CreateKubeStashReleaseFile() api.Release {
 		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.23.0", prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.22.0", prerelease)},
-				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.14.0", prerelease)},
+				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.23.0", prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.15.0", prerelease)},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
-					Tag: TagP("v0.21.0", prerelease),
+					Tag: TagP("v0.22.0", prerelease),
 				},
 			},
 			{
