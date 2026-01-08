@@ -49,21 +49,21 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2025.11.21" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2026.1.8" + prerelease
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubevault.com/docs/%s",
-		KubernetesVersion: "1.26+",
+		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/apimachinery": api.Project{
-					Tag: TagP("v0.23.0", prerelease),
+					Tag: TagP("v0.24.0", prerelease),
 				},
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
-					Tag: TagP("v0.23.0", prerelease),
+					Tag: TagP("v0.24.0", prerelease),
 				},
 			},
 			{
@@ -72,11 +72,11 @@ func CreateKubeVaultReleaseFile() api.Release {
 					ChartNames: []string{
 						"kubevault-operator",
 					},
-					Tag: TagP("v0.23.0", prerelease),
+					Tag: TagP("v0.24.0", prerelease),
 				},
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
-					Tag: TagP("v0.23.0", prerelease),
+					Tag: TagP("v0.24.0", prerelease),
 				},
 				// {
 				// 	"github.com/kubevault/prometheus-exporter": api.Project{
@@ -96,7 +96,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
-						"go run ./hack/fmt/main.go --update-spec=spec.unsealer.image=kubevault/vault-unsealer:${KUBEVAULT_UNSEALER_TAG}",
+						"go run ./hack/fmt/main.go --update-spec=spec.unsealer.image=ghcr.io/kubevault/vault-unsealer:${KUBEVAULT_UNSEALER_TAG}",
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-operator CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-webhook-server CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
