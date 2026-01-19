@@ -62,13 +62,13 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/db-client-go": api.Project{Tag: TagP("v0.15.0", prerelease)},
+				"github.com/kubedb/crd-manager":  api.Project{Tag: TagP("v0.15.0", prerelease)},
 			},
 			{
 				"github.com/kubedb/cli": api.Project{
 					Key: "kubedb-cli",
 					Tag: TagP("v0.60.0", prerelease),
 				},
-				"github.com/kubedb/crd-manager":                api.Project{Tag: TagP("v0.15.0", prerelease)},
 				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.15.0", prerelease)},
 				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.15.0", prerelease)},
 				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.15.0", prerelease)},
@@ -189,8 +189,6 @@ func CreateKubeDBReleaseFile() api.Release {
 						"kubedb-ui-server",
 					},
 				},
-			},
-			{
 				"github.com/kubedb/ops-manager": api.Project{
 					Key: "kubedb-ops-manager",
 					Tag: TagP("v0.47.0", prerelease),
@@ -198,8 +196,6 @@ func CreateKubeDBReleaseFile() api.Release {
 						"kubedb-ops-manager",
 					},
 				},
-			},
-			{
 				"github.com/kubedb/autoscaler": api.Project{
 					Key: "kubedb-autoscaler",
 					Tag: TagP("v0.45.0", prerelease),
@@ -207,8 +203,6 @@ func CreateKubeDBReleaseFile() api.Release {
 						"kubedb-autoscaler",
 					},
 				},
-			},
-			{
 				"github.com/kubedb/webhook-server": api.Project{
 					Key: "kubedb-webhook-server",
 					Tag: TagP("v0.36.0", prerelease),
