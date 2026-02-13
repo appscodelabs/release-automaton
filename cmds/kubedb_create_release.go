@@ -108,6 +108,8 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/neo4j":                      api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/qdrant":                     api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/weaviate":                   api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/migrator-cli":               api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubedb/migrator-operator":          api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.18.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.23.0", prerelease)},
