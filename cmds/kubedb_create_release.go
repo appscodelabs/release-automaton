@@ -109,7 +109,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/qdrant":                     api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/weaviate":                   api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/migrator-cli":               api.Project{Tag: TagP("v0.1.0", prerelease)},
-				"github.com/kubedb/migrator-operator":          api.Project{Tag: TagP("v0.1.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.19.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.24.0", prerelease)},
@@ -141,6 +140,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.21.0", prerelease)},
+				"github.com/kubedb/migrator-operator":              api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
 					Tag: TagP("v0.48.0", prerelease),
 					Commands: []string{
