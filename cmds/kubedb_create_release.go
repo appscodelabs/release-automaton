@@ -49,13 +49,13 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2026.2.16" + prerelease
+	prerelease := "-rc.1"
+	releaseNumber := "v2026.2.21" + prerelease
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
 		DocsURLTemplate:   "https://kubedb.com/docs/%s",
-		KubernetesVersion: "1.26+",
+		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubedb/apimachinery": api.Project{Tag: TagP("v0.61.0", prerelease)},
@@ -239,8 +239,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=PerconaXtraDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/percona-xtradb-coordinator:${KUBEDB_PERCONA_XTRADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.archiver.walg.image=${KUBEDB_POSTGRES_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/pg-coordinator:${KUBEDB_PG_COORDINATOR_TAG}",
-						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.migrator.cli=ghcr.io/kubedb/migrator-cli:${KUBEDB_MIGRATOR_CLI_TAG}",
-						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.migrator.statusReporter=ghcr.io/kubedb/migrator-operator:${KUBEDB_MIGRATOR_OPERATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.migrator.cli.image=ghcr.io/kubedb/migrator-cli:${KUBEDB_MIGRATOR_CLI_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.migrator.statusReporter.image=ghcr.io/kubedb/migrator-operator:${KUBEDB_MIGRATOR_OPERATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=RedisVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/redis-coordinator:${KUBEDB_REDIS_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=SinglestoreVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/singlestore-coordinator:${KUBEDB_SINGLESTORE_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --update-spec=spec.replicationModeDetector.image=ghcr.io/kubedb/replication-mode-detector:${KUBEDB_REPLICATION_MODE_DETECTOR_TAG}",
