@@ -229,6 +229,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"./hack/scripts/import-crds.sh",
 
 						"go run ./catalog/kubedb/fmt/main.go --kind=DB2Version --update-spec=spec.coordinator.image=ghcr.io/kubedb/db2-coordinator:${KUBEDB_DB2_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=HanaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/hanadb-coordinator:${KUBEDB_HANADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MARIADB_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mariadb-coordinator:${KUBEDB_MARIADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/mssqlserver-archiver:${KUBEDB_MSSQLSERVER_ARCHIVER_TAG}",
