@@ -104,6 +104,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/db2":                        api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/db2-coordinator":            api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/hanadb":                     api.Project{Tag: TagP("v0.2.0", prerelease)},
+				"github.com/kubedb/hanadb-coordinator":         api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/milvus":                     api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/neo4j":                      api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/qdrant":                     api.Project{Tag: TagP("v0.2.0", prerelease)},
