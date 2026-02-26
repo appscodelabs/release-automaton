@@ -6,44 +6,44 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 if [[ $# -ne 1 ]]; then
-  echo "Usage: $0 <product>" >&2
-  echo "Supported products: voyager kubevault kubedb ace stash kubestash" >&2
-  exit 1
+    echo "Usage: $0 <product>" >&2
+    echo "Supported products: voyager kubevault kubedb ace stash kubestash" >&2
+    exit 1
 fi
 
 product="${1,,}"
 
 case "${product}" in
-  voyager | voyager_create_release.go)
-    target_basename="voyager_create_release.go"
-    ;;
-  kubevault | kubevault_create_release.go)
-    target_basename="kubevault_create_release.go"
-    ;;
-  kubedb | kubedb_create_release.go)
-    target_basename="kubedb_create_release.go"
-    ;;
-  ace | ace_create_release.go)
-    target_basename="ace_create_release.go"
-    ;;
-  stash | stash_create_release.go)
-    target_basename="stash_create_release.go"
-    ;;
-  kubestash | kubestash_create_release.go)
-    target_basename="kubestash_create_release.go"
-    ;;
-  *)
-    echo "Unsupported product: ${1}" >&2
-    echo "Supported products: voyager kubevault kubedb ace stash kubestash" >&2
-    exit 1
-    ;;
+    voyager | voyager_create_release.go)
+        target_basename="voyager_create_release.go"
+        ;;
+    kubevault | kubevault_create_release.go)
+        target_basename="kubevault_create_release.go"
+        ;;
+    kubedb | kubedb_create_release.go)
+        target_basename="kubedb_create_release.go"
+        ;;
+    ace | ace_create_release.go)
+        target_basename="ace_create_release.go"
+        ;;
+    stash | stash_create_release.go)
+        target_basename="stash_create_release.go"
+        ;;
+    kubestash | kubestash_create_release.go)
+        target_basename="kubestash_create_release.go"
+        ;;
+    *)
+        echo "Unsupported product: ${1}" >&2
+        echo "Supported products: voyager kubevault kubedb ace stash kubestash" >&2
+        exit 1
+        ;;
 esac
 
 TARGET_FILE="${REPO_ROOT}/cmds/${target_basename}"
 
 if [[ ! -f "${TARGET_FILE}" ]]; then
-  echo "Target file not found: ${TARGET_FILE}" >&2
-  exit 1
+    echo "Target file not found: ${TARGET_FILE}" >&2
+    exit 1
 fi
 
 perl -i.bak -pe '
