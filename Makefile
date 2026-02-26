@@ -243,6 +243,14 @@ verify-gen: gen fmt
 		echo "files are out of date, run make gen fmt"; exit 1; \
 	fi
 
+.PHONY: bump-release-minor
+bump-release-minor:
+	@if [ -z "$(PRODUCT)" ]; then \
+		echo "Usage: make bump-release-minor PRODUCT=<voyager|kubevault|kubedb|ace|stash|kubestash>"; \
+		exit 1; \
+	fi
+	@./hack/scripts/bump-release-minor.sh $(PRODUCT)
+
 .PHONY: add-license
 add-license:
 	@echo "Adding license header"

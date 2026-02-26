@@ -20,3 +20,23 @@ especially one capable of a range of programmed responses to different circumsta
 ### Patch Releases
 
 - Make sure cherry picks are done ahead of time.
+
+## Version Bump Script
+
+Increment minor version (and reset patch to 0) for semver values in a product release file:
+
+- `./hack/scripts/bump-release-minor.sh kubedb`
+- `./hack/scripts/bump-release-minor.sh voyager`
+
+Supported products:
+
+- `voyager`
+- `kubevault`
+- `kubedb`
+- `ace`
+- `stash`
+- `kubestash`
+
+Alternative via Makefile:
+
+- `make bump-release-minor PRODUCT=kubedb`
