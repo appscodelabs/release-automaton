@@ -123,7 +123,7 @@ func ParseReply(s string) *api.Reply {
 
 func ParseComment(s string) []api.Reply {
 	var out []api.Reply
-	for _, line := range strings.Split(s, "\n") {
+	for line := range strings.SplitSeq(s, "\n") {
 		if reply := ParseReply(line); reply != nil {
 			out = append(out, *reply)
 		}

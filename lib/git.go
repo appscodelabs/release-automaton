@@ -161,8 +161,8 @@ func LastCommitBody(sh *shell.Session, trimBlankLines bool) string {
 	}
 
 	var out []string
-	lines := strings.Split(string(data), "\n")
-	for _, line := range lines {
+	lines := strings.SplitSeq(string(data), "\n")
+	for line := range lines {
 		line = strings.TrimSpace(line)
 		if line != "" {
 			out = append(out, line)
@@ -249,7 +249,7 @@ func ListCommits(sh *shell.Session, start, end string) []api.Commit {
 		panic(err)
 	}
 	var commits []api.Commit
-	for _, line := range strings.Split(string(data), "\n") {
+	for line := range strings.SplitSeq(string(data), "\n") {
 		if line == "" {
 			continue
 		}

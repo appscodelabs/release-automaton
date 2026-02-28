@@ -49,7 +49,7 @@ func main_Execute_ShellQuote() {
 	}
 	fmt.Println(fields)
 
-	args := make([]interface{}, len(fields)-1)
+	args := make([]any, len(fields)-1)
 	for i := range fields[1:] {
 		args[i] = fields[i+1]
 	}

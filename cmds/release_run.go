@@ -19,6 +19,7 @@ package cmds
 import (
 	"context"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"sort"
@@ -293,9 +294,7 @@ func runAutomaton() {
 				}
 
 				if len(yetToMerge) > 0 {
-					for k, v := range yetToMerge {
-						chartsYetToMerge[k] = v
-					}
+					maps.Copy(chartsYetToMerge, yetToMerge)
 				} else if !chartPublished.Has(repoURL) {
 					chartsReadyToPublish.Insert(repoURL)
 				}

@@ -79,8 +79,8 @@ func GetQueryParameter(v url.Values, key string) sets.Set[string] {
 	}
 
 	for _, s := range vs {
-		entries := strings.Split(s, ",")
-		for _, e := range entries {
+		entries := strings.SplitSeq(s, ",")
+		for e := range entries {
 			e = strings.TrimSpace(e)
 			if e != "" {
 				out.Insert(e)
