@@ -30,15 +30,16 @@ func NewRootCmd() *cobra.Command {
 
 	rootCmd.AddCommand(NewCmdRelease())
 	rootCmd.AddCommand(NewCmdAce())
-	rootCmd.AddCommand(NewCmdStash())
-	rootCmd.AddCommand(NewCmdKubeStash())
 	rootCmd.AddCommand(NewCmdKubeDB())
+	rootCmd.AddCommand(NewCmdKubeStash())
 	rootCmd.AddCommand(NewCmdKubeVault())
+	rootCmd.AddCommand(NewCmdStash())
+	rootCmd.AddCommand(NewCmdVirtualSecrets())
 	rootCmd.AddCommand(NewCmdVoyager())
-	rootCmd.AddCommand(NewCmdUpdateBundles())
-	rootCmd.AddCommand(NewCmdUpdateAssets())
-	rootCmd.AddCommand(NewCmdUpdateEnvVars())
 	rootCmd.AddCommand(NewCmdListVersions())
+	rootCmd.AddCommand(NewCmdUpdateAssets())
+	rootCmd.AddCommand(NewCmdUpdateBundles())
+	rootCmd.AddCommand(NewCmdUpdateEnvVars())
 	rootCmd.AddCommand(v.NewCmdVersion())
 	return rootCmd
 }
