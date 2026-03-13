@@ -49,7 +49,7 @@ func NewCmdAceCreateRelease() *cobra.Command {
 
 func CreateAceReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.3.2" + prerelease
+	releaseNumber := "v2026.3.30" + prerelease
 	return api.Release{
 		ProductLine: "ACE",
 		Release:     releaseNumber,
