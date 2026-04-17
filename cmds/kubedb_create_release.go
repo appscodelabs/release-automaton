@@ -308,7 +308,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"make chart-kubedb-provider-gcp CHART_VERSION=${RELEASE} APP_VERSION=${KUBEDB_PROVIDER_GCP_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 
 						"./hack/scripts/update-chart-dependencies.sh",
-						"make bundle TAG=${RELEASE} VERSION=${RELEASE}",
+						"sudo make bundle TAG=${RELEASE} VERSION=${RELEASE}",
 
 						"rm -rf charts/kubedb-certified charts/kubedb-certified-crds",
 						"chart-packer crd-less --input charts/kubedb --output charts",
