@@ -241,12 +241,10 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	latestVersion := data[0].Version
 	for i := range data {
 		v := semver.MustParse(data[i].Version)
-		if !data[i].Show ||
-			strings.HasPrefix(v.Prerelease(), "alpha.") ||
-			strings.HasPrefix(v.Prerelease(), "beta.") {
+		if !data[i].Show || v.Prerelease() != "" {
 			continue
 		}
-		// Use the latest non alpha/beta release
+		// Use the latest non pre-release version
 		latestVersion = data[i].Version
 		break
 	}
