@@ -67,6 +67,7 @@ func CreateKubeStashReleaseFile() api.Release {
 				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.19.0", prerelease)},
+				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
 					Tag: TagP("v0.26.0", prerelease),
@@ -94,6 +95,8 @@ func CreateKubeStashReleaseFile() api.Release {
 						"go run ./hack/fmt/main.go --kind=Function --name=volumesnapshot-restore --update-spec=spec.image=ghcr.io/kubestash/volume-snapshotter:${KUBESTASH_VOLUME_SNAPSHOTTER_TAG}",
 						"go run ./hack/fmt/main.go --kind=Function --name=workload-backup --update-spec=spec.image=ghcr.io/kubestash/workload:${KUBESTASH_WORKLOAD_TAG}",
 						"go run ./hack/fmt/main.go --kind=Function --name=workload-restore --update-spec=spec.image=ghcr.io/kubestash/workload:${KUBESTASH_WORKLOAD_TAG}",
+						"go run ./hack/fmt/main.go --kind=Function --name=vault-backup --update-spec=spec.image=ghcr.io/kubestash/vault:${KUBESTASH_VAULT_TAG}",
+						"go run ./hack/fmt/main.go --kind=Function --name=vault-restore --update-spec=spec.image=ghcr.io/kubestash/vault:${KUBESTASH_VAULT_TAG}",
 
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubestash-operator CHART_VERSION=${KUBESTASH_KUBESTASH_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
