@@ -31,5 +31,6 @@ func NewCmdKubeDB() *cobra.Command {
 
 	cmd.AddCommand(NewCmdKubeDBCreateRelease())
 	cmd.AddCommand(NewCmdKubeDBRecordLegacyReleases())
+	cmd.AddCommand(NewCmdKubeDBUpdateExampleVersions())
 	return cmd
 }
