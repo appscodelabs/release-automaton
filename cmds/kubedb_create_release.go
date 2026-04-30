@@ -330,6 +330,8 @@ func CreateKubeDBReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
+						"curl -fsSL https://github.com/kubedb/installer/raw/${RELEASE}/catalog/kubedb/active_versions.json -o /tmp/kubedb-active-versions.json",
+						"release-automaton kubedb update-example-versions /tmp/kubedb-active-versions.json --workspace=${WORKSPACE}",
 						"release-automaton update-assets --hide --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
