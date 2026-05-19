@@ -45,7 +45,7 @@ const (
 func NewGitHubClient() *github.Client {
 	token, found := os.LookupEnv(api.GitHubTokenKey)
 	if !found {
-		panic(api.GitHubTokenKey + " env var is not set")
+		log.Fatalln(api.GitHubTokenKey + " env var is not set")
 	}
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
@@ -68,16 +68,10 @@ func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo strin
 	result := sets.New[string]()
 	for {
 		labels, resp, err := gh.Issues.ListLabelsByIssue(ctx, owner, repo, number, opt)
-		switch e := err.(type) {
-		case *github.ErrorResponse:
-			if e.Response.StatusCode == http.StatusNotFound {
+		if err != nil {
+			if ge, ok := err.(*github.ErrorResponse); ok && ge.Response.StatusCode == http.StatusNotFound {
 				log.Println(err)
-				break
 			} else {
-				return nil, err
-			}
-		default:
-			if e != nil {
 				return nil, err
 			}
 		}
@@ -101,16 +95,10 @@ func ListReleases(ctx context.Context, gh *github.Client, owner, repo string) ([
 	var result []*github.RepositoryRelease
 	for {
 		releases, resp, err := gh.Repositories.ListReleases(ctx, owner, repo, opt)
-		switch e := err.(type) {
-		case *github.ErrorResponse:
-			if e.Response.StatusCode == http.StatusNotFound {
+		if err != nil {
+			if ge, ok := err.(*github.ErrorResponse); ok && ge.Response.StatusCode == http.StatusNotFound {
 				log.Println(err)
-				break
 			} else {
-				return nil, err
-			}
-		default:
-			if e != nil {
 				return nil, err
 			}
 		}
@@ -132,16 +120,10 @@ func ListReviews(ctx context.Context, gh *github.Client, owner, repo string, num
 	var result []*github.PullRequestReview
 	for {
 		reviews, resp, err := gh.PullRequests.ListReviews(ctx, owner, repo, number, opt)
-		switch e := err.(type) {
-		case *github.ErrorResponse:
-			if e.Response.StatusCode == http.StatusNotFound {
+		if err != nil {
+			if ge, ok := err.(*github.ErrorResponse); ok && ge.Response.StatusCode == http.StatusNotFound {
 				log.Println(err)
-				break
 			} else {
-				return nil, err
-			}
-		default:
-			if e != nil {
 				return nil, err
 			}
 		}
@@ -167,16 +149,10 @@ func ListPullRequestComment(ctx context.Context, gh *github.Client, owner, repo 
 	var result []*github.PullRequestComment
 	for {
 		comments, resp, err := gh.PullRequests.ListComments(ctx, owner, repo, number, opt)
-		switch e := err.(type) {
-		case *github.ErrorResponse:
-			if e.Response.StatusCode == http.StatusNotFound {
+		if err != nil {
+			if ge, ok := err.(*github.ErrorResponse); ok && ge.Response.StatusCode == http.StatusNotFound {
 				log.Println(err)
-				break
 			} else {
-				return nil, err
-			}
-		default:
-			if e != nil {
 				return nil, err
 			}
 		}
@@ -202,16 +178,10 @@ func ListComments(ctx context.Context, gh *github.Client, owner, repo string, nu
 	var result []*github.IssueComment
 	for {
 		comments, resp, err := gh.Issues.ListComments(ctx, owner, repo, number, opt)
-		switch e := err.(type) {
-		case *github.ErrorResponse:
-			if e.Response.StatusCode == http.StatusNotFound {
+		if err != nil {
+			if ge, ok := err.(*github.ErrorResponse); ok && ge.Response.StatusCode == http.StatusNotFound {
 				log.Println(err)
-				break
 			} else {
-				return nil, err
-			}
-		default:
-			if e != nil {
 				return nil, err
 			}
 		}
