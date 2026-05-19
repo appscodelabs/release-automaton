@@ -47,8 +47,12 @@ func IsPublicGitRepo(repoURL string) bool {
 		repoURL = "https://" + repoURL
 	}
 
-	_, err := http.Get(repoURL)
-	return err == nil
+	resp, err := http.Get(repoURL)
+	if err != nil {
+		return false
+	}
+	_ = resp.Body.Close()
+	return true
 }
 
 func DetectVCSRoot(repoURL string) (string, error) {
@@ -68,6 +72,7 @@ func DetectVCSRoot(repoURL string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer res.Body.Close()
 	data := new(MetaData)
 
 	err = metabolize.Metabolize(res.Body, data)
