@@ -80,7 +80,11 @@ func GetRemoteTag(sh *shell.Session, tag string) string {
 	if err != nil {
 		return ""
 	}
-	return strings.Fields(string(data))[0]
+	fields := strings.Fields(string(data))
+	if len(fields) == 0 {
+		return ""
+	}
+	return fields[0]
 }
 
 func GetRemoteCommitHash(sh *shell.Session, url, tag string) string {
@@ -95,7 +99,11 @@ func GetRemoteCommitHash(sh *shell.Session, url, tag string) string {
 	if err != nil {
 		return ""
 	}
-	return strings.Fields(string(data))[0]
+	fields := strings.Fields(string(data))
+	if len(fields) == 0 {
+		return ""
+	}
+	return fields[0]
 }
 
 // IsTagged checks if the current commit is tagged.
@@ -127,6 +135,9 @@ func FirstCommit(sh *shell.Session) string {
 		panic(err)
 	}
 	commits := strings.Fields(string(data))
+	if len(commits) == 0 {
+		return ""
+	}
 	return commits[len(commits)-1]
 }
 
@@ -137,6 +148,9 @@ func LastCommitSHA(sh *shell.Session) string {
 		panic(err)
 	}
 	commits := strings.Fields(string(data))
+	if len(commits) == 0 {
+		return ""
+	}
 	return commits[0]
 }
 

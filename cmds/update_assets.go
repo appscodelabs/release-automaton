@@ -238,15 +238,18 @@ func sortProductVersions(versions []saapi.ProductVersion) ([]saapi.ProductVersio
 	sort.Slice(data, func(i, j int) bool {
 		return !semvers.CompareVersions(semver.MustParse(data[i].Version), semver.MustParse(data[j].Version))
 	})
-	latestVersion := data[0].Version
-	for i := range data {
-		v := semver.MustParse(data[i].Version)
-		if !data[i].Show || v.Prerelease() != "" {
-			continue
+	var latestVersion string
+	if len(data) > 0 {
+		latestVersion = data[0].Version
+		for i := range data {
+			v := semver.MustParse(data[i].Version)
+			if !data[i].Show || v.Prerelease() != "" {
+				continue
+			}
+			// Use the latest non pre-release version
+			latestVersion = data[i].Version
+			break
 		}
-		// Use the latest non pre-release version
-		latestVersion = data[i].Version
-		break
 	}
 
 	// inject to the top

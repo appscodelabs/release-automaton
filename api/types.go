@@ -323,8 +323,17 @@ func (chlog *Changelog) Sort() {
 	sort.Slice(chlog.Projects, func(i, j int) bool { return chlog.Projects[i].URL < chlog.Projects[j].URL })
 	for idx, projects := range chlog.Projects {
 		sort.Slice(projects.Releases, func(i, j int) bool {
-			vi, _ := semver.NewVersion(projects.Releases[i].Tag)
-			vj, _ := semver.NewVersion(projects.Releases[j].Tag)
+			vi, errI := semver.NewVersion(projects.Releases[i].Tag)
+			vj, errJ := semver.NewVersion(projects.Releases[j].Tag)
+			// Sort unparseable tags to the end and fall back to string compare.
+			switch {
+			case errI != nil && errJ != nil:
+				return projects.Releases[i].Tag < projects.Releases[j].Tag
+			case errI != nil:
+				return false
+			case errJ != nil:
+				return true
+			}
 			return semvers.CompareVersions(vi, vj)
 		})
 		chlog.Projects[idx] = projects
