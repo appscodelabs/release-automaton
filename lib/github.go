@@ -351,11 +351,11 @@ func ListTags2(ctx context.Context, gh *github.Client, owner, repo string) ([]*g
 
 	var result []*github.RepositoryTag
 	for {
-		reviews, resp, err := gh.Repositories.ListTags(ctx, owner, repo, opt)
+		tags, resp, err := gh.Repositories.ListTags(ctx, owner, repo, opt)
 		if err != nil {
-			break
+			return nil, err
 		}
-		result = append(result, reviews...)
+		result = append(result, tags...)
 		if resp.NextPage == 0 {
 			break
 		}
