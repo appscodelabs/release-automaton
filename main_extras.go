@@ -88,11 +88,12 @@ func main_CreateKubeDBReleaseTable() {
 }
 
 func main_RemoveLabel() {
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		panic(err)
+	}
 	u := "https://github.com/appscodelabs/release-automaton-demo/pull/1"
 	fmt.Println(u)
-
-	var err error
 
 	_, _, err = gh.Issues.AddLabelsToIssue(context.TODO(), "appscodelabs", "release-automaton-demo", 1, []string{
 		"xyz",
@@ -215,7 +216,10 @@ func main_CreatePR() {
 	owner := "tamalsaha"
 	repo := "gh-release-automation-testing"
 
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		panic(err)
+	}
 
 	pr, err := lib.CreatePR(gh, owner, repo, &github.NewPullRequest{
 		Title:               github.String("Test pr api"),

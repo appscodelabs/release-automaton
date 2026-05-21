@@ -42,10 +42,10 @@ const (
 	maxRateLimitRetryAttempts  = 8
 )
 
-func NewGitHubClient() *github.Client {
+func NewGitHubClient() (*github.Client, error) {
 	token, found := os.LookupEnv(api.GitHubTokenKey)
 	if !found {
-		log.Fatalln(api.GitHubTokenKey + " env var is not set")
+		return nil, fmt.Errorf("%s env var is not set", api.GitHubTokenKey)
 	}
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
@@ -57,7 +57,7 @@ func NewGitHubClient() *github.Client {
 	}
 	tc.Transport = &rateLimitTransport{base: baseTransport}
 
-	return github.NewClient(tc)
+	return github.NewClient(tc), nil
 }
 
 func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo string, number int) (sets.Set[string], error) {

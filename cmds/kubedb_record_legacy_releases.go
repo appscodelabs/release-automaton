@@ -65,7 +65,10 @@ func NewCmdKubeDBRecordLegacyReleases() *cobra.Command {
 }
 
 func CreateKubeDBReleaseTable() api.ReleaseTable {
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		panic(err)
+	}
 	releases, err := lib.ListReleases(context.TODO(), gh, "kubedb", "cli")
 	if err != nil {
 		panic(err)

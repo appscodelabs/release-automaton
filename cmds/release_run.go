@@ -149,7 +149,10 @@ func runAutomaton() {
 
 	releaseOwner, releaseRepo, releasePR := lib.ParsePullRequestURL(releaseTracker)
 
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		panic(err)
+	}
 	pr, _, err := gh.PullRequests.Get(context.TODO(), releaseOwner, releaseRepo, releasePR)
 	if err != nil {
 		panic(err)
