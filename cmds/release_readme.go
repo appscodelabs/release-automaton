@@ -52,11 +52,12 @@ func GenerateTable() api.ReleaseTable {
 
 	legacyfilename := filepath.Join(changelogRoot, "legacy_releases.json")
 	data, err := os.ReadFile(legacyfilename)
-	if !os.IsNotExist(err) {
-		err = json.Unmarshal(data, &table)
-		if err != nil {
+	if err == nil {
+		if err := json.Unmarshal(data, &table); err != nil {
 			panic(err)
 		}
+	} else if !os.IsNotExist(err) {
+		panic(err)
 	}
 
 	entries, err := os.ReadDir(changelogRoot)

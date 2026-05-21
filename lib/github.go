@@ -42,10 +42,10 @@ const (
 	maxRateLimitRetryAttempts  = 8
 )
 
-func NewGitHubClient() *github.Client {
+func NewGitHubClient() (*github.Client, error) {
 	token, found := os.LookupEnv(api.GitHubTokenKey)
 	if !found {
-		log.Fatalln(api.GitHubTokenKey + " env var is not set")
+		return nil, fmt.Errorf("%s env var is not set", api.GitHubTokenKey)
 	}
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
@@ -57,7 +57,7 @@ func NewGitHubClient() *github.Client {
 	}
 	tc.Transport = &rateLimitTransport{base: baseTransport}
 
-	return github.NewClient(tc)
+	return github.NewClient(tc), nil
 }
 
 func ListLabelsByIssue(ctx context.Context, gh *github.Client, owner, repo string, number int) (sets.Set[string], error) {
@@ -196,22 +196,22 @@ func ListComments(ctx context.Context, gh *github.Client, owner, repo string, nu
 }
 
 // https://developer.github.com/v3/pulls/reviews/#create-a-review-for-a-pull-request
-func PRApproved(gh *github.Client, owner string, repo string, prNumber int) bool {
+func PRApproved(gh *github.Client, owner string, repo string, prNumber int) (bool, error) {
 	reviews, err := ListReviews(context.TODO(), gh, owner, repo, prNumber)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 	for _, review := range reviews {
 		if review.GetState() == "REQUEST_CHANGES" {
-			return false
+			return false, nil
 		}
 	}
 	for _, review := range reviews {
 		if review.GetState() == "APPROVED" {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullRequest, labels ...string) (*github.PullRequest, error) {
@@ -351,11 +351,11 @@ func ListTags2(ctx context.Context, gh *github.Client, owner, repo string) ([]*g
 
 	var result []*github.RepositoryTag
 	for {
-		reviews, resp, err := gh.Repositories.ListTags(ctx, owner, repo, opt)
+		tags, resp, err := gh.Repositories.ListTags(ctx, owner, repo, opt)
 		if err != nil {
-			break
+			return nil, err
 		}
-		result = append(result, reviews...)
+		result = append(result, tags...)
 		if resp.NextPage == 0 {
 			break
 		}

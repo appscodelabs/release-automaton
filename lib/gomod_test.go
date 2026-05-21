@@ -30,9 +30,13 @@ func TestDetectVCSRoot(t *testing.T) {
 	// res, _ := http.Get("https://k8s.io/api?go-get=1")
 	// "https://github.com/cloudevents/sdk-go/blob/master/samples/kafka?go-get=1"
 
+	if testing.Short() {
+		t.Skip("skipping network-dependent test in short mode")
+	}
+
 	r, err := DetectVCSRoot("stash.appscode.dev/cli")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	fmt.Println(r)
 }

@@ -71,7 +71,10 @@ func CreateVoyagerReleaseTable() (*api.ReleaseTable, error) {
 	owner := "voyagermesh"
 	repo := "voyager"
 
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		return nil, err
+	}
 	releases, err := lib.ListReleases(context.TODO(), gh, owner, repo)
 	if err != nil {
 		return nil, err

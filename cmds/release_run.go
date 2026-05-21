@@ -18,6 +18,7 @@ package cmds
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"maps"
 	"os"
@@ -148,7 +149,10 @@ func runAutomaton() {
 
 	releaseOwner, releaseRepo, releasePR := lib.ParsePullRequestURL(releaseTracker)
 
-	gh := lib.NewGitHubClient()
+	gh, err := lib.NewGitHubClient()
+	if err != nil {
+		panic(err)
+	}
 	pr, _, err := gh.PullRequests.Get(context.TODO(), releaseOwner, releaseRepo, releasePR)
 	if err != nil {
 		panic(err)
@@ -161,7 +165,11 @@ func runAutomaton() {
 		fmt.Println("Release tracker pr is not open")
 		return
 	}
-	if !lib.PRApproved(gh, releaseOwner, releaseRepo, releasePR) {
+	approved, err := lib.PRApproved(gh, releaseOwner, releaseRepo, releasePR)
+	if err != nil {
+		panic(err)
+	}
+	if !approved {
 		fmt.Println("PR must be approved to continue")
 		return
 	}
@@ -442,7 +450,7 @@ func runAutomaton() {
 			// Do not want external projects to report back, so releaseTracker is not set.
 			err = PrepareExternalProject(gh, sh, "", repoURL, project)
 			if err != nil {
-				break
+				panic(err)
 			}
 		}
 	}
@@ -459,6 +467,34 @@ func runAutomaton() {
 		}
 		return // Let next execution to pick up
 	}
+}
+
+// gitCloneWithToken runs `git clone` against a plain HTTPS URL, passing the
+// credentials via `--config http.<host>.extraheader=...` instead of embedding
+// them in the URL. This keeps the token out of the session log AND out of the
+// cloned repo's `origin` URL in .git/config. The extraheader config is
+// persisted into the new repo's local config so subsequent fetch/push against
+// `origin` (same host) authenticate automatically.
+func gitCloneWithToken(sh *shell.Session, repoURL string, extraArgs ...string) error {
+	cloneURL := fmt.Sprintf("https://%s.git", repoURL)
+	creds := base64.StdEncoding.EncodeToString([]byte(os.Getenv(api.GitHubUserKey) + ":" + os.Getenv(api.GitHubTokenKey)))
+	authConfig := "http.https://github.com/.extraheader=AUTHORIZATION: basic " + creds
+
+	args := make([]any, 0, 3+len(extraArgs)+1)
+	args = append(args, "clone", "--config", authConfig)
+	for _, a := range extraArgs {
+		args = append(args, a)
+	}
+	args = append(args, cloneURL)
+
+	prev := sh.ShowCMD
+	sh.ShowCMD = false
+	if prev {
+		fmt.Printf("$ git clone %s %s\n", strings.Join(extraArgs, " "), cloneURL)
+	}
+	err := sh.Command("git", args...).Run()
+	sh.ShowCMD = prev
+	return err
 }
 
 func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) error {
@@ -478,14 +514,12 @@ func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) erro
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
-			"clone",
+		err = gitCloneWithToken(sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
-			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
-		).Run()
+		)
 		if err != nil {
 			return err
 		}
@@ -539,14 +573,12 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
-			"clone",
+		err = gitCloneWithToken(sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
-			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
-		).Run()
+		)
 		if err != nil {
 			return err
 		}
@@ -789,14 +821,12 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
-			"clone",
+		err = gitCloneWithToken(sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
 			//"--no-single-branch",
-			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
-		).Run()
+		)
 		if err != nil {
 			return err
 		}
@@ -1098,14 +1128,12 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
-			"clone",
+		err = gitCloneWithToken(sh, repoURL,
 			"--no-tags",
 			"--recurse-submodules",
 			"--depth=1",
 			"--no-single-branch",
-			fmt.Sprintf("https://%s:%s@%s.git", os.Getenv(api.GitHubUserKey), os.Getenv(api.GitHubTokenKey), repoURL),
-		).Run()
+		)
 		if err != nil {
 			return err
 		}

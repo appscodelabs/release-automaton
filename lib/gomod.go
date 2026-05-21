@@ -22,9 +22,12 @@ import (
 	"net/url"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/keighl/metabolize"
 )
+
+var httpClient = &http.Client{Timeout: 30 * time.Second}
 
 type GoImport struct {
 	RepoRoot string
@@ -47,12 +50,12 @@ func IsPublicGitRepo(repoURL string) bool {
 		repoURL = "https://" + repoURL
 	}
 
-	resp, err := http.Get(repoURL)
+	resp, err := httpClient.Get(repoURL)
 	if err != nil {
 		return false
 	}
 	_ = resp.Body.Close()
-	return true
+	return resp.StatusCode < 400
 }
 
 func DetectVCSRoot(repoURL string) (string, error) {
@@ -68,11 +71,11 @@ func DetectVCSRoot(repoURL string) (string, error) {
 	qRepo.Set("go-get", "1")
 	uRepo.RawQuery = qRepo.Encode()
 
-	res, err := http.Get(uRepo.String())
+	res, err := httpClient.Get(uRepo.String())
 	if err != nil {
 		return "", err
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 	data := new(MetaData)
 
 	err = metabolize.Metabolize(res.Body, data)
