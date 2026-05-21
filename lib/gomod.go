@@ -75,7 +75,7 @@ func DetectVCSRoot(repoURL string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer res.Body.Close()
+	defer func() { _ = res.Body.Close() }()
 	data := new(MetaData)
 
 	err = metabolize.Metabolize(res.Body, data)
