@@ -196,22 +196,22 @@ func ListComments(ctx context.Context, gh *github.Client, owner, repo string, nu
 }
 
 // https://developer.github.com/v3/pulls/reviews/#create-a-review-for-a-pull-request
-func PRApproved(gh *github.Client, owner string, repo string, prNumber int) bool {
+func PRApproved(gh *github.Client, owner string, repo string, prNumber int) (bool, error) {
 	reviews, err := ListReviews(context.TODO(), gh, owner, repo, prNumber)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 	for _, review := range reviews {
 		if review.GetState() == "REQUEST_CHANGES" {
-			return false
+			return false, nil
 		}
 	}
 	for _, review := range reviews {
 		if review.GetState() == "APPROVED" {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 func CreatePR(gh *github.Client, owner string, repo string, req *github.NewPullRequest, labels ...string) (*github.PullRequest, error) {

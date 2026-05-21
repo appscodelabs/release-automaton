@@ -165,7 +165,11 @@ func runAutomaton() {
 		fmt.Println("Release tracker pr is not open")
 		return
 	}
-	if !lib.PRApproved(gh, releaseOwner, releaseRepo, releasePR) {
+	approved, err := lib.PRApproved(gh, releaseOwner, releaseRepo, releasePR)
+	if err != nil {
+		panic(err)
+	}
+	if !approved {
 		fmt.Println("PR must be approved to continue")
 		return
 	}
