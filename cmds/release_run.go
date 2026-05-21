@@ -450,7 +450,7 @@ func runAutomaton() {
 			// Do not want external projects to report back, so releaseTracker is not set.
 			err = PrepareExternalProject(gh, sh, "", repoURL, project)
 			if err != nil {
-				break
+				panic(err)
 			}
 		}
 	}
