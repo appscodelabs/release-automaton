@@ -72,7 +72,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/documentdb":                 api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.20.0", prerelease)},
-				"github.com/kubedb/ferretdb":                   api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.20.0", prerelease)},
