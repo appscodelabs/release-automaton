@@ -356,7 +356,7 @@ func CreateKubeDBReleaseFile() api.Release {
 							"make docs",
 						},
 						semvers.IsPublicRelease(releaseNumber),
-						"make set-version VERSION=${TAG}",
+						"make set-operator-version VERSION=${TAG}",
 					),
 					Changelog: api.SkipChangelog,
 				},
