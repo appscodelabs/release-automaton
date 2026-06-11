@@ -71,6 +71,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				},
 				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/documentdb":                 api.Project{Tag: TagP("v0.2.0", prerelease)},
+				"github.com/kubedb/documentdb-coordinator":     api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.20.0", prerelease)},
@@ -230,6 +231,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"./hack/scripts/import-crds.sh",
 
 						"go run ./catalog/kubedb/fmt/main.go --kind=DB2Version --update-spec=spec.coordinator.image=ghcr.io/kubedb/db2-coordinator:${KUBEDB_DB2_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=DocumentDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/documentdb-coordinator:${KUBEDB_DOCUMENTDB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=HanaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/hanadb-coordinator:${KUBEDB_HANADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MARIADB_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mariadb-coordinator:${KUBEDB_MARIADB_COORDINATOR_TAG}",
