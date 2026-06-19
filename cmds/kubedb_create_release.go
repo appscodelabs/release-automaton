@@ -114,6 +114,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/migrator-cli":               api.Project{Tag: TagP("v0.5.0", prerelease)},
 				// kubestash plugins
 				"github.com/kubedb/clickhouse-backup-plugin":        api.Project{Tag: TagP("v0.2.0", prerelease)},
+				"github.com/kubedb/neo4j-backup-plugin":             api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.23.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.28.0", prerelease)},
 				"github.com/kubedb/kubedb-manifest-plugin":          api.Project{Tag: TagP("v0.28.0", prerelease)},
@@ -261,6 +262,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=cassandra-restore --update-spec=spec.image=ghcr.io/kubedb/cassandra-medusa-plugin:${KUBEDB_CASSANDRA_MEDUSA_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=clickhouse-backup --update-spec=spec.image=ghcr.io/kubedb/clickhouse-backup-plugin:${KUBEDB_CLICKHOUSE_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=clickhouse-restore --update-spec=spec.image=ghcr.io/kubedb/clickhouse-backup-plugin:${KUBEDB_CLICKHOUSE_BACKUP_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=neo4j-backup --update-spec=spec.image=ghcr.io/kubedb/neo4j-backup-plugin:${KUBEDB_NEO4J_BACKUP_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=neo4j-restore --update-spec=spec.image=ghcr.io/kubedb/neo4j-backup-plugin:${KUBEDB_NEO4J_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-backup --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-dashboard-restore --update-spec=spec.image=ghcr.io/kubedb/dashboard-restic-plugin:${KUBEDB_DASHBOARD_RESTIC_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=elasticsearch-backup --update-spec=spec.image=ghcr.io/kubedb/elasticsearch-restic-plugin:${KUBEDB_ELASTICSEARCH_RESTIC_PLUGIN_TAG}",
