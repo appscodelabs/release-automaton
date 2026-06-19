@@ -69,6 +69,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Key: "kubedb-cli",
 					Tag: TagP("v0.65.0", prerelease),
 				},
+				"github.com/kubedb/aeropspike":                 api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/clickhouse":                 api.Project{Tag: TagP("v0.20.0", prerelease)},
 				"github.com/kubedb/documentdb":                 api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/documentdb-coordinator":     api.Project{Tag: TagP("v0.1.0", prerelease)},
