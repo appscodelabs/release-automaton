@@ -24,6 +24,7 @@ import (
 
 	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/semvers"
 )
 
 func NewCmdAceCreateRelease() *cobra.Command {
@@ -49,7 +50,7 @@ func NewCmdAceCreateRelease() *cobra.Command {
 
 func CreateAceReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.6.12" + prerelease
+	releaseNumber := "v2026.6.19" + prerelease
 	return api.Release{
 		ProductLine: "ACE",
 		Release:     releaseNumber,
@@ -58,7 +59,7 @@ func CreateAceReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/ui-wizards": api.Project{
-					Tag: TagP("v0.34.0", prerelease),
+					Tag: TagP("v0.35.0", prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -70,7 +71,7 @@ func CreateAceReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: TagP("v0.46.0", prerelease),
+					Tag: TagP("v0.47.0", prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --use-digest=false --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -90,10 +91,10 @@ func CreateAceReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubeops/ui-server": api.Project{
-					Tag: TagP("v0.4.0", prerelease),
+					Tag: TagP("v0.5.0", prerelease),
 				},
 				"github.com/kubepack/lib-app": api.Project{
-					Tag: TagP("v0.22.0", prerelease),
+					Tag: TagP("v0.23.0", prerelease),
 					Commands: []string{
 						"make set-version VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -101,19 +102,19 @@ func CreateAceReleaseFile() api.Release {
 				},
 				/*
 					"github.com/appscode-cloud/cluster-ui": api.Project{
-						Tag: TagP("v0.7.0", prerelease),
+						Tag: TagP("v0.8.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/kubedb-ui": api.Project{
-						Tag: TagP("v0.7.0", prerelease),
+						Tag: TagP("v0.8.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/accounts-ui": api.Project{
-						Tag: TagP("v0.7.0", prerelease),
+						Tag: TagP("v0.8.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
@@ -181,13 +182,46 @@ func CreateAceReleaseFile() api.Release {
 					},
 				},
 			},
-
 			{
 				"github.com/appscode/charts": api.Project{
 					ChartRepos: []string{
 						"github.com/kubeops/installer",
 						"github.com/appscode-cloud/installer",
 					},
+					Changelog: api.SkipChangelog,
+				},
+			},
+			{
+				// Must come before docs repo, so we can generate the docs_changelog.md
+				"github.com/appscode/static-assets": api.Project{
+					Commands: []string{
+						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+					},
+					Changelog: api.StandaloneWebsiteChangelog,
+				},
+			},
+			{
+				"github.com/appscode-cloud/docs": api.Project{
+					Key:           "kubedbplatform",
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "release-${TAG}",
+					Commands: []string{
+						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+					},
+				},
+			},
+			{
+				"github.com/kubedb/website": api.Project{
+					Tag:           github.String(releaseNumber),
+					ReleaseBranch: "master",
+					Commands: lib.AppendIf(
+						[]string{
+							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
+							"make docs-platform",
+						},
+						semvers.IsPublicRelease(releaseNumber),
+						"make set-platform-version VERSION=${TAG}",
+					),
 					Changelog: api.SkipChangelog,
 				},
 			},
