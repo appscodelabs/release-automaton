@@ -206,18 +206,18 @@ func CreateAceReleaseFile() api.Release {
 					Tag:           github.String(releaseNumber),
 					ReleaseBranch: "release-${TAG}",
 					Commands: []string{
-						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/CHANGELOG-${RELEASE}.md",
+						"mv ${SCRIPT_ROOT}/releases/${RELEASE}/docs_changelog.md ${WORKSPACE}/docs/platform/CHANGELOG-${RELEASE}.md",
 					},
 				},
 			},
 			{
 				"github.com/kubedb/website": api.Project{
-					Tag:           github.String(releaseNumber),
+					Tag:           github.String("akp/" + releaseNumber),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
-							"make docs-platform",
+							"make assets docs-platform",
 						},
 						semvers.IsPublicRelease(releaseNumber),
 						"make set-platform-version VERSION=${TAG}",
