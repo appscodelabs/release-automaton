@@ -50,7 +50,7 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 
 func CreateKubeStashReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.6.19" + prerelease
+	releaseNumber := "v2026.7.10" + prerelease
 	return api.Release{
 		ProductLine:       "KubeStash",
 		Release:           releaseNumber,
@@ -58,19 +58,19 @@ func CreateKubeStashReleaseFile() api.Release {
 		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.29.0", prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.27.0", prerelease)},
-				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.27.0", prerelease)},
-				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.27.0", prerelease)},
-				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.27.0", prerelease)},
-				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.20.0", prerelease)},
-				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.2.0", prerelease)},
+				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.21.0", prerelease)},
+				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.3.0", prerelease)},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
-					Tag: TagP("v0.27.0", prerelease),
+					Tag: TagP("v0.28.0", prerelease),
 				},
 			},
 			{
