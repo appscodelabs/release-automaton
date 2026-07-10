@@ -244,6 +244,8 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=MongoDBVersion --update-spec=spec.courier.statusReporter.image=ghcr.io/kubedb/kubedb-courier:${KUBEDB_COURIER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/mssqlserver-archiver:${KUBEDB_MSSQLSERVER_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mssql-coordinator:${KUBEDB_MSSQL_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.courier.cli.image=ghcr.io/kubedb/kubedb-migrator-mssqlserver:${KUBEDB_MIGRATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=MSSQLServerVersion --update-spec=spec.courier.statusReporter.image=ghcr.io/kubedb/kubedb-courier:${KUBEDB_COURIER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MYSQL_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/mysql-coordinator:${KUBEDB_MYSQL_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.courier.cli.image=ghcr.io/kubedb/kubedb-migrator-mysql:${KUBEDB_MIGRATOR_TAG}",
