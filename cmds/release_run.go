@@ -514,7 +514,8 @@ func UpdateChartIndex(gh *github.Client, sh *shell.Session, repoURL string) erro
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = gitCloneWithToken(sh, repoURL,
+		err = gitCloneWithToken(
+			sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
@@ -573,7 +574,8 @@ func PrepareProject(gh *github.Client, sh *shell.Session, releaseTracker, repoUR
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = gitCloneWithToken(sh, repoURL,
+		err = gitCloneWithToken(
+			sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
@@ -821,7 +823,8 @@ func ReleaseProject(sh *shell.Session, releaseTracker, repoURL string, project a
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = gitCloneWithToken(sh, repoURL,
+		err = gitCloneWithToken(
+			sh, repoURL,
 			// "--no-tags", //TODO: ok?
 			"--recurse-submodules",
 			//"--depth=1",
@@ -1128,7 +1131,8 @@ func PrepareExternalProject(gh *github.Client, sh *shell.Session, releaseTracker
 	if !lib.Exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = gitCloneWithToken(sh, repoURL,
+		err = gitCloneWithToken(
+			sh, repoURL,
 			"--no-tags",
 			"--recurse-submodules",
 			"--depth=1",
