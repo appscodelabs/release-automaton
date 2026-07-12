@@ -212,7 +212,7 @@ func CreateAceReleaseFile() api.Release {
 			},
 			{
 				"github.com/kubedb/website": api.Project{
-					Tag:           github.String("akp/" + releaseNumber),
+					Tag:           github.String(releaseNumber + "+akp"),
 					ReleaseBranch: "master",
 					Commands: lib.AppendIf(
 						[]string{
