@@ -40,3 +40,9 @@ Supported products:
 Alternative via Makefile:
 
 - `make bump-release-minor PRODUCT=kubedb`
+
+## Release prompt
+
+```
+every 5min list all the open prs that reference <changelog-pr> and sqaush merge them with --admin flag if all checks pass
+```
