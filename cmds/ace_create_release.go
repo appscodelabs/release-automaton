@@ -51,6 +51,9 @@ func NewCmdAceCreateRelease() *cobra.Command {
 func CreateAceReleaseFile() api.Release {
 	prerelease := ""
 	releaseNumber := "v2026.7.10" + prerelease
+	// hideDocs hides this release's docs from the website. When set, the release
+	// is not advertised as the website's version either.
+	hideDocs := false
 	return api.Release{
 		ProductLine: "ACE",
 		Release:     releaseNumber,
@@ -195,7 +198,7 @@ func CreateAceReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						UpdateAssetsCmd(hideDocs),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
@@ -219,7 +222,7 @@ func CreateAceReleaseFile() api.Release {
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
 							"make assets docs-platform",
 						},
-						semvers.IsPublicRelease(releaseNumber),
+						!hideDocs && semvers.IsPublicRelease(releaseNumber),
 						"make set-platform-version VERSION=${RELEASE}",
 					),
 					Changelog: api.SkipChangelog,

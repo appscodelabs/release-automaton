@@ -51,6 +51,9 @@ func NewCmdStashCreateRelease() *cobra.Command {
 func CreateStashReleaseFile() api.Release {
 	prerelease := ""
 	releaseNumber := "v2025.10.17" + prerelease
+	// hideDocs hides this release's docs from the website. When set, the release
+	// is not advertised as the website's version either.
+	hideDocs := false
 	updateVars := "release-automaton update-vars " +
 		"--env-file=${WORKSPACE}/Makefile.env " +
 		"--vars=STASH_VERSION=${STASHED_STASH_TAG} " +
@@ -273,7 +276,7 @@ func CreateStashReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						UpdateAssetsCmd(hideDocs),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
@@ -297,7 +300,7 @@ func CreateStashReleaseFile() api.Release {
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
 							"make docs",
 						},
-						semvers.IsPublicRelease(releaseNumber),
+						!hideDocs && semvers.IsPublicRelease(releaseNumber),
 						"make set-version VERSION=${TAG}",
 					),
 					Changelog: api.SkipChangelog,

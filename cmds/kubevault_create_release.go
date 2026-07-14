@@ -51,6 +51,9 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 func CreateKubeVaultReleaseFile() api.Release {
 	prerelease := "-rc.1"
 	releaseNumber := "v2026.5.18" + prerelease
+	// hideDocs hides this release's docs from the website. When set, the release
+	// is not advertised as the website's version either.
+	hideDocs := false
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
@@ -122,7 +125,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						"release-automaton update-assets --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						UpdateAssetsCmd(hideDocs),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
@@ -146,7 +149,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
 							"make docs",
 						},
-						semvers.IsPublicRelease(releaseNumber),
+						!hideDocs && semvers.IsPublicRelease(releaseNumber),
 						"make set-version VERSION=${TAG}",
 					),
 					Changelog: api.SkipChangelog,
