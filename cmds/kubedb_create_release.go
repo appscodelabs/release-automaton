@@ -51,6 +51,13 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 func CreateKubeDBReleaseFile() api.Release {
 	prerelease := ""
 	releaseNumber := "v2026.7.10" + prerelease
+	// hideDocs hides this release's docs from the website. When set, the release
+	// is not advertised as the website's operator version either.
+	hideDocs := true
+	updateAssetsFlags := ""
+	if hideDocs {
+		updateAssetsFlags = "--hide "
+	}
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -348,7 +355,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Commands: []string{
 						"curl -fsSL https://github.com/kubedb/installer/raw/${RELEASE}/catalog/kubedb/active_versions.json -o /tmp/kubedb-active-versions.json",
 						"release-automaton kubedb update-example-versions /tmp/kubedb-active-versions.json --workspace=${WORKSPACE}",
-						"release-automaton update-assets --hide --release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}",
+						fmt.Sprintf("release-automaton update-assets %s--release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}", updateAssetsFlags),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},
@@ -372,7 +379,7 @@ func CreateKubeDBReleaseFile() api.Release {
 							"make set-assets-repo ASSETS_REPO_URL=https://github.com/appscode/static-assets",
 							"make docs",
 						},
-						semvers.IsPublicRelease(releaseNumber),
+						!hideDocs && semvers.IsPublicRelease(releaseNumber),
 						"make set-operator-version VERSION=${TAG}",
 					),
 					Changelog: api.SkipChangelog,
