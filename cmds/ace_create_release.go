@@ -220,7 +220,7 @@ func CreateAceReleaseFile() api.Release {
 							"make assets docs-platform",
 						},
 						semvers.IsPublicRelease(releaseNumber),
-						"make set-platform-version VERSION=${TAG}",
+						"make set-platform-version VERSION=${RELEASE}",
 					),
 					Changelog: api.SkipChangelog,
 				},
