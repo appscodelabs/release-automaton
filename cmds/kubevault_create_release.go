@@ -54,10 +54,6 @@ func CreateKubeVaultReleaseFile() api.Release {
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
-	updateAssetsFlags := ""
-	if hideDocs {
-		updateAssetsFlags = "--hide "
-	}
 	return api.Release{
 		ProductLine:       "KubeVault",
 		Release:           releaseNumber,
@@ -129,7 +125,7 @@ func CreateKubeVaultReleaseFile() api.Release {
 				// Must come before docs repo, so we can generate the docs_changelog.md
 				"github.com/appscode/static-assets": api.Project{
 					Commands: []string{
-						fmt.Sprintf("release-automaton update-assets %s--release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}", updateAssetsFlags),
+						UpdateAssetsCmd(hideDocs),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},

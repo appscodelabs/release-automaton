@@ -54,10 +54,6 @@ func CreateKubeDBReleaseFile() api.Release {
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's operator version either.
 	hideDocs := true
-	updateAssetsFlags := ""
-	if hideDocs {
-		updateAssetsFlags = "--hide "
-	}
 	return api.Release{
 		ProductLine:       "KubeDB",
 		Release:           releaseNumber,
@@ -355,7 +351,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Commands: []string{
 						"curl -fsSL https://github.com/kubedb/installer/raw/${RELEASE}/catalog/kubedb/active_versions.json -o /tmp/kubedb-active-versions.json",
 						"release-automaton kubedb update-example-versions /tmp/kubedb-active-versions.json --workspace=${WORKSPACE}",
-						fmt.Sprintf("release-automaton update-assets %s--release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}", updateAssetsFlags),
+						UpdateAssetsCmd(hideDocs),
 					},
 					Changelog: api.StandaloneWebsiteChangelog,
 				},

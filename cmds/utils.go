@@ -52,3 +52,15 @@ func TagP(v, prerelease string) *string {
 	tag := computeTag(v, prerelease)
 	return &tag
 }
+
+// UpdateAssetsCmd builds the `release-automaton update-assets` command for a
+// release. When hideDocs is true, the release's docs are hidden from the
+// website via the --hide flag (and callers should also skip advertising it as
+// the website's version).
+func UpdateAssetsCmd(hideDocs bool) string {
+	flags := ""
+	if hideDocs {
+		flags = "--hide "
+	}
+	return fmt.Sprintf("release-automaton update-assets %s--release-file=${SCRIPT_ROOT}/releases/${RELEASE}/release.json --workspace=${WORKSPACE}", flags)
+}
