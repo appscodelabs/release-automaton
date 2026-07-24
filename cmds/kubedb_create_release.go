@@ -329,11 +329,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"./hack/scripts/update-chart-dependencies.sh",
 						"sudo make bundle TAG=${RELEASE} VERSION=${RELEASE}",
 
-						"rm -rf charts/kubedb-certified charts/kubedb-certified-crds",
-						"chart-packer crd-less --input charts/kubedb --output charts",
-						"chart-packer crd-only --input charts/kubedb --output charts",
-						"make gen-chart-doc",
-						"./hack/scripts/update-catalog.sh",
+						"make refresh",
 					},
 				},
 			},
