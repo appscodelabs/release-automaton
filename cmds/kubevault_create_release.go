@@ -49,8 +49,8 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 }
 
 func CreateKubeVaultReleaseFile() api.Release {
-	prerelease := "-rc.2"
-	releaseNumber := "v2026.7.24" + prerelease
+	prerelease := ""
+	releaseNumber := "v2026.8.7" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
@@ -99,7 +99,9 @@ func CreateKubeVaultReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
+
 						"go run ./hack/fmt/main.go --update-spec=spec.unsealer.image=ghcr.io/kubevault/vault-unsealer:${KUBEVAULT_UNSEALER_TAG}",
+
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-operator CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubevault-webhook-server CHART_VERSION=${KUBEVAULT_OPERATOR_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
