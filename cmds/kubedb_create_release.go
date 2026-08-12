@@ -116,7 +116,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/weaviate":                   api.Project{Tag: TagP("v0.7.0", prerelease)},
 				"github.com/kubedb/migrator":                   api.Project{Tag: TagP("v0.6.0", prerelease)},
 				// kubestash plugins
-				"github.com/kubedb/clickhouse-backup-plugin":        api.Project{Tag: TagP("v0.3.0", prerelease)},
 				"github.com/kubedb/neo4j-backup-plugin":             api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.24.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.29.0", prerelease)},
@@ -148,6 +147,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/provider-gcp":   api.Project{Tag: TagP("v0.27.0", prerelease)},
 			},
 			{
+				"github.com/kubedb/clickhouse-backup-plugin":       api.Project{Tag: TagP("v0.3.0", prerelease)},
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubedb/courier":                        api.Project{Tag: TagP("v0.6.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
