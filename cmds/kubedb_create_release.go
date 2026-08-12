@@ -49,8 +49,8 @@ func NewCmdKubeDBCreateRelease() *cobra.Command {
 }
 
 func CreateKubeDBReleaseFile() api.Release {
-	prerelease := ""
-	releaseNumber := "v2026.7.10" + prerelease
+	prerelease := "-rc.0"
+	releaseNumber := "v2026.8.12" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's operator version either.
 	hideDocs := true
