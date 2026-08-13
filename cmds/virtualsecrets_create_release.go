@@ -49,7 +49,7 @@ func NewCmdVirtualSecretsCreateRelease() *cobra.Command {
 
 func CreateVirtualSecretsReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.2.27" + prerelease
+	releaseNumber := "v2026.8.14" + prerelease
 	return api.Release{
 		ProductLine:       "VirtualSecrets",
 		Release:           releaseNumber,
@@ -58,15 +58,15 @@ func CreateVirtualSecretsReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/virtual-secrets/apimachinery": api.Project{
-					Tag: TagP("v0.1.0", prerelease),
+					Tag: TagP("v0.2.0", prerelease),
 				},
 			},
 			{
 				"github.com/virtual-secrets/server": api.Project{
-					Tag: TagP("v0.3.0", prerelease),
+					Tag: TagP("v0.4.0", prerelease),
 				},
 				"github.com/virtual-secrets/csi-provider": api.Project{
-					Tag: TagP("v0.1.0", prerelease),
+					Tag: TagP("v0.2.0", prerelease),
 				},
 			},
 			{
@@ -79,9 +79,11 @@ func CreateVirtualSecretsReleaseFile() api.Release {
 					},
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
+
 						"make chart-virtual-secrets-server CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL} APP_VERSION=${VIRTUAL_SECRETS_SERVER_TAG}",
 						"make chart-secrets-store-csi-driver-provider-virtual-secrets CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL} APP_VERSION=${VIRTUAL_SECRETS_CSI_PROVIDER_TAG}",
-						"./hack/scripts/update-catalog.sh",
+
+						"make refresh",
 					},
 				},
 			},
