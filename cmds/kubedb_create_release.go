@@ -77,6 +77,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/documentdb":                 api.Project{Tag: TagP("v0.4.0", prerelease)},
 				"github.com/kubedb/documentdb-coordinator":     api.Project{Tag: TagP("v0.3.0", prerelease)},
 				"github.com/kubedb/druid":                      api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubedb/etcd":                       api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/pgpool":                     api.Project{Tag: TagP("v0.22.0", prerelease)},
 				"github.com/kubedb/rabbitmq":                   api.Project{Tag: TagP("v0.22.0", prerelease)},
 				"github.com/kubedb/singlestore":                api.Project{Tag: TagP("v0.22.0", prerelease)},
@@ -116,6 +117,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/weaviate":                   api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/migrator":                   api.Project{Tag: TagP("v0.7.0", prerelease)},
 				// kubestash plugins
+				"github.com/kubedb/etcd-restic-plugin":              api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/neo4j-backup-plugin":             api.Project{Tag: TagP("v0.3.0", prerelease)},
 				"github.com/kubedb/dashboard-restic-plugin":         api.Project{Tag: TagP("v0.25.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":     api.Project{Tag: TagP("v0.30.0", prerelease)},
