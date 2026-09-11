@@ -70,6 +70,9 @@ func CreateKubeVaultReleaseFile() api.Release {
 				},
 			},
 			{
+				"github.com/kubevault/crd-manager": api.Project{Tag: TagP("v0.1.0", prerelease)},
+			},
+			{
 				"github.com/kubevault/operator": api.Project{
 					Key: "kubevault-operator",
 					ChartNames: []string{
