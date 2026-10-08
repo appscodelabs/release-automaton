@@ -72,6 +72,13 @@ func CreateKubeStashReleaseFile() api.Release {
 				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.28.0", prerelease)},
 				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.21.0", prerelease)},
 				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/ui-server": api.Project{
+					Key: "kubestash-ui-server",
+					Tag: TagP("v0.1.0", prerelease),
+					ChartNames: []string{
+						"kubestash-ui-server",
+					},
+				},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
 					Tag: TagP("v0.28.0", prerelease),
@@ -110,6 +117,7 @@ func CreateKubeStashReleaseFile() api.Release {
 
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubestash-operator CHART_VERSION=${KUBESTASH_KUBESTASH_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-kubestash-ui-server CHART_VERSION=${KUBESTASH_UI_SERVER_TAG} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 
 						"make refresh",
 					},
