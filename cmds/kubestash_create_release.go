@@ -49,8 +49,8 @@ func NewCmdKubeStashCreateRelease() *cobra.Command {
 }
 
 func CreateKubeStashReleaseFile() api.Release {
-	prerelease := "-rc.0"
-	releaseNumber := "v2026.8.12" + prerelease
+	prerelease := ""
+	releaseNumber := "v2026.10.12" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
@@ -61,27 +61,27 @@ func CreateKubeStashReleaseFile() api.Release {
 		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
-				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/apimachinery": api.Project{Tag: TagP("v0.30.0", prerelease)},
 			},
 			{
-				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.29.0", prerelease)},
-				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubestash/kubevirt":           api.Project{Tag: TagP("v0.1.0", prerelease)},
-				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.28.0", prerelease)},
-				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.21.0", prerelease)},
-				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.3.0", prerelease)},
+				"github.com/kubestash/kubestash":          api.Project{Tag: TagP("v0.30.0", prerelease)},
+				"github.com/kubestash/pvc":                api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/workload":           api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/kubedump":           api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/kubevirt":           api.Project{Tag: TagP("v0.2.0", prerelease)},
+				"github.com/kubestash/volume-snapshotter": api.Project{Tag: TagP("v0.29.0", prerelease)},
+				"github.com/kubestash/manifest":           api.Project{Tag: TagP("v0.22.0", prerelease)},
+				"github.com/kubestash/vault":              api.Project{Tag: TagP("v0.4.0", prerelease)},
 				"github.com/kubestash/ui-server": api.Project{
 					Key: "kubestash-ui-server",
-					Tag: TagP("v0.1.0", prerelease),
+					Tag: TagP("v0.2.0", prerelease),
 					ChartNames: []string{
 						"kubestash-ui-server",
 					},
 				},
 				"github.com/kubestash/cli": api.Project{
 					Key: "kubestash-cli",
-					Tag: TagP("v0.28.0", prerelease),
+					Tag: TagP("v0.29.0", prerelease),
 				},
 			},
 			{

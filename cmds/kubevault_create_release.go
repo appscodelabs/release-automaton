@@ -50,7 +50,7 @@ func NewCmdKubeVaultCreateRelease() *cobra.Command {
 
 func CreateKubeVaultReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.8.7" + prerelease
+	releaseNumber := "v2026.10.12" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
@@ -62,15 +62,15 @@ func CreateKubeVaultReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/kubevault/apimachinery": api.Project{
-					Tag: TagP("v0.25.0", prerelease),
+					Tag: TagP("v0.26.0", prerelease),
 				},
 				"github.com/kubevault/unsealer": api.Project{
 					Key: "kubevault-unsealer",
-					Tag: TagP("v0.25.0", prerelease),
+					Tag: TagP("v0.26.0", prerelease),
 				},
 			},
 			{
-				"github.com/kubevault/crd-manager": api.Project{Tag: TagP("v0.1.0", prerelease)},
+				"github.com/kubevault/crd-manager": api.Project{Tag: TagP("v0.2.0", prerelease)},
 			},
 			{
 				"github.com/kubevault/operator": api.Project{
@@ -78,15 +78,15 @@ func CreateKubeVaultReleaseFile() api.Release {
 					ChartNames: []string{
 						"kubevault-operator",
 					},
-					Tag: TagP("v0.25.0", prerelease),
+					Tag: TagP("v0.26.0", prerelease),
 				},
 				"github.com/kubevault/cli": api.Project{
 					Key: "kubevault-cli",
-					Tag: TagP("v0.25.0", prerelease),
+					Tag: TagP("v0.26.0", prerelease),
 				},
 				// {
 				// 	"github.com/kubevault/prometheus-exporter": api.Project{
-				// 		Tag: TagP("v0.7.0" , prerelease),
+				// 		Tag: TagP("v0.8.0" , prerelease),
 				// 	},
 				// },
 			},
