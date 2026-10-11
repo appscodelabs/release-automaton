@@ -122,7 +122,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/oracle-backup-plugin":              api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/solr-backup-plugin":                api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/milvus-archiver":                   api.Project{Tag: TagP("v0.2.0", prerelease)},
-				"github.com/kubedb/milvus-csi-snapshotter-plugin":     api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/documentdb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/dashboard-restic-plugin":           api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":       api.Project{Tag: TagP("v0.31.0", prerelease)},
@@ -156,6 +155,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/clickhouse-backup-plugin":       api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubedb/milvus-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/courier":                        api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
 					Tag: TagP("v0.55.0", prerelease),
