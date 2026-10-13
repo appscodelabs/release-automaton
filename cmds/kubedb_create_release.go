@@ -243,6 +243,7 @@ func CreateKubeDBReleaseFile() api.Release {
 					Commands: []string{
 						"./hack/scripts/import-crds.sh",
 
+						"go run ./catalog/kubedb/fmt/main.go --kind=ClickHouseVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/clickhouse-backup-plugin:${KUBEDB_CLICKHOUSE_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=DB2Version --update-spec=spec.coordinator.image=ghcr.io/kubedb/db2-coordinator:${KUBEDB_DB2_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=DocumentDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/documentdb-coordinator:${KUBEDB_DOCUMENTDB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=HanaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/hanadb-coordinator:${KUBEDB_HANADB_COORDINATOR_TAG}",
@@ -262,6 +263,7 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.courier.cli.image=ghcr.io/kubedb/kubedb-migrator-mysql:${KUBEDB_MIGRATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.courier.statusReporter.image=ghcr.io/kubedb/kubedb-courier:${KUBEDB_COURIER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MySQLVersion --update-spec=spec.routerInitContainer.image=ghcr.io/kubedb/mysql-router-init:${KUBEDB_MYSQL_ROUTER_INIT_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=Neo4jVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/neo4j-backup-plugin:${KUBEDB_NEO4J_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=OracleVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/oracle-coordinator:${KUBEDB_ORACLE_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PerconaXtraDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/percona-xtradb-coordinator:${KUBEDB_PERCONA_XTRADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=PostgresVersion --update-spec=spec.archiver.walg.image=${KUBEDB_POSTGRES_ARCHIVER_TAG}",
