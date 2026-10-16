@@ -155,6 +155,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/clickhouse-backup-plugin":       api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubedb/milvus-backup-plugin":           api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/milvus-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/courier":                        api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
@@ -293,6 +294,10 @@ func CreateKubeDBReleaseFile() api.Release {
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-physical-backup --update-spec=spec.image=ghcr.io/kubedb/mariadb-restic-plugin:${KUBEDB_MARIADB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-physical-restore --update-spec=spec.image=ghcr.io/kubedb/mariadb-restic-plugin:${KUBEDB_MARIADB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mariadb-restore --update-spec=spec.image=ghcr.io/kubedb/mariadb-restic-plugin:${KUBEDB_MARIADB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=milvus-backup --update-spec=spec.image=ghcr.io/kubedb/milvus-backup-plugin:${KUBEDB_MILVUS_BACKUP_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=milvus-physical-backup --update-spec=spec.image=ghcr.io/kubedb/milvus-backup-plugin:${KUBEDB_MILVUS_BACKUP_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=milvus-physical-backup-restore --update-spec=spec.image=ghcr.io/kubedb/milvus-backup-plugin:${KUBEDB_MILVUS_BACKUP_PLUGIN_TAG}",
+						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=milvus-restore --update-spec=spec.image=ghcr.io/kubedb/milvus-backup-plugin:${KUBEDB_MILVUS_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=milvus-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/milvus-csi-snapshotter-plugin:${KUBEDB_MILVUS_CSI_SNAPSHOTTER_PLUGIN_TAG}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mongodb-backup --update-spec=spec.image=ghcr.io/kubedb/mongodb-restic-plugin:${KUBEDB_MONGODB_RESTIC_PLUGIN_TAG}_$${DB_VERSION}",
 						"go run ./catalog/kubestash/fmt/main.go --kind=Function --name=mongodb-csi-snapshotter --update-spec=spec.image=ghcr.io/kubedb/mongodb-csi-snapshotter-plugin:${KUBEDB_MONGODB_CSI_SNAPSHOTTER_PLUGIN_TAG}",
