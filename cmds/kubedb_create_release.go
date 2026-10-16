@@ -156,6 +156,7 @@ func CreateKubeDBReleaseFile() api.Release {
 			{
 				"github.com/kubedb/clickhouse-backup-plugin":       api.Project{Tag: TagP("v0.5.0", prerelease)},
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.28.0", prerelease)},
+				"github.com/kubedb/milvus-backup-plugin":           api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/milvus-csi-snapshotter-plugin":  api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/courier":                        api.Project{Tag: TagP("v0.8.0", prerelease)},
 				"github.com/kubedb/pgbouncer": api.Project{
