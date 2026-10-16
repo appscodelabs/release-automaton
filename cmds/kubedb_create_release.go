@@ -122,7 +122,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/oracle-backup-plugin":              api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/solr-backup-plugin":                api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/milvus-archiver":                   api.Project{Tag: TagP("v0.2.0", prerelease)},
-				"github.com/kubedb/milvus-backup-plugin":              api.Project{Tag: TagP("v0.1.0", prerelease)},
 				"github.com/kubedb/documentdb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.2.0", prerelease)},
 				"github.com/kubedb/dashboard-restic-plugin":           api.Project{Tag: TagP("v0.26.0", prerelease)},
 				"github.com/kubedb/elasticsearch-restic-plugin":       api.Project{Tag: TagP("v0.31.0", prerelease)},
