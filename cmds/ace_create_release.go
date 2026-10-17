@@ -50,7 +50,7 @@ func NewCmdAceCreateRelease() *cobra.Command {
 
 func CreateAceReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.10.12" + prerelease
+	releaseNumber := "v2026.10.30" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
@@ -62,7 +62,7 @@ func CreateAceReleaseFile() api.Release {
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/ui-wizards": api.Project{
-					Tag: TagP("v0.38.0", prerelease),
+					Tag: TagP("v0.39.0", prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -74,7 +74,7 @@ func CreateAceReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: TagP("v0.50.0", prerelease),
+					Tag: TagP("v0.51.0", prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --use-digest=false --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -94,10 +94,10 @@ func CreateAceReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubeops/ui-server": api.Project{
-					Tag: TagP("v0.8.0", prerelease),
+					Tag: TagP("v0.9.0", prerelease),
 				},
 				"github.com/kubepack/lib-app": api.Project{
-					Tag: TagP("v0.26.0", prerelease),
+					Tag: TagP("v0.27.0", prerelease),
 					Commands: []string{
 						"make set-version VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -105,19 +105,19 @@ func CreateAceReleaseFile() api.Release {
 				},
 				/*
 					"github.com/appscode-cloud/cluster-ui": api.Project{
-						Tag: TagP("v0.11.0", prerelease),
+						Tag: TagP("v0.12.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/kubedb-ui": api.Project{
-						Tag: TagP("v0.11.0", prerelease),
+						Tag: TagP("v0.12.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/accounts-ui": api.Project{
-						Tag: TagP("v0.11.0", prerelease),
+						Tag: TagP("v0.12.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
