@@ -20,15 +20,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCmdAce() *cobra.Command {
+func NewCmdAkp() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "ace",
-		Short:             "ACE catalog commands",
+		Use:               "akp",
+		Short:             "AKP catalog commands",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 		},
 	}
 
-	cmd.AddCommand(NewCmdAceCreateRelease())
+	cmd.AddCommand(NewCmdAkpCreateRelease())
 	return cmd
 }

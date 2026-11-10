@@ -21,15 +21,15 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 if [[ $# -ne 1 ]]; then
     echo "Usage: $0 <product>" >&2
-    echo "Supported products: ace kubedb kubestash kubevault stash virtualsecrets voyager" >&2
+    echo "Supported products: akp kubedb kubestash kubevault stash virtualsecrets voyager" >&2
     exit 1
 fi
 
 product="${1,,}"
 
 case "${product}" in
-    ace)
-        target_basename="ace_create_release.go"
+    akp)
+        target_basename="akp_create_release.go"
         ;;
     kubedb)
         target_basename="kubedb_create_release.go"
@@ -51,7 +51,7 @@ case "${product}" in
         ;;
     *)
         echo "Unsupported product: ${1}" >&2
-        echo "Supported products: voyager kubevault kubedb ace stash kubestash" >&2
+        echo "Supported products: voyager kubevault kubedb akp stash kubestash" >&2
         exit 1
         ;;
 esac

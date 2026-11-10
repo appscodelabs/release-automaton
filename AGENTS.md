@@ -16,13 +16,13 @@
 
 ## Products
 
-This repo automates releases for multiple AppsCode products: `voyager`, `kubevault`, `kubedb`, `ace`, `stash`, `kubestash`.
+This repo automates releases for multiple AppsCode products: `voyager`, `kubevault`, `kubedb`, `akp`, `stash`, `kubestash`.
 
 - **Bump minor version**: `make bump-release-minor PRODUCT=<product>` or `./hack/scripts/bump-release-minor.sh <product>`
 
 ## CLI Commands
 
-The binary supports subcommands: `release`, `ace`, `kubedb`, `kubestash`, `kubevault`, `stash`, `virtualsecrets`, `voyager`, `list-versions`, `update-assets`, `update-bundles`, `update-envvars`.
+The binary supports subcommands: `release`, `akp`, `kubedb`, `kubestash`, `kubevault`, `stash`, `virtualsecrets`, `voyager`, `list-versions`, `update-assets`, `update-bundles`, `update-envvars`.
 
 ## CI
 

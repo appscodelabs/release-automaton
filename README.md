@@ -33,7 +33,7 @@ Supported products:
 - `voyager`
 - `kubevault`
 - `kubedb`
-- `ace`
+- `akp`
 - `stash`
 - `kubestash`
 
