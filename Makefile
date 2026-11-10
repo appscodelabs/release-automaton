@@ -246,7 +246,7 @@ verify-gen: gen fmt
 .PHONY: bump-release-minor
 bump-release-minor:
 	@if [ -z "$(PRODUCT)" ]; then \
-		echo "Usage: make bump-release-minor PRODUCT=<voyager|kubevault|kubedb|ace|stash|kubestash>"; \
+		echo "Usage: make bump-release-minor PRODUCT=<voyager|kubevault|kubedb|akp|stash|kubestash>"; \
 		exit 1; \
 	fi
 	@./hack/scripts/bump-release-minor.sh $(PRODUCT)

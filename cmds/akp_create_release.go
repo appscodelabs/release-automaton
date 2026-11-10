@@ -27,13 +27,13 @@ import (
 	"gomodules.xyz/semvers"
 )
 
-func NewCmdAceCreateRelease() *cobra.Command {
+func NewCmdAkpCreateRelease() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "create-release",
 		Short:             "Create release file",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			rel := CreateAceReleaseFile()
+			rel := CreateAkpReleaseFile()
 			err := rel.Validate()
 			if err != nil {
 				panic(err)
@@ -48,21 +48,21 @@ func NewCmdAceCreateRelease() *cobra.Command {
 	return cmd
 }
 
-func CreateAceReleaseFile() api.Release {
+func CreateAkpReleaseFile() api.Release {
 	prerelease := ""
-	releaseNumber := "v2026.10.30" + prerelease
+	releaseNumber := "v2026.11.15" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
 	hideDocs := false
 	return api.Release{
-		ProductLine: "ACE",
+		ProductLine: "AKP",
 		Release:     releaseNumber,
 		// DocsURLTemplate:   "https://appscode.com/docs/%s",
 		KubernetesVersion: "1.28+",
 		Projects: []api.IndependentProjects{
 			{
 				"github.com/appscode-cloud/ui-wizards": api.Project{
-					Tag: TagP("v0.39.0", prerelease),
+					Tag: TagP("v0.40.0", prerelease),
 					ChartNames: []string{
 						"kubedbcom-mongodb-editor-options",
 					},
@@ -74,7 +74,7 @@ func CreateAceReleaseFile() api.Release {
 			},
 			{
 				"github.com/kmodules/resource-metadata": api.Project{
-					Tag: TagP("v0.51.0", prerelease),
+					Tag: TagP("v0.52.0", prerelease),
 					Commands: []string{
 						"go run cmd/ui-updater/main.go --use-digest=false --chart.version=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -94,10 +94,10 @@ func CreateAceReleaseFile() api.Release {
 					},
 				},
 				"github.com/kubeops/ui-server": api.Project{
-					Tag: TagP("v0.9.0", prerelease),
+					Tag: TagP("v0.10.0", prerelease),
 				},
 				"github.com/kubepack/lib-app": api.Project{
-					Tag: TagP("v0.27.0", prerelease),
+					Tag: TagP("v0.28.0", prerelease),
 					Commands: []string{
 						"make set-version VERSION=${APPSCODE_CLOUD_UI_WIZARDS_TAG}",
 						"make fmt",
@@ -105,19 +105,19 @@ func CreateAceReleaseFile() api.Release {
 				},
 				/*
 					"github.com/appscode-cloud/cluster-ui": api.Project{
-						Tag: TagP("v0.12.0", prerelease),
+						Tag: TagP("v0.13.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/kubedb-ui": api.Project{
-						Tag: TagP("v0.12.0", prerelease),
+						Tag: TagP("v0.13.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
 					},
 					"github.com/appscode-cloud/accounts-ui": api.Project{
-						Tag: TagP("v0.12.0", prerelease),
+						Tag: TagP("v0.13.0", prerelease),
 						Commands: []string{
 							"npm --no-git-tag-version --allow-same-version version ${TAG_WITHOUT_V_PREFIX}",
 						},
@@ -159,8 +159,9 @@ func CreateAceReleaseFile() api.Release {
 						"make update-charts CHART_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-acaas CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-accounts-ui CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-ace CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
-						"make chart-ace-installer CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-akp CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make chart-akp-installer CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
+						"make update-legacy-chart",
 						"make chart-billing CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-kubedb-ui-presets CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
 						"make chart-marketplace-api CHART_VERSION=${RELEASE} APP_VERSION=${RELEASE} CHART_REGISTRY=${CHART_REGISTRY} CHART_REGISTRY_URL=${CHART_REGISTRY_URL}",
@@ -176,9 +177,9 @@ func CreateAceReleaseFile() api.Release {
 						"go run ./cmd/update-version/main.go",
 						"./hack/scripts/update-chart-dependencies.sh",
 
-						"rm -rf charts/ace-installer-certified charts/ace-installer-certified-crds",
-						"chart-packer crd-less --input charts/ace-installer --output charts",
-						"chart-packer crd-only --input charts/ace-installer --output charts",
+						"rm -rf charts/akp-installer-certified charts/akp-installer-certified-crds",
+						"chart-packer crd-less --input charts/akp-installer --output charts",
+						"chart-packer crd-only --input charts/akp-installer --output charts",
 						"make gen-chart-doc",
 						"./hack/scripts/update-catalog.sh",
 						"make gen fmt",
