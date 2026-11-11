@@ -53,7 +53,7 @@ func CreateAkpReleaseFile() api.Release {
 	releaseNumber := "v2026.11.15" + prerelease
 	// hideDocs hides this release's docs from the website. When set, the release
 	// is not advertised as the website's version either.
-	hideDocs := false
+	hideDocs := true
 	return api.Release{
 		ProductLine: "AKP",
 		Release:     releaseNumber,
