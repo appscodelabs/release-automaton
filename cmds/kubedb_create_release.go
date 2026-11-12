@@ -102,7 +102,6 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/redis":                      api.Project{Tag: TagP("v0.62.0", prerelease)},
 				"github.com/kubedb/redis-coordinator":          api.Project{Tag: TagP("v0.48.0", prerelease)},
 				"github.com/kubedb/replication-mode-detector":  api.Project{Tag: TagP("v0.56.0", prerelease)},
-				"github.com/kubedb/tests":                      api.Project{Tag: TagP("v0.54.0", prerelease)},
 				"github.com/kubedb/cassandra":                  api.Project{Tag: TagP("v0.22.0", prerelease)},
 				"github.com/kubedb/hazelcast":                  api.Project{Tag: TagP("v0.15.0", prerelease)},
 				"github.com/kubedb/oracle":                     api.Project{Tag: TagP("v0.15.0", prerelease)},
@@ -153,6 +152,7 @@ func CreateKubeDBReleaseFile() api.Release {
 				"github.com/kubedb/provider-gcp":   api.Project{Tag: TagP("v0.30.0", prerelease)},
 			},
 			{
+				"github.com/kubedb/tests":                          api.Project{Tag: TagP("v0.54.0", prerelease)},
 				"github.com/kubedb/clickhouse-backup-plugin":       api.Project{Tag: TagP("v0.6.0", prerelease)},
 				"github.com/kubedb/mariadb-csi-snapshotter-plugin": api.Project{Tag: TagP("v0.29.0", prerelease)},
 				"github.com/kubedb/milvus-backup-plugin":           api.Project{Tag: TagP("v0.2.0", prerelease)},
