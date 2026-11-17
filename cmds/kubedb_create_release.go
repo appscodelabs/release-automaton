@@ -246,6 +246,7 @@ func CreateKubeDBReleaseFile() api.Release {
 
 						"go run ./catalog/kubedb/fmt/main.go --kind=ClickHouseVersion --update-spec=spec.archiver.walg.image=ghcr.io/kubedb/clickhouse-backup-plugin:${KUBEDB_CLICKHOUSE_BACKUP_PLUGIN_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=DB2Version --update-spec=spec.coordinator.image=ghcr.io/kubedb/db2-coordinator:${KUBEDB_DB2_COORDINATOR_TAG}",
+						"go run ./catalog/kubedb/fmt/main.go --kind=DocumentDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_POSTGRES_ARCHIVER_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=DocumentDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/documentdb-coordinator:${KUBEDB_DOCUMENTDB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=HanaDBVersion --update-spec=spec.coordinator.image=ghcr.io/kubedb/hanadb-coordinator:${KUBEDB_HANADB_COORDINATOR_TAG}",
 						"go run ./catalog/kubedb/fmt/main.go --kind=MariaDBVersion --update-spec=spec.archiver.walg.image=${KUBEDB_MARIADB_ARCHIVER_TAG}",
